@@ -13,6 +13,7 @@ use App\Helpers\ServerUrl;
 use App\Helpers\Utilities;
 use App\Helpers\Constants;
 use App\Helpers\Session as LegacySession;
+use Illuminate\Support\Facades\Cache;
 
 
 class AuthorisationController extends Controller
@@ -69,66 +70,18 @@ class AuthorisationController extends Controller
         $trackingCipher = LegacySession::getSessionVariable('reEncString');
         $requestData['trackingCipher'] = $trackingCipher !== false ? $trackingCipher : '';
 
-        $response = ServerCommunication::sendCall(ServerUrl::PLAYER_LOGIN, $requestData, Validations::$isAjax); // 
-        Log::info(json_encode($response));
-        if (Validations::getErrorCode() != 0) {
-            LegacySession::setSessionVariable('verificationPending', true);
-            LegacySession::setSessionVariable('verificationPendingUserName', (string) $userName);
+        $response = ServerCommunication::sendCall(ServerUrl::PLAYER_LOGIN, $requestData, Validations::$isAjax);
 
-            if (Validations::getErrorCode() == Errors::VERIFICATION_PENDING) {
-                if (Validations::$isAjax) {
-                    // return Redirection::ajaxExit(
-                    //     Redirection::VERIFICATION_PENDING,
-                    //     Constants::AJAX_FLAG_RELOAD,
-                    //     Errors::TYPE_ERROR,
-                    //     Validations::getRespMsg()
-                    // ); // 
-                }
-                // return Redirection::to(Redirection::VERIFICATION_PENDING, Errors::TYPE_ERROR, Validations::getRespMsg());
-            }
+        if (isset($response->errorCode) && $response->errorCode == 0 && isset($response->playerLoginInfo)) {
+            $userId = $response->playerLoginInfo->playerId;
+            // Save whole $response (or only the needed fields) in cache
+            Cache::put('user_session_' . $userId, $response, 60 * 24); // expires in 24 hours
 
-            if ($loginToken == Constants::IGE_LOGIN_TOKEN) { // IGELOGIN compatibility. 
-                // return Redirection::to(config('app.url') . '/component/weaver?task=authorisation.loginWindow&error=' . urlencode(Validations::getRespMsg()));
-            }
-
-            if (Validations::$isAjax) {
-                return Redirection::ajaxSendDataToView($response);
-            }
-            // return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Validations::getRespMsg());
+            // Optionally, use Laravel session for basic web auth
+            session(['user_id' => $userId]);
         }
 
-        // Success: session + redirects exactly like Joomla. 
-        if (method_exists(LegacySession::class, 'sessionInitiate')) {
-            LegacySession::sessionInitiate($response);
-        }
-        LegacySession::setSessionVariable('fireLoginEvent', true);
-        LegacySession::unsetSessionVariable('reEncString');
-        LegacySession::setSessionVariable('encPwd', $encPwd);
-
-        $redirectTo = $submitUrl ? urldecode((string) $submitUrl) : url('/');
-
-        if (LegacySession::getSessionVariable('LOTTERY_LOGINREDIRECT') === true) {
-            LegacySession::unsetSessionVariable('LOTTERY_LOGINREDIRECT');
-            $redirectTo = (string) LegacySession::getSessionVariable('LOTTERY_pageToGo');
-        }
-
-        // Enrich response with links (kept as in Joomla). 
-        $response->cashierLink = Redirection::CASHIER_INITIATE;
-        $response->rummyLink   = Redirection::PLAY_RUMMY;
-
-        if (Validations::$isAjax) {
-            $response->path = $redirectTo;
-            // return Redirection::ajaxSendDataToView($response);
-        }
-
-        if ($loginToken == Constants::IGE_LOGIN_TOKEN) {
-            $playerId  = Utilities::getPlayerId();
-            $token     = Utilities::getPlayerToken();
-            // return Redirection::to($redirectTo . "&forceLogin=YES&playerId={$playerId}&merchantSessionId={$token}");
-        }
-
-        // return Redirection::to($redirectTo);
-        return response()->view('weaver.login-window', [
+        return response()->json([
             'error'       => '',
             'callBackURL' => $submitUrl,
             'response'    => $response
@@ -220,12 +173,14 @@ class AuthorisationController extends Controller
         $error = (string) $request->query('error', '');
         $callBackURL = $request->query('callBackURL');
         $igedevice   = $request->query('igedevice');
+        $userId = session('user_id');
+        $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
+        $balance = $userSession->playerLoginInfo->walletBean->totalBalance ?? 0;
 
         if (!is_null($igedevice)) {
             LegacySession::setSessionVariable('igedevice', $igedevice);
         }
 
-        // Match the old behavior: wrap callback with fixed domain & urlencode. 
         $callBackURL = urlencode("http://ala-new.winweaver.com/InstantGameEngineOLD/" . $callBackURL);
 
         if (!LegacySession::getSessionVariable('callBackURL')) {
@@ -235,6 +190,19 @@ class AuthorisationController extends Controller
         return response()->view('weaver.login-window', [
             'error'       => $error,
             'callBackURL' => $callBackURL,
+            'userId' => $userId,
+            'balance' => $balance
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        $userId = session('user_id');
+        if ($userId) {
+            Cache::forget('user_session_' . $userId);
+            session()->forget('user_id');
+        }
+        return redirect('weaver/authorisation/login-window');
+    }
+
 }

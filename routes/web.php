@@ -14,6 +14,7 @@ Route::post('/weaver/authorisation/login', [AuthorisationController::class, 'pla
 Route::post('/weaver/authorisation/reset-password', [AuthorisationController::class, 'resetPassword'])->name('weaver.reset');
 Route::get('/weaver/authorisation/token', [AuthorisationController::class, 'getToken'])->name('weaver.token');
 Route::get('/weaver/authorisation/login-window', [AuthorisationController::class, 'loginWindow'])->name('weaver.loginWindow');
+Route::get('/logout', [AuthorisationController::class, 'logout'])->name('logout');
 
 
 Route::get('/', function () {
