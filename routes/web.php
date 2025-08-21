@@ -10,15 +10,16 @@ Route::match(['GET','POST'], '/component/weaver', [AuthorisationController::clas
     ->name('weaver.dispatch');
 
 // (Optional: pretty routes if you want them too)
-Route::post('/weaver/authorisation/login', [AuthorisationController::class, 'playerLogin'])->name('weaver.login');
+Route::post('/login', [AuthorisationController::class, 'playerLogin'])->name('weaver.login');
 Route::post('/weaver/authorisation/reset-password', [AuthorisationController::class, 'resetPassword'])->name('weaver.reset');
 Route::get('/weaver/authorisation/token', [AuthorisationController::class, 'getToken'])->name('weaver.token');
-Route::get('/weaver/authorisation/login-window', [AuthorisationController::class, 'loginWindow'])->name('weaver.loginWindow');
+Route::get('/', [AuthorisationController::class, 'loginWindow'])->name('loginPage');
 Route::get('/logout', [AuthorisationController::class, 'logout'])->name('logout');
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::get('/games/newige', [NewIgeGameController::class, 'newIge']);
 Route::get('/games/slot', [NewIgeGameController::class, 'slotGaming']);
+Route::get('/register', [AuthorisationController::class, 'registerview'])->name('registerview');
+
+Route::post('/check-availability', [AuthorisationController::class, 'checkAvailability'])->name('check.availability');
+Route::post('/verify-otp', [AuthorisationController::class, 'verifyOtpRegistration'])->name('verify.otp');
+Route::post('/player-registration', [AuthorisationController::class, 'playerRegistration'])->name('player.registration');

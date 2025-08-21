@@ -1,3 +1,5 @@
+@extends('layouts.app')
+@section('content')
 <script type="text/javascript">
     var hash = location.hash;
     if (hash.length > 11)
@@ -37,3 +39,4 @@
 <script type="text/javascript">LottoGames.frame(_ic);</script>
 <div id="lottogames_div_iframe"></div>
 <div id="fakeDarkBg"></div>
+@endsection 

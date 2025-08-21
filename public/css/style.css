@@ -1,0 +1,320 @@
+
+    body{
+    margin:0;
+    padding:0;
+      font-family: "Roboto", sans-serif !important;
+}
+.header{
+    background:#fff;
+
+}
+.header .nav-link{
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 4px;
+}
+.header .logo{
+    width:90px;
+}
+.btn-login-signup{
+        font-size: 13px  !important;
+    border-radius: 40px  !important;
+    font-weight: 600  !important;
+    background-color: #ce1126 !important ;
+        height: 35px;
+}
+.countrycode{
+    padding: 5px;
+    margin-right: 10px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 3px;
+    border-color: #dddddd;
+    background-color: #e8e8e8;
+}
+.cards-icons img {
+    /* width: 35%; */
+    max-width: 75%;
+    /* margin: auto; */
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    max-height: 80px;
+}
+.games-main .col-md-2{ 
+    width:20%;
+        padding: 0 2px;
+}
+.cards-icons {
+    text-align: center;
+        flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    line-height: 1.1;
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.17);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 5px;
+    color: #0448a8;
+        height: 172px;
+}
+.games-main{
+        margin: 90px 0;
+            padding: 0 10px;
+
+}
+.game777{
+        width: 68% !important;
+}
+.cards-icons a{
+     color: #0448a8;
+     text-decoration: none;
+     font-weight: 600;
+         margin-top: 17px;
+
+}
+.footer-main{
+    background-color: #f5f5f5;
+    padding: 30px 0 0;
+}
+.logo-footer img{
+        width: 150px;
+}
+.logo-footer p{
+    font-size: 15px;
+    margin-top: 16px;
+    font-weight: 400;
+}
+.quicklinks ul{
+    list-style: none;
+    padding:0;
+        margin-top: 20px;
+}
+.quicklinks ul li a{
+        font-size: 14px;
+    color: #000;
+    text-decoration: none;
+}
+.quicklinks ul li{
+       padding: 9px 0px;
+    border-bottom: 1px solid #e5e5e5;
+        font-weight: 500;
+}
+.quicklinks ul li:last-child{
+    border-bottom:none !important;
+
+}
+.partner-section{
+        background: #123374;
+    padding: 30px;
+}
+.partner-logo ul{
+    padding:0;
+    list-style: none;
+    display: flex;
+    margin: 0;
+        align-items: center;
+    height: 32px;
+
+}
+.partner-logo ul li img{
+        margin-right: 16px;
+}
+.size-icons{
+        width: 106px;
+}
+.social-icons{
+    background: #fff;
+    text-align: center;
+        padding: 21px 0;
+
+}
+.social-icons ul {
+    text-decoration: none;
+    padding:0;
+    display: flex;
+    list-style: none;
+        justify-content: center;
+}
+.social-icons ul li{
+    background-color: #0448a8;
+    margin: 0 4px;
+    padding:0px 5px;
+        border-radius: 5px;
+}
+.social-icons ul li a{
+    color:#fff;
+}
+.social-icons ul li a i{
+        font-size: 18px;
+}
+.social-icons p{
+        margin: 0;
+    font-size: 12px;
+}
+    .navbar {
+      transition: all 0.3s ease;
+      padding: 20px 15px;  /* More height */
+    }
+
+    /* Shrunk navbar */
+    .navbar.shrink {
+      padding: 8px 15px;   /* Less height */
+      background-color: #fff !important; /* Dark background */
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .games-main .chang_row .col-md-3{
+        width: 20%;
+        padding-right: 4px !important;
+        padding-left: 1px !important;
+    }
+    @media (max-width: 580px) {
+        .games-main .chang_row .col-md-3{
+            width: 50%;
+        }
+        .cards-icons img {
+   
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+ .col-md-3.last_parents {
+    margin: auto;
+    width: 100% !important;
+}
+.cards-icons{
+    margin-bottom: 20px;
+}
+
+.partner-logo ul li img {
+    width: 44px;
+}
+img.size-icons {
+    width: 100px !important;
+}
+    }
+
+/* MODAL */
+    .modal {
+      display: none; 
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 10px;
+      width: 300px;
+      padding: 25px 30px;
+      text-align: center;
+      position: relative;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 50px;
+      padding: 8px 14px;
+      margin-top: 5px;
+    }
+
+    .input-wrapper .icon {
+      font-size: 16px;
+      margin-right: 10px;
+      color: #888;
+    }
+
+    .input-wrapper input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .login-submit {
+      width: 100%;
+      background: #E4105D;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+  #scrollToTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  background-color: white;
+  border: 2px solid #b22234; /* red border */
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-sizing: border-box;
+  transition: background-color 0.4s, border-color 0.4s;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #b22234;  /* red background */
+  border-color: #b22234;      /* red border */
+}
+
+#scrollToTopBtn svg {
+  stroke: #b22234;             /* red arrow */
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: auto;
+  transition: stroke 0.4s;
+}
+
+#scrollToTopBtn:hover svg {
+  stroke: white;              /* white arrow on hover */
+}
+
+#scrollToTopBtn.show {
+  display: block;
+  opacity: 1;
+}

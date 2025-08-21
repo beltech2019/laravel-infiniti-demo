@@ -27,6 +27,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
+            "app/Helpers/Helper.php",
             "app/Helpers/Api.php",
             "app/Helpers/Campaign.php",
             "app/Helpers/Configuration.php",

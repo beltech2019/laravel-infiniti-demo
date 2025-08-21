@@ -18,45 +18,16 @@ use Illuminate\Support\Facades\Cache;
 
 class AuthorisationController extends Controller
 {
-    /**
-     * Compatibility dispatcher for legacy Joomla `?task=` calls, e.g.:
-     * /component/weaver?task=authorisation.playerLogin
-     */
-    public function dispatch(Request $request)
-    {
-        $task = $request->query('task', '');
-
-        return match ($task) {
-            'authorisation.playerLogin'   => $this->playerLogin($request),
-            'authorisation.resetPassword' => $this->resetPassword($request),
-            'authorisation.getToken'      => $this->getToken($request),
-            'authorisation.loginWindow'   => $this->loginWindow($request),
-            default                       => abort(404, 'Unknown task'),
-        };
-    }
-
     public function playerLogin(Request $request)
     {
-        // Mimic Joomla Log::addLogger + add(json) (laravel channel below)
-        Log::channel('playerlogin')->info('playerlogin request', [
-            'payload' => $request->except(['password', 'encPwd']), // don't log secrets
-            'ip'      => $request->ip(),
-        ]); // mirrors the intention of the Joomla logger. 
-
-        // Joomla code calls Session::sessionRemove() before starting. 
-        if (method_exists(LegacySession::class, 'sessionRemove')) {
-            LegacySession::sessionRemove();
-        }
-
         $isAjax = $request->string('isAjax', '');
         Validations::$isAjax = ($isAjax === 'true');
 
         $userName    = $request->string('userName_email', '');
-        $rawPassword    = $request->input('password', ''); // RAW in Joomla
+        $rawPassword    = $request->input('password', '');
         $loginToken  = $request->string('loginToken', '');
         $submitUrl   = $request->string('submiturl', null);
-        // $encPwd      = $request->input('encPwd', ''); // RAW in Joomla
-        $encPwd   = md5($rawPassword); // single MD5
+        $encPwd   = md5($rawPassword); 
         $hashedPw = md5($encPwd . $loginToken); 
         $password = $hashedPw;
         $requestData = [
@@ -66,7 +37,6 @@ class AuthorisationController extends Controller
             'requestIp' => Configuration::getClientIP(),
         ];
 
-        // trackingCipher (reEncString) behavior preserved. 
         $trackingCipher = LegacySession::getSessionVariable('reEncString');
         $requestData['trackingCipher'] = $trackingCipher !== false ? $trackingCipher : '';
 
@@ -74,8 +44,7 @@ class AuthorisationController extends Controller
 
         if (isset($response->errorCode) && $response->errorCode == 0 && isset($response->playerLoginInfo)) {
             $userId = $response->playerLoginInfo->playerId;
-            // Save whole $response (or only the needed fields) in cache
-            Cache::put('user_session_' . $userId, $response, 60 * 24); // expires in 24 hours
+            Cache::put('user_session_' . $userId, $response, 60 * 24);
 
             // Optionally, use Laravel session for basic web auth
             session(['user_id' => $userId]);
@@ -170,29 +139,7 @@ class AuthorisationController extends Controller
 
     public function loginWindow(Request $request)
     {
-        $error = (string) $request->query('error', '');
-        $callBackURL = $request->query('callBackURL');
-        $igedevice   = $request->query('igedevice');
-        $userId = session('user_id');
-        $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
-        $balance = $userSession->playerLoginInfo->walletBean->totalBalance ?? 0;
-
-        if (!is_null($igedevice)) {
-            LegacySession::setSessionVariable('igedevice', $igedevice);
-        }
-
-        $callBackURL = urlencode("http://ala-new.winweaver.com/InstantGameEngineOLD/" . $callBackURL);
-
-        if (!LegacySession::getSessionVariable('callBackURL')) {
-            LegacySession::setSessionVariable('callBackURL', $callBackURL);
-        }
-
-        return response()->view('weaver.login-window', [
-            'error'       => $error,
-            'callBackURL' => $callBackURL,
-            'userId' => $userId,
-            'balance' => $balance
-        ]);
+        return response()->view('weaver.login-window');
     }
 
     public function logout(Request $request)
@@ -202,7 +149,230 @@ class AuthorisationController extends Controller
             Cache::forget('user_session_' . $userId);
             session()->forget('user_id');
         }
-        return redirect('weaver/authorisation/login-window');
+        return redirect()->route('loginPage');
+    }
+
+    public function registerview(Request $request)
+    {
+        $countries = Utilities::getCountryList();
+        $currency = Constants::$currencyMap;
+        return response()->view('weaver.register',compact('countries','currency'));
+    }
+
+    public function registrationOTP(Request $request) //done
+    {
+        if (!LegacySession::sessionValidate()) {
+            $isAjax = $request->input('isAjax', '');
+            Validations::$isAjax = ($isAjax == 'true') ? true : false;
+            $mobileNo = LegacySession::getSessionVariable('playerPreRegistrationData')['mobileNo'];
+        
+
+             $regOtpRequestArr = array(
+                 "mobileNo" => $mobileNo,
+                 "aliasName" => Configuration::DOMAIN_NAME
+                );
+
+             $response = ServerCommunication::sendCallRam(ServerUrl::RAM_PRELOGIN_SEND_OTP, $regOtpRequestArr, Validations::$isAjax,true, false, 'GET');
+
+            LegacySession::setSessionVariable("register_otp", $response->errorMessage);
+            if (Validations::getErrorCode() != 0) {
+                if (Validations::$isAjax == true)
+                    Redirection::ajaxSendDataToView($response);
+                Redirection::to(Redirection::REGISTRATION, Errors::TYPE_ERROR, Validations::getRespMsg());
+            }
+            else {
+                $response->errorMessage = true;
+                // unset($response->data->mobVerificationCode);
+                Redirection::ajaxSendDataToView($response);
+            }
+        } else {
+            if (Validations::$isAjax)
+                Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+            Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+        }
+    }
+
+
+    public function checkAvailability(Request $request)
+    {
+        if (!LegacySession::sessionValidate()) {
+            $registrationType = $request->input('registrationType', '');
+            $password         = $request->input('reg_password', '');
+            $mobileNo         = $request->input('mobile', 0);
+            $stateCode        = $request->input('state', '');
+            $submitUrl        = $request->input('submiturl', null);
+            $refercode        = $request->input('refercode', '');
+
+            $referSource = $refercode == '' ? '' : 'REFER_FRIEND';
+
+            $currency   = Configuration::getCurrencyDetails();
+            $currencyId = $request->input('currency');
+            $countryCode= $request->input('countrycode');
+
+            // Store preregistration data in session
+            $requestArrRegistration = [
+                "password"        => $password,
+                "mobileNo"        => $mobileNo,
+                "requestIp"       => Configuration::getClientIP(),
+                "registrationType"=> $registrationType,
+                "currencyId"      => $currencyId,
+                "countryCode"     => $countryCode,
+                "referCode"       => $refercode,
+                "referSource"     => $referSource
+            ];
+
+            if ($registrationType == "FULL") {
+                $requestArrRegistration['firstName'] = $request->input('fname', '');
+                $requestArrRegistration['lastName']  = $request->input('lname', '');
+            }
+
+            LegacySession::setSessionVariable('playerPreRegistrationData', $requestArrRegistration);
+
+            // check availability
+            $requestArr = [
+                "userName"   => $mobileNo,
+                "domainName" => Configuration::DOMAIN_NAME
+            ];
+
+            $response = ServerCommunication::sendCall(ServerUrl::CHECK_AVAILABILITY, $requestArr, Validations::$isAjax);
+            return response()->json($response);
+        }
+    }
+
+    public function verifyOtpRegistration(Request $request)
+    {
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax === 'true');
+
+        if (!LegacySession::sessionValidate()) {
+            $verificationCode = $request->input('otp_confirm', '');
+            $preData = LegacySession::getSessionVariable('playerPreRegistrationData');
+
+            $requestArr = [
+                "countryCode"     => $preData['countryCode'],
+                "password"        => $preData['password'],
+                "mobileNo"        => $preData['mobileNo'],
+                "requestIp"       => Configuration::getClientIP(),
+                "registrationType"=> 'REGISTRATION',
+                "currencyCode"    => $preData['currencyId'],
+                "otp"             => $verificationCode,
+            ];
+
+            if (!empty($preData['referCode'])) {
+                $requestArr["referCode"]   = $preData["referCode"];
+                $requestArr["referSource"] = $preData["referSource"];
+            }
+
+            if (!empty($preData['trackId'])) {
+                $requestArr["trackId"] = $preData["trackId"];
+            }
+
+            if (!empty($preData['campId'])) {
+                $requestArr["campId"] = $preData["campId"];
+            }
+
+            if ($preData['registrationType'] == "FULL") {
+                $requestArr['firstName'] = $preData['fname'] ?? '';
+                $requestArr['lastName']  = $preData['lname'] ?? '';
+            }
+
+            $response = ServerCommunication::sendCallRam(ServerUrl::RAM_REGISTRATION, $requestArr, Validations::$isAjax);
+
+            if ($response->errorCode != 0) {
+                if (Validations::$isAjax) {
+                    return Redirection::ajaxSendDataToView($response);
+                }
+                return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Validations::getRespMsg());
+            }
+
+            LegacySession::sessionInitiate($response);
+            LegacySession::unsetSessionVariable("playerPreRegistrationData");
+
+            $redirectTo = Redirection::LOGIN;
+
+            if (Validations::$isAjax) {
+                $response->path = $redirectTo;
+                return Redirection::ajaxSendDataToView($response);
+            }
+        } else {
+            if (Validations::$isAjax) {
+                return Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+            }
+            return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+        }
+    }
+
+    public function playerRegistration(Request $request)
+    {
+        if (!LegacySession::sessionValidate()) {
+            $userName   = $request->input('userName', '');
+            $mobileNo   = $request->input('mobile', 0);
+            $emailId    = $request->input('email', '');
+            $password   = $request->input('reg_password', '');
+            $registrationType = $request->input('registrationType', '');
+            $currency   = $request->input('currency', '');
+            $countrycode= (int)str_replace('-', '', $request->input('countrycode', 0));
+            echo $countrycode;
+            exit;
+            $country    = $request->input('country', '');
+
+            $mobileNo   = $countrycode . $mobileNo;
+
+            $requestArr = [
+                "userName"        => $userName,
+                "password"        => $password,
+                "mobileNo"        => $mobileNo,
+                "emailId"         => $emailId,
+                "requestIp"       => Configuration::getClientIP(),
+                "registrationType"=> $registrationType,
+                "countryCode"     => $country,
+                "currencyCode"    => $currency,
+                "eventTypes"      => ["ALL"],
+                "type"            => 'EMAIL'
+            ];
+
+            $preData = LegacySession::getSessionVariable('playerPreRegistrationData');
+
+            if (!empty($preData['referCode'])) {
+                $requestArr["referCode"] = $preData["referCode"];
+            }
+            if (!empty($preData['trackId'])) {
+                $requestArr["trackId"] = $preData["trackId"];
+            }
+            if (!empty($preData['campId'])) {
+                $requestArr["campId"] = $preData["campId"];
+            }
+
+            if ($registrationType == "FULL") {
+                $requestArr['firstName'] = $preData['fname'] ?? '';
+                $requestArr['lastName']  = $preData['lname'] ?? '';
+            }
+
+            $response = ServerCommunication::sendCallRam(ServerUrl::RAM_REGISTRATION, $requestArr, Validations::$isAjax);
+            echo json_encode($response);
+            exit; 
+            if ($response->errorCode != 0) {
+                if (Validations::$isAjax) {
+                    return Redirection::ajaxSendDataToView($response);
+                }
+                return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Validations::getRespMsg());
+            }
+       
+            LegacySession::sessionInitiate($response);
+            LegacySession::unsetSessionVariable("playerPreRegistrationData");
+
+            $redirectTo = Redirection::LOGIN;
+
+            if (Validations::$isAjax) {
+                $response->path = $redirectTo;
+                return Redirection::ajaxSendDataToView($response);
+            }
+        } else {
+            if (Validations::$isAjax) {
+                return Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+            }
+            return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+        }
     }
 
 }
