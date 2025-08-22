@@ -45,8 +45,6 @@ class AuthorisationController extends Controller
         if (isset($response->errorCode) && $response->errorCode == 0 && isset($response->playerLoginInfo)) {
             $userId = $response->playerLoginInfo->playerId;
             Cache::put('user_session_' . $userId, $response, 60 * 24);
-
-            // Optionally, use Laravel session for basic web auth
             session(['user_id' => $userId]);
         }
 
@@ -156,42 +154,9 @@ class AuthorisationController extends Controller
     {
         $countries = Utilities::getCountryList();
         $currency = Constants::$currencyMap;
-        return response()->view('weaver.register',compact('countries','currency'));
+        $otp_enable = false;
+        return response()->view('weaver.register',compact('countries', 'currency', 'otp_enable'));
     }
-
-    public function registrationOTP(Request $request) //done
-    {
-        if (!LegacySession::sessionValidate()) {
-            $isAjax = $request->input('isAjax', '');
-            Validations::$isAjax = ($isAjax == 'true') ? true : false;
-            $mobileNo = LegacySession::getSessionVariable('playerPreRegistrationData')['mobileNo'];
-        
-
-             $regOtpRequestArr = array(
-                 "mobileNo" => $mobileNo,
-                 "aliasName" => Configuration::DOMAIN_NAME
-                );
-
-             $response = ServerCommunication::sendCallRam(ServerUrl::RAM_PRELOGIN_SEND_OTP, $regOtpRequestArr, Validations::$isAjax,true, false, 'GET');
-
-            LegacySession::setSessionVariable("register_otp", $response->errorMessage);
-            if (Validations::getErrorCode() != 0) {
-                if (Validations::$isAjax == true)
-                    Redirection::ajaxSendDataToView($response);
-                Redirection::to(Redirection::REGISTRATION, Errors::TYPE_ERROR, Validations::getRespMsg());
-            }
-            else {
-                $response->errorMessage = true;
-                // unset($response->data->mobVerificationCode);
-                Redirection::ajaxSendDataToView($response);
-            }
-        } else {
-            if (Validations::$isAjax)
-                Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
-            Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
-        }
-    }
-
 
     public function checkAvailability(Request $request)
     {
@@ -209,7 +174,6 @@ class AuthorisationController extends Controller
             $currencyId = $request->input('currency');
             $countryCode= $request->input('countrycode');
 
-            // Store preregistration data in session
             $requestArrRegistration = [
                 "password"        => $password,
                 "mobileNo"        => $mobileNo,
@@ -239,67 +203,62 @@ class AuthorisationController extends Controller
         }
     }
 
+    
+    public function registrationOTP(Request $request) //done
+    {
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax == 'true') ? true : false;
+        $mobileNo = LegacySession::getSessionVariable('playerPreRegistrationData')['mobileNo'];
+        $regOtpRequestArr = array(
+            "mobileNo" => $mobileNo,
+            "aliasName" => Configuration::DOMAIN_NAME
+        );
+
+        $response = ServerCommunication::sendCallRam(ServerUrl::RAM_PRELOGIN_SEND_OTP, $regOtpRequestArr, Validations::$isAjax,true, false, 'GET');
+        return response()->json($response);
+    }
+
+
     public function verifyOtpRegistration(Request $request)
     {
         $isAjax = $request->input('isAjax', '');
         Validations::$isAjax = ($isAjax === 'true');
+        $verificationCode = $request->input('otp_confirm', '');
+        $preData = LegacySession::getSessionVariable('playerPreRegistrationData');
+        Log::info($preData); 
+        $requestArr = [
+            "countryCode"     => $preData['countryCode'],
+            "password"        => $preData['password'],
+            "mobileNo"        => $preData['mobileNo'],
+            "requestIp"       => Configuration::getClientIP(),
+            "registrationType"=> 'REGISTRATION',
+            "currencyCode"    => $preData['currencyId'],
+            "otp"             => $verificationCode,
+        ];
 
-        if (!LegacySession::sessionValidate()) {
-            $verificationCode = $request->input('otp_confirm', '');
-            $preData = LegacySession::getSessionVariable('playerPreRegistrationData');
-
-            $requestArr = [
-                "countryCode"     => $preData['countryCode'],
-                "password"        => $preData['password'],
-                "mobileNo"        => $preData['mobileNo'],
-                "requestIp"       => Configuration::getClientIP(),
-                "registrationType"=> 'REGISTRATION',
-                "currencyCode"    => $preData['currencyId'],
-                "otp"             => $verificationCode,
-            ];
-
-            if (!empty($preData['referCode'])) {
-                $requestArr["referCode"]   = $preData["referCode"];
-                $requestArr["referSource"] = $preData["referSource"];
-            }
-
-            if (!empty($preData['trackId'])) {
-                $requestArr["trackId"] = $preData["trackId"];
-            }
-
-            if (!empty($preData['campId'])) {
-                $requestArr["campId"] = $preData["campId"];
-            }
-
-            if ($preData['registrationType'] == "FULL") {
-                $requestArr['firstName'] = $preData['fname'] ?? '';
-                $requestArr['lastName']  = $preData['lname'] ?? '';
-            }
-
-            $response = ServerCommunication::sendCallRam(ServerUrl::RAM_REGISTRATION, $requestArr, Validations::$isAjax);
-
-            if ($response->errorCode != 0) {
-                if (Validations::$isAjax) {
-                    return Redirection::ajaxSendDataToView($response);
-                }
-                return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Validations::getRespMsg());
-            }
-
-            LegacySession::sessionInitiate($response);
-            LegacySession::unsetSessionVariable("playerPreRegistrationData");
-
-            $redirectTo = Redirection::LOGIN;
-
-            if (Validations::$isAjax) {
-                $response->path = $redirectTo;
-                return Redirection::ajaxSendDataToView($response);
-            }
-        } else {
-            if (Validations::$isAjax) {
-                return Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
-            }
-            return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+        if (!empty($preData['referCode'])) {
+            $requestArr["referCode"]   = $preData["referCode"];
+            $requestArr["referSource"] = $preData["referSource"];
         }
+
+        if (!empty($preData['trackId'])) {
+            $requestArr["trackId"] = $preData["trackId"];
+        }
+
+        if (!empty($preData['campId'])) {
+            $requestArr["campId"] = $preData["campId"];
+        }
+
+        if ($preData['registrationType'] == "FULL") {
+            $requestArr['firstName'] = $preData['fname'] ?? '';
+            $requestArr['lastName']  = $preData['lname'] ?? '';
+        }
+
+        $response = ServerCommunication::sendCallRam(ServerUrl::RAM_REGISTRATION, $requestArr, Validations::$isAjax);
+        return response()->json($response);
+        // LegacySession::sessionInitiate($response);
+        // LegacySession::unsetSessionVariable("playerPreRegistrationData");
+        // $redirectTo = Redirection::LOGIN;
     }
 
     public function playerRegistration(Request $request)
@@ -312,8 +271,6 @@ class AuthorisationController extends Controller
             $registrationType = $request->input('registrationType', '');
             $currency   = $request->input('currency', '');
             $countrycode= (int)str_replace('-', '', $request->input('countrycode', 0));
-            echo $countrycode;
-            exit;
             $country    = $request->input('country', '');
 
             $mobileNo   = $countrycode . $mobileNo;
@@ -373,6 +330,36 @@ class AuthorisationController extends Controller
             }
             return Redirection::to(Redirection::LOGIN, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
         }
+    }
+
+    function forgotPassword(Request $request) {
+        $mobile = $request->input('forget_mobile', '');
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax == 'true') ? true : false;
+        $response = ServerCommunication::sendCall(ServerUrl::FORGOT_PASSWORD, array(
+                    "mobileNo" => $mobile
+                        ), Validations::$isAjax);
+                        
+        $response->mobile = $mobile;
+        return response()->json($response);
+    }
+
+
+
+    function resetPasswordForgot(Request $request) {
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax == 'true') ? true : false;
+        $newPassword = $request->input('newPassword', '');
+        $confirmPassword = $request->input('retypePassword', '');
+        $verificationCode = $request->input('playerotp', '');
+        $mobile = $request->input('forgot_mobile', '');
+        $response = ServerCommunication::sendCall(ServerUrl::RESET_PASSWORD, array(
+            "otp" => $verificationCode,
+            "newPassword" => $newPassword,
+            "confirmPassword" => $confirmPassword,
+            "mobileNo" => $mobile
+        ), Validations::$isAjax);
+        return response()->json($response);
     }
 
 }

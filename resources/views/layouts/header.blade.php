@@ -1,7 +1,7 @@
 <header class="header sticky-top bg-transparent">
     <nav class="navbar navbar-expand-lg navbar-light ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="{{asset('images/infinity.png')}}" class="logo"></a>
+            <a class="navbar-brand" href="{{route('loginPage')}}"><img src="{{asset('images/infinity.png')}}" class="logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -22,10 +22,10 @@
                         <a class="nav-link" href="#">Sports betting</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Instant Games</a>
+                        <a class="nav-link" href="{{route('instantgames')}}">Instant Games</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Slots</a>
+                        <a class="nav-link" href="{{route('slotgames')}}">Slots</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Crazy Billions</a>

@@ -12,7 +12,8 @@
     <link class="rounded-circle" rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 @stack('style')       
 </head>
@@ -72,13 +73,15 @@
     <span class="close-btn" onclick="closeForgotModal()">&times;</span>
     <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Forget Password?</h2>
     
-    <form>
+    <form method="post" action="{{route('forget.password')}}">
+      @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">👤</span>
-          <input type="text" placeholder="Username/mobile">
+          <input type="text" placeholder="Username/mobile" name="forget_mobile">
         </div>
       </div>
+      <p id="forgetpasserror" style="color:red"></p>
       <button type="submit" class="login-submit">Submit</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
         Don’t have a account? <a href="{{route('registerview')}}" style="color: #0056cc;">Signup</a>
@@ -87,41 +90,25 @@
   </div>
 </div>
 
-<div id="verifyOTPModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Verify OTP</h2>
-    
-    <form>
-       @csrf 
-      <div class="form-group">
-        <div class="input-wrapper">
-          <span class="icon">👤</span>
-          <input type="number" placeholder="OTP">
-        </div>
-      </div>
-      <button type="submit" class="login-submit">Submit</button>
-    </form>
-  </div>
-</div>
 <div id="forgotPasswordOTPModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeForgotModal()">&times;</span>
     <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Forget Password?</h2>
     
-    <form>
+    <form method="post" action="{{route('resetPassword.Forgot')}}">
+      @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="number" placeholder="OTP">
+          <input type="number" placeholder="OTP" name="playerotp" id="playerotp">
         </div>
       </div>
       
       <div class="form-group">
-        <label>Password</label>
+        <label>New Password</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="Password" name="password" id="password" autocomplete="off">
+          <input type="password" placeholder="New Password" name="newPassword" id="newPassword" autocomplete="off">
         </div>
       </div>
       
@@ -129,9 +116,10 @@
         <label>Confirm Password</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="Confirm Password" name="confirm_password" id="password" autocomplete="off">
+          <input type="password" placeholder="Confirm Password" name="retypePassword" id="retypePassword" autocomplete="off">
         </div>
       </div>
+      <p id="forgetpassotperror" style="color:red"></p>
       <button type="submit" class="login-submit">Submit</button>
     </form>
   </div>
@@ -191,7 +179,17 @@
 <script>
   document.getElementById('login-form-ige').addEventListener('submit', function (e) {
   e.preventDefault();
+    let mobile   = document.getElementById('userName_email').value.trim();
+    let password = document.getElementById('password').value.trim();
+    if(!/^[0-9]{10}$/.test(mobile)) {
+        showError("Mobile number must be exactly 10 digits.");
+        return;
+    }
 
+    if(!/^[a-zA-Z0-9]+$/.test(password)) {
+        showError("Password can only contain letters and numbers (no special characters).");
+        return;
+    }
   const form = this;
   const loginUrl = form.action;
   const formData = new FormData(form);
@@ -206,7 +204,7 @@
   .then(data => {
     if (data.response.errorCode === 0 && data.response.playerLoginInfo) {
       closeModal();
-    //   window.location.href = window.location.href;
+    location.reload();
     } else {
       document.querySelector('#login-form-ige p[style*="color:red"]').textContent = data.response.respMsg;
     }
@@ -252,7 +250,104 @@ scrollToTopBtn.addEventListener("click", () => {
   });
 });
 </script>
-@stack('style')
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const forgotForm = document.querySelector("#forgotPasswordModal form");
+    const resetForm = document.querySelector("#forgotPasswordOTPModal form");
+
+    forgotForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const mobile = forgotForm.querySelector("input[name='forget_mobile']").value.trim();
+        const errorBox = document.getElementById("forgetpasserror");
+
+        if (!/^[0-9]{10}$/.test(mobile)) {
+            errorBox.textContent = "Mobile number must be exactly 10 digits.";
+            return;
+        }
+        errorBox.textContent = "";
+
+        try {
+            const res = await fetch("{{ route('forget.password') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    isAjax: true,
+                    forget_mobile: mobile
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.errorCode === 0) {
+                document.getElementById("forgotPasswordModal").style.display = "none";
+                document.getElementById("forgotPasswordOTPModal").style.display = "flex";
+
+                document.getElementById("forgotPasswordOTPModal").dataset.mobile = mobile;
+            } else {
+                errorBox.textContent = data.respMsg;
+            }
+
+        } catch (err) {
+            errorBox.textContent = "Something went wrong, please try again.";
+        }
+    });
+
+    resetForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const otp = document.getElementById("playerotp").value.trim();
+        const password = document.getElementById("newPassword").value.trim();
+        const confirm = document.getElementById("retypePassword").value.trim();
+        const mobile = document.getElementById("forgotPasswordOTPModal").dataset.mobile;
+        const errorBox = document.getElementById("forgetpassotperror");
+
+        if (!/^[a-zA-Z0-9]+$/.test(password)) {
+            errorBox.textContent = "Password can only contain letters and numbers (no special characters).";
+            return;
+        }
+        if (password !== confirm) {
+            errorBox.textContent = "Password and Confirm Password do not match.";
+            return;
+        }
+        errorBox.textContent = "";
+
+        try {
+            const res = await fetch("{{ route('resetPassword.Forgot') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    isAjax: true,
+                    playerotp: otp,
+                    newPassword: password,
+                    retypePassword: confirm,
+                    forgot_mobile: mobile
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.errorCode === 0) {
+                errorBox.textContent = data.respMsg;
+            } else {
+                errorBox.textContent = data.respMsg;
+            }
+
+        } catch (err) {
+            errorBox.textContent = "Something went wrong, please try again.";
+        }
+    });
+
+});
+</script>
+@stack('script')
 </body>
 
 </html>

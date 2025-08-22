@@ -16,10 +16,14 @@ Route::get('/weaver/authorisation/token', [AuthorisationController::class, 'getT
 Route::get('/', [AuthorisationController::class, 'loginWindow'])->name('loginPage');
 Route::get('/logout', [AuthorisationController::class, 'logout'])->name('logout');
 
-Route::get('/games/newige', [NewIgeGameController::class, 'newIge']);
-Route::get('/games/slot', [NewIgeGameController::class, 'slotGaming']);
-Route::get('/register', [AuthorisationController::class, 'registerview'])->name('registerview');
+Route::get('/games/newige', [NewIgeGameController::class, 'newIge'])->name('instantgames');
+Route::get('/games/slot', [NewIgeGameController::class, 'slotGaming'])->name('slotgames');
 
+Route::get('/register', [AuthorisationController::class, 'registerview'])->name('registerview');
 Route::post('/check-availability', [AuthorisationController::class, 'checkAvailability'])->name('check.availability');
+Route::post('/registration-OTP', [AuthorisationController::class, 'registrationOTP'])->name('registration.OTP');
 Route::post('/verify-otp', [AuthorisationController::class, 'verifyOtpRegistration'])->name('verify.otp');
 Route::post('/player-registration', [AuthorisationController::class, 'playerRegistration'])->name('player.registration');
+
+Route::post('/forget-password', [AuthorisationController::class, 'forgotPassword'])->name('forget.password');
+Route::post('/reset-password-forgot', [AuthorisationController::class, 'resetPasswordForgot'])->name('resetPassword.Forgot');
