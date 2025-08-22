@@ -5,7 +5,6 @@
       font-family: "Roboto", sans-serif !important;
 }
 .header{
-    background:#fff;
 
 }
 .header .nav-link{
@@ -13,6 +12,40 @@
     font-size: 14px;
     font-weight: 700;
     margin: 4px;
+}
+.navbar{
+  padding:0 !important;
+}
+.header .nav-item{
+  align-items: center;
+  display: flex;
+}
+.navbar-collapse{
+  align-items: normal !important;
+}
+.header .nav-item:hover{
+  background-color: #ededed;
+}
+
+.cards-icons:hover{
+  background-color: #ededed;
+}
+
+.header .nav-item:hover .nav-link{
+  color: #ce1126;
+}
+
+.header .nav-item.active{
+  background-color: #ededed !important;
+}
+.header .navbar {
+  height:80px;
+    background:#fff;
+
+}
+.navbar-nav{
+  height:80px;
+
 }
 .header .logo{
     width:90px;
@@ -50,7 +83,7 @@
 }
 .cards-icons {
     text-align: center;
-        flex: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -64,7 +97,8 @@
     border: 1px solid rgba(0, 0, 0, 0.04);
     border-radius: 5px;
     color: #0448a8;
-        height: 172px;
+    height: 172px;
+    text-decoration: none;
 }
 .games-main{
         margin: 90px 0;
@@ -75,10 +109,10 @@
         width: 68% !important;
 }
 .cards-icons a{
-     color: #0448a8;
-     text-decoration: none;
-     font-weight: 600;
-         margin-top: 17px;
+    color: #0448a8;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 17px;
 
 }
 .footer-main{
@@ -170,7 +204,17 @@
       padding: 8px 15px;   /* Less height */
       background-color: #fff !important; /* Dark background */
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      height:50px !important;
     }
+    .shrink .logo{
+    width: 60px;
+    transition:all 0.3s ease-in-out;
+    }
+    .shrink .navbar-nav{
+    height: 53px;
+
+    }
+
     .games-main .chang_row .col-md-3{
         width: 20%;
         padding-right: 4px !important;
@@ -206,7 +250,7 @@ img.size-icons {
     .modal {
       display: none; 
       position: fixed;
-      z-index: 999;
+      z-index: 1034;
       left: 0; top: 0;
       width: 100%; height: 100%;
       overflow: auto;

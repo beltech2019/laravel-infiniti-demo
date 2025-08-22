@@ -9,29 +9,29 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Lottery</a>
+                    <li class="nav-item" id="nav-item-lottery">
+                        <a class="nav-link" id="nav-link-lottery" aria-current="page" href="#">Lottery</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sportspool</a>
+                    <li class="nav-item" id="nav-item-sportsPool">
+                        <a class="nav-link" id="nav-link-sportsPool" href="#">Sportspool</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Bingo</a>
+                    <li class="nav-item" id="nav-item-bingo">
+                        <a class="nav-link" id="nav-link-bingo" href="#">Bingo</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sports betting</a>
+                    <li class="nav-item" id="nav-item-sportsBetting">
+                        <a class="nav-link" id="nav-link-sportsBetting" href="#">Sports betting</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('instantgames')}}">Instant Games</a>
+                    <li class="nav-item" id="nav-item-instant">
+                        <a class="nav-link" id="nav-link-instant" href="{{route('instantgames')}}">Instant Games</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('slotgames')}}">Slots</a>
+                    <li class="nav-item" id="nav-item-slots">
+                        <a class="nav-link" id="nav-link-slots" href="{{route('slotgames')}}">Slots</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Crazy Billions</a>
+                    <li class="nav-item" id="nav-item-crazyBillions">
+                        <a class="nav-link" id="nav-link-crazyBillions" href="#">Crazy Billions</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Game Art</a>
+                    <li class="nav-item" id="nav-item-gameArt">
+                        <a class="nav-link" id="nav-link-gameArt" href="#">Game Art</a>
                     </li>
 
 

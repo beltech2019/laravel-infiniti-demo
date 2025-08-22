@@ -18,14 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!document.body.classList.contains("post-login")) {
             console.log(document.body.classList);
             console.log('loginmodal');
-            const loginModal = new bootstrap.Modal(document.getElementById('home_login'));
-            loginModal.show();
+            document.getElementById('loginModal').style.display = 'flex';
         } else {
             if (currency !== "EUR") {
                 const errorPopup = document.getElementById('error_popup');
                 errorPopup.querySelector('.msg').innerHTML = "Your currency does not support these games. You can play demo games only.";
-                const modal = new bootstrap.Modal(errorPopup);
-                modal.show();
+                errorPopup.style.display = 'flex';
                 return;
             }
 

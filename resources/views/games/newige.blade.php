@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <script type="text/javascript">
+    debugger;
     var hash = location.hash;
     if (hash.length > 11)
         hash = hash.split(",");
@@ -30,13 +31,18 @@
     _ic.push(['isMobileApp', '0']);
     _ic.push(['return_url', '{{ $return_url }}']);
     _ic.push(['iframe_div_id', 'lottogames_div_iframe']);
-
-    (function () {
-        document.write('<script type="text/javascript" src="{{ $url }}assets/js/lottogames.js"><\/script>');
-    })();
 </script>
-
+<script type="text/javascript" src="{{ $url }}assets/js/lottogames.js"></script>
 <script type="text/javascript">LottoGames.frame(_ic);</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const li = document.getElementById("nav-item-instant");
+  const anchor = document.getElementById("nav-link-instant");
+
+  li.classList.add("active");
+  anchor.classList.add("active");
+});
+</script>
 <div id="lottogames_div_iframe"></div>
 <div id="fakeDarkBg"></div>
 @endsection 

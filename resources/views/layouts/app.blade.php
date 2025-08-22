@@ -14,18 +14,19 @@
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 @stack('style')       
 </head>
 
-<body>
+<body class="@if(session('user_id'))post-login @endif">
 @include('layouts.header')
  <div class="div">
 @yield('content')
  </div>
 @include('layouts.footer')
 <button id="scrollToTopBtn" title="Go to top">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#b22234" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#b22234" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" viewBox="3 0 24 28">
     <polyline points="18 15 12 9 6 15"></polyline>
   </svg>
 </button>
@@ -92,7 +93,7 @@
 
 <div id="forgotPasswordOTPModal" class="modal">
   <div class="modal-content">
-    <span class="close-btn" onclick="closeForgotModal()">&times;</span>
+    <span class="close-btn" onclick="closeResetForgotModal()">&times;</span>
     <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Forget Password?</h2>
     
     <form method="post" action="{{route('resetPassword.Forgot')}}">
@@ -123,7 +124,16 @@
       <button type="submit" class="login-submit">Submit</button>
     </form>
   </div>
-</div>    
+</div> 
+<div id="error_popup" class="modal">
+  <div class="modal-content">
+      <span class="close-btn" onclick="closeErrorModal()">&times;</span>
+      <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Error</h2>
+      <div class="modal-body">
+          <p class="msg">Default error message goes here.</p>
+      </div>
+  </div>
+</div>  
    <script>
     // Shrink navbar on scroll
     window.addEventListener("scroll", function() {
@@ -168,6 +178,16 @@
     document.getElementById('forgotPasswordModal').style.display = 'none';
   }
 
+  // Close reset password modal
+  function closeResetForgotModal() {
+    document.getElementById('forgotPasswordOTPModal').style.display = 'none';
+  }
+
+  // Close forgot password modal
+  function closeErrorModal() {
+    document.getElementById('error_popup').style.display = 'none';
+  }
+
   // Optional: close modal when clicking outside
   window.onclick = function(event) {
     const forgotModal = document.getElementById('forgotPasswordModal');
@@ -204,7 +224,7 @@
   .then(data => {
     if (data.response.errorCode === 0 && data.response.playerLoginInfo) {
       closeModal();
-    location.reload();
+      location.reload();
     } else {
       document.querySelector('#login-form-ige p[style*="color:red"]').textContent = data.response.respMsg;
     }
