@@ -95,4 +95,24 @@ class NewIgeGameController extends Controller
         return view('games.crazybillions', compact('gamelist', 'token', 'playerId', 'currency'));
     }
 
+
+    public function gameart()
+    {
+        $artlist = Utilities::getArtGameList();
+
+        $token = '';
+        $playerId = '';
+        $currency = '';
+        $playerLoginResponse = '';
+
+        if (Session::sessionValidate()) {
+            $playerLoginResponse = Utilities::getPlayerLoginResponse();
+            $token = Utilities::getPlayerToken() ?? '';
+            $playerId = $playerLoginResponse->walletBean->playerId ?? '';
+            $currency = $playerLoginResponse->walletBean->currency ?? '';
+        }
+        return view('games.gameart', compact('artlist', 'token', 'playerId', 'currency'));
+    }
+  
+
 }

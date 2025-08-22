@@ -31,7 +31,7 @@
                         <a class="nav-link" id="nav-link-crazyBillions" href="{{route('crazyBillions')}}">Crazy Billions</a>
                     </li>
                     <li class="nav-item" id="nav-item-gameArt">
-                        <a class="nav-link" id="nav-link-gameArt" href="#">Game Art</a>
+                        <a class="nav-link" id="nav-link-gameArt" href="{{route('gameart')}}">Game Art</a>
                     </li>
 
 

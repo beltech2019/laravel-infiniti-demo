@@ -19,6 +19,7 @@ Route::get('/logout', [AuthorisationController::class, 'logout'])->name('logout'
 Route::get('/games/newige', [NewIgeGameController::class, 'newIge'])->name('instantgames');
 Route::get('/games/slot', [NewIgeGameController::class, 'slotGaming'])->name('slotgames');
 Route::get('/games/crazyBillions', [NewIgeGameController::class, 'crazyBillions'])->name('crazyBillions');
+Route::get('/games/gameart', [NewIgeGameController::class, 'gameart'])->name('gameart');
 
 Route::get('/register', [AuthorisationController::class, 'registerview'])->name('registerview');
 Route::post('/check-availability', [AuthorisationController::class, 'checkAvailability'])->name('check.availability');

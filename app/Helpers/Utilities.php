@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use Illuminate\Support\Facades\Session as LaravelSession;
+use App\Models\GameArt;
 use App\Models\GameMaster;
 
 class Utilities {
@@ -1015,13 +1016,7 @@ class Utilities {
     
     public static function getArtGameList()
     {   
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query->select('*')
-            ->from($db->quoteName('#__gameart_info'));
-        $db->setQuery($query);
-        $result = $db->loadAssocList();
-        //exit(json_encode($result));
+        $result = GameArt::all();
         return $result;
     }
     
