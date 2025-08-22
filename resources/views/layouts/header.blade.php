@@ -28,7 +28,7 @@
                         <a class="nav-link" id="nav-link-slots" href="{{route('slotgames')}}">Slots</a>
                     </li>
                     <li class="nav-item" id="nav-item-crazyBillions">
-                        <a class="nav-link" id="nav-link-crazyBillions" href="#">Crazy Billions</a>
+                        <a class="nav-link" id="nav-link-crazyBillions" href="{{route('crazyBillions')}}">Crazy Billions</a>
                     </li>
                     <li class="nav-item" id="nav-item-gameArt">
                         <a class="nav-link" id="nav-link-gameArt" href="#">Game Art</a>

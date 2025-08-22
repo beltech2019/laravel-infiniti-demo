@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use app\Helpers\Utilities;
 use app\Helpers\Configuration;
 use app\Helpers\Session;
+use Log;
 
 class NewIgeGameController extends Controller
 {
@@ -70,6 +71,28 @@ class NewIgeGameController extends Controller
         }
 
         return view('games.slotgaming', compact('slotList', 'token', 'playerId', 'currency'));
+    }
+
+    public function crazyBillions()
+    {
+        $gamelist = Utilities::crazyBillionGames();
+
+        $token = '';
+        $playerId = '';
+        $currency = '';
+        $playerLoginResponse = '';
+
+        if (Session::sessionValidate()) {
+            $playerLoginResponse = Utilities::getPlayerLoginResponse();
+            $token = Utilities::getPlayerToken() ?? '';
+            $playerId = $playerLoginResponse->walletBean->playerId ?? '';
+            $currency = $playerLoginResponse->walletBean->currency ?? '';
+        }
+        log::info($playerLoginResponse);
+        log::info($token);
+        log::info($playerId);
+        log::info($currency);
+        return view('games.crazybillions', compact('gamelist', 'token', 'playerId', 'currency'));
     }
 
 }

@@ -46,6 +46,8 @@ class AuthorisationController extends Controller
             $userId = $response->playerLoginInfo->playerId;
             Cache::put('user_session_' . $userId, $response, 60 * 24);
             session(['user_id' => $userId]);
+            Utilities::setPlayerLoginResponse($response);
+            Utilities::setPlayerToken($response->playerToken);
         }
 
         return response()->json([
@@ -224,8 +226,7 @@ class AuthorisationController extends Controller
         $isAjax = $request->input('isAjax', '');
         Validations::$isAjax = ($isAjax === 'true');
         $verificationCode = $request->input('otp_confirm', '');
-        $preData = LegacySession::getSessionVariable('playerPreRegistrationData');
-        Log::info($preData); 
+        $preData = LegacySession::getSessionVariable('playerPreRegistrationData'); 
         $requestArr = [
             "countryCode"     => $preData['countryCode'],
             "password"        => $preData['password'],
