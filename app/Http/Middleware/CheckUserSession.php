@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cache;
+use App\Helpers\Session as LegacySession;
 
 class CheckUserSession
 {
@@ -18,7 +19,7 @@ class CheckUserSession
     {
         $userId = session('user_id');
         if (!$userId || !Cache::has('user_session_' . $userId)) {
-            // Not logged in!
+            LegacySession::sessionRemove();
             return redirect('/login');
         }
         // Optionally attach cached user data to request

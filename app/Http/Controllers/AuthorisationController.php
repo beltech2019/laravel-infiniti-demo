@@ -48,6 +48,7 @@ class AuthorisationController extends Controller
             session(['user_id' => $userId]);
             Utilities::setPlayerLoginResponse($response);
             Utilities::setPlayerToken($response->playerToken);
+            LegacySession::sessionInitiate($response);
         }
 
         return response()->json([
@@ -149,6 +150,7 @@ class AuthorisationController extends Controller
             Cache::forget('user_session_' . $userId);
             session()->forget('user_id');
         }
+        LegacySession::sessionRemove();
         return redirect()->route('loginPage');
     }
 

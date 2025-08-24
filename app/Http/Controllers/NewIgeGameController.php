@@ -88,10 +88,6 @@ class NewIgeGameController extends Controller
             $playerId = $playerLoginResponse->walletBean->playerId ?? '';
             $currency = $playerLoginResponse->walletBean->currency ?? '';
         }
-        log::info($playerLoginResponse);
-        log::info($token);
-        log::info($playerId);
-        log::info($currency);
         return view('games.crazybillions', compact('gamelist', 'token', 'playerId', 'currency'));
     }
 
@@ -108,7 +104,7 @@ class NewIgeGameController extends Controller
         if (Session::sessionValidate()) {
             $playerLoginResponse = Utilities::getPlayerLoginResponse();
             $token = Utilities::getPlayerToken() ?? '';
-            $playerId = $playerLoginResponse->walletBean->playerId ?? '';
+            $playerId = $playerLoginResponse->playerId ?? '';
             $currency = $playerLoginResponse->walletBean->currency ?? '';
         }
         return view('games.gameart', compact('artlist', 'token', 'playerId', 'currency'));

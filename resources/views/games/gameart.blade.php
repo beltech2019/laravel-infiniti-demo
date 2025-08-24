@@ -34,6 +34,7 @@ body.slotfullscreen .gameIframeOuterWrap {
 body.slotfullscreen .gameIframeOuterWrap .trigger-btn .maxi_btn {display: none;}
 body.slotfullscreen .gameIframeOuterWrap .trigger-btn .mini_btn {display: block;}
 </style>
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 @extends('layouts.app')
 @section('content')
 <div id="slot_iframe"></div>
@@ -61,3 +62,13 @@ body.slotfullscreen .gameIframeOuterWrap .trigger-btn .mini_btn {display: block;
     </div>
 </div>
 @endsection
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const li = document.getElementById("nav-item-gameArt");
+  const anchor = document.getElementById("nav-link-gameArt");
+
+  li.classList.add("active");
+  anchor.classList.add("active");
+});
+</script>
+<script src="{{ asset('js/gameartdefault.js') }}"></script>
