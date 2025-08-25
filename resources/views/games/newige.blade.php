@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <script type="text/javascript">
-    debugger;
     var hash = location.hash;
     if (hash.length > 11)
         hash = hash.split(",");

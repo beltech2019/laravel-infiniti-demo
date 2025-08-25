@@ -195,7 +195,6 @@
     font-size: 12px;
 }
     .navbar {
-      transition: all 0.3s ease;
       padding: 20px 15px;  /* More height */
     }
 
@@ -208,7 +207,6 @@
     }
     .shrink .logo{
     width: 60px;
-    transition:all 0.3s ease-in-out;
     }
     .shrink .navbar-nav{
     height: 53px;

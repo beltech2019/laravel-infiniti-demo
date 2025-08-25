@@ -3,6 +3,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Session as LaravelSession;
 use App\Models\GameArt;
 use App\Models\SlotGames;
+use Illuminate\Support\Facades\Log;
 
 class Utilities {
 
@@ -100,6 +101,7 @@ class Utilities {
         foreach ($data as $k => $v) {
             $playerLoginResponse->$k = $v;
         }
+        Log::info("updating".\json_encode($playerLoginResponse));
         self::setPlayerLoginResponse($playerLoginResponse);
     }
 
@@ -147,17 +149,9 @@ class Utilities {
 
     public static function getPlayerBalance($refill = false, $isAjax = false) {
         $response = ServerCommunication::sendCall(ServerUrl::GET_BALANCE, array('refill' => $refill), $isAjax);
-        if (Validations::getErrorCode() != 0) {
-            if ($isAjax)
-                Redirection::ajaxSendDataToView($response);
-            Redirection::to(JUri::base(), Errors::TYPE_ERROR, Validations::getRespMsg());
-        }
         foreach ($response->wallet as $k => $v) {
             if (strtolower($k) == "currency")
                 continue;
-            //if (strpos($v, ".") !== false)
-            // $response->wallet->$k = (int) $v;
-            //$response->wallet->$k= round($v, 2);
         }
         self::updatePlayerLoginResponse(array(
             "walletBean" => $response->wallet

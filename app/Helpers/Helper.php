@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\Utilities;
 
 function authUserId(){
     $userId = session('user_id');
@@ -10,17 +11,16 @@ function authUserId(){
 
 function authUserBalance(){
     $userId = session('user_id');
-    Log::info($userId);
-    $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
-    $balance = $userSession->playerLoginInfo->walletBean->totalBalance ?? 0;
-    return number_format($balance);
+    $userSession = Utilities::getPlayerLoginResponse();
+    $balance = $userSession->walletBean->totalBalance ?? 0;
+    $currencyDisplayCode = $userSession->walletBean->currencyDisplayCode ?? '';
+    return $currencyDisplayCode.' '.$balance;
 }
 
 function authUserName(){
     $userId = session('user_id');
     $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
     $userName = $userSession->playerLoginInfo->userName ?? '';
-    Log::info($userName);
     return $userName;
 }
 
@@ -29,7 +29,7 @@ function callBackURL(){
 }
 
 function playerToken(){
-     $userId = session('user_id');
+    $userId = session('user_id');
     $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
     $token = $userSession->playerToken ?? 0;
     return $token;

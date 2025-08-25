@@ -79,33 +79,27 @@ function startAjax(url, params, reply, str, cashierFunc, payLoad){
     var nvar = /khelplayrummy/gi;
     if (url.search(nvar) == -1)
         url = base_href + url;
-    removeToolTipError('all');
-    removeToolTipErrorManual('all');
+    // removeToolTipError('all');
+    // removeToolTipErrorManual('all');
     var result = '';
     if (str != "null"){
         $(str).submit(function (e) {
             e.preventDefault();
         });
     }
-    // $(document).ajaxStart(function(){
     if (str != "nottoshow") {
         $("#loadingImage").remove();
         $("body").append('<div id="loadingImage"><img src="' + base_href + '/images/loading3.gif" /></div>');
         $("#loadingImage").css("display", "flex");
         $("#loadingImage").focus();
     }
-    // });
-    // $(document).ajaxStop(function(){
-    //     if(str != "nottoshow") {
-    //        $("#loadingImage").remove();
-    //     }
-    // });
-    
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    var fullParams = params + "&isAjax=true" + "&_token=" + encodeURIComponent(csrfToken);
     $.ajax({
         type: 'POST',
         async: true,
         url: url,
-        data: params + "&isAjax=true",
+        data: fullParams,
         encode: true,
         timeout:30000,
         error: showNetworkErrorCommon
@@ -123,7 +117,7 @@ function startAjax(url, params, reply, str, cashierFunc, payLoad){
     }).fail(function (data1, jqXHR, textStatus) {
         if (textStatus == 'timeout')
         {   
-            errorDisplay(Joomla.JText._('WEAVER_PLEASE_TRY_AGAIN_LATER'), 'error');
+            errorDisplay("Please Try Again Later", 'error');
             //do something. Try again perhaps?
         }
         if (str != "nottoshow") {
@@ -370,8 +364,7 @@ function updateBalance(balance,currency='',dispCurrency=''){
     if( (dispCurrency) == ''  ){
         dispCurrency = defaultCurrencyDisp;
     }
-    if ($(".cash-balance").length > 0)
-        $(".cash-balance").html(formatCurrency(balance,currency,dispCurrency));
+    $("#amount-text").text(balance);
 }
 
 function updatePracticeBalance(balance){
@@ -869,9 +862,9 @@ function updatePlayerBalance(refill, str){
         update_both_balances = true;
     }
     if (refill == true) {
-        startAjax("/component/weaver/?task=account.getPlayerBalance", 'refill=true', getBalance, 'nottoshow');
+        startAjax("/account/getPlayerBalance", 'refill=true', getBalance, 'nottoshow');
     } else {
-        startAjax("/component/weaver/?task=account.getPlayerBalance", '', getBalance, 'nottoshow');
+        startAjax("/account/getPlayerBalance", '', getBalance, 'nottoshow');
     }
 }
 

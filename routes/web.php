@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewIgeGameController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthorisationController;
 
 
@@ -31,4 +32,12 @@ Route::prefix('games')->name('games.')->group(function () {
     Route::get('/slot', [NewIgeGameController::class, 'slotGaming'])->name('slotgames');
     Route::get('/crazyBillions', [NewIgeGameController::class, 'crazyBillions'])->name('crazyBillions');
     Route::get('/gameart', [NewIgeGameController::class, 'gameart'])->name('gameart');
+});
+
+Route::prefix('account')->name('account.')->group(function () {
+    Route::any('/getPlayerBalance', [AccountController::class, 'getPlayerBalance'])->name('getPlayerBalance');
+});
+
+Route::get('/profile', function () {
+    return view('account.profile');
 });
