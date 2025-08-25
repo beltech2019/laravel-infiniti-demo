@@ -22,16 +22,16 @@
                         <a class="nav-link" id="nav-link-sportsBetting" href="#">Sports betting</a>
                     </li>
                     <li class="nav-item" id="nav-item-instant">
-                        <a class="nav-link" id="nav-link-instant" href="{{route('instantgames')}}">Instant Games</a>
+                        <a class="nav-link" id="nav-link-instant" href="{{route('games.instantgames')}}">Instant Games</a>
                     </li>
                     <li class="nav-item" id="nav-item-slots">
-                        <a class="nav-link" id="nav-link-slots" href="{{route('slotgames')}}">Slots</a>
+                        <a class="nav-link" id="nav-link-slots" href="{{route('games.slotgames')}}">Slots</a>
                     </li>
                     <li class="nav-item" id="nav-item-crazyBillions">
-                        <a class="nav-link" id="nav-link-crazyBillions" href="{{route('crazyBillions')}}">Crazy Billions</a>
+                        <a class="nav-link" id="nav-link-crazyBillions" href="{{route('games.crazyBillions')}}">Crazy Billions</a>
                     </li>
                     <li class="nav-item" id="nav-item-gameArt">
-                        <a class="nav-link" id="nav-link-gameArt" href="{{route('gameart')}}">Game Art</a>
+                        <a class="nav-link" id="nav-link-gameArt" href="{{route('games.gameart')}}">Game Art</a>
                     </li>
 
 
@@ -42,10 +42,10 @@
                         <img src="{{asset('images/en_gb.gif')}}" class="">
                     </div>
                     @if(session('user_id'))
-                    <!-- Authenticated -->
                     <div id="user-info" class="dropdown">
                         <button id="amount-button" class="btn btn-sm btn-outline-primary dropdown-toggle fw-bold" data-bs-toggle="dropdown" aria-expanded="false">
-                        ₹<span id="amount-text">{{ authUserBalance() }}</span>
+                        <!-- <span id="amount-textaa">{{ authUserName() }}</span>    -->
+                        <span id="amount-text">{{ authUserBalance() }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Profile</a></li>

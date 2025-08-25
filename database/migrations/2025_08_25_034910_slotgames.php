@@ -1,6 +1,5 @@
 <?php
 
-// database/migrations/2025_08_25_000001_create_tb_slot_games_list_table.php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

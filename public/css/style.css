@@ -362,3 +362,9 @@ img.size-icons {
   display: block;
   opacity: 1;
 }
+
+/* #amount-button{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+} */

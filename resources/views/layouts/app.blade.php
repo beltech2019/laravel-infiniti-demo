@@ -367,6 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+<script src="{{ asset('js/common.js') }}"></script>
 @stack('script')
 </body>
 

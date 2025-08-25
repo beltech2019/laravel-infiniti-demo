@@ -10,9 +10,18 @@ function authUserId(){
 
 function authUserBalance(){
     $userId = session('user_id');
+    Log::info($userId);
     $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
     $balance = $userSession->playerLoginInfo->walletBean->totalBalance ?? 0;
     return number_format($balance);
+}
+
+function authUserName(){
+    $userId = session('user_id');
+    $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
+    $userName = $userSession->playerLoginInfo->userName ?? '';
+    Log::info($userName);
+    return $userName;
 }
 
 function callBackURL(){

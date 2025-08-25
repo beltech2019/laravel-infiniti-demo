@@ -26,10 +26,10 @@
                     </a>    
                 </div>
                 <div class="col-md-3">
-                    <a href="{{route('instantgames')}}" class="">
+                    <a href="{{route('games.instantgames')}}" class="">
                         <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-instant.png')}}" alt="Instant Win">
-                            <a href="{{route('instantgames')}}" class="">Instant Games</a>
+                            <a href="{{route('games.instantgames')}}" class="">Instant Games</a>
                         </div>
                     </a>
                 </div>
@@ -43,10 +43,10 @@
                     </a>    
                 </div>
                 <div class="col-md-3 last_parents">
-                    <a href="{{route('slotgames')}}" class="">
+                    <a href="{{route('games.slotgames')}}" class="">
                          <div class="cards-icons ">
                             <img src="{{ asset('images/game-icons/games-slot.png')}}" alt="slot" class="game777">
-                            <a href="{{route('slotgames')}}" class="">SLOT</a>
+                            <a href="{{route('games.slotgames')}}" class="">SLOT</a>
                         </div>
                     </a>    
                 </div>
