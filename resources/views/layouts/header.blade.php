@@ -48,7 +48,7 @@
                         <span id="amount-text">{{ authUserBalance() }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{route('account.profile')}}">Profile</a></li>
                         <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </div>
