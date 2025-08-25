@@ -2,7 +2,7 @@
 namespace App\Helpers;
 use Illuminate\Support\Facades\Session as LaravelSession;
 use App\Models\GameArt;
-use App\Models\GameMaster;
+use App\Models\SlotGames;
 
 class Utilities {
 
@@ -989,7 +989,7 @@ class Utilities {
 
     public static function getCTGamelist()
     {
-        return GameMaster::select('gameNumber', 'gameName', 'gameImageLocations', 'engineType')
+        return SlotGames::select('gameNumber', 'gameName', 'gameImageLocations', 'engineType')
             ->orderBy('ordering', 'DESC')
             ->get()
             ->toArray();

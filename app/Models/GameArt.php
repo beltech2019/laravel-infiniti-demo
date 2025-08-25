@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GameArt extends Model
 {
-    protected $table = 'stpl_gameart_info';
+    use SoftDeletes;
 
-    // If the table doesn't have timestamps
-    public $timestamps = false;
+    protected $table = 'tb_gameart_list';
+
+    protected $fillable = [
+        'gameName', 'gameId', 'thumbnail'
+    ];
 }
