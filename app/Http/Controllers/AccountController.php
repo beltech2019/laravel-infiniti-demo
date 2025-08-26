@@ -28,4 +28,22 @@ class AccountController extends Controller
             return json_encode($response);
         }
     }
+
+    public function ticketsdetails(Request $request)
+    {
+        $transactionDetailsURL = "";
+        $playerId = Utilities::getPlayerID();
+        $playerToken = Utilities::getPlayerToken();
+        $playerInfo = Utilities::getPlayerLoginResponse();
+        $lang = 'en';
+        $currencyInfo = Utilities::getCurrencyInfo();
+        $currencyCode = $currencyInfo[0] ?? '';
+        $dispCurrency = $currencyInfo[1] ?? '';
+        $maxrowlimit = Constants::MAX_ROW_LIMIT;
+        $domain_main = Configuration::DOMAIN_NAME;
+        $ticketDomain = Configuration::DOMAIN;
+        return view('account.ticketdetails', compact('ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+    }
+
+
 }

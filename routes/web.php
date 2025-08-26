@@ -41,4 +41,5 @@ Route::prefix('games')->name('games.')->group(function () {
 Route::prefix('account')->name('account.')->group(function () {
     Route::any('/getPlayerBalance', [AccountController::class, 'getPlayerBalance'])->name('getPlayerBalance');
     Route::get('/profile', function () {return view('account.profile');})->name('profile');
+    Route::any('/ticketsdetails', [AccountController::class, 'ticketsdetails'])->name('ticketsdetails');
 });
