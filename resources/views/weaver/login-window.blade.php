@@ -10,18 +10,18 @@
 
             <div class="row chang_row">
                 <div class="col-md-3">
-                    <a href="#" class="">
+                    <a href="{{route('games.lottery')}}" class="">
                         <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-draw.png')}}" alt="Draw">
-                            <a href="#" class="">Lottery</a>
+                            <a href="{{route('games.lottery')}}" class="">Lottery</a>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="">
+                    <a href="{{route('games.sportsPool')}}" class="">
                           <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-sportsLottery.png')}}" alt="sportspool">
-                            <a href="#" class="">SportsPool</a>
+                            <a href="{{route('games.sportsPool')}}" class="">SportsPool</a>
                         </div>
                     </a>    
                 </div>
@@ -35,10 +35,10 @@
                 </div>
                 
                 <div class="col-md-3">
-                    <a href="#" class="">
+                    <a href="{{route('games.bingo')}}" class="">
                        <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/game-bingo.png')}}" alt="Bingo">
-                            <a href="#" class="">Bingo</a>
+                            <a href="{{route('games.bingo')}}" class="">Bingo</a>
                         </div>
                     </a>    
                 </div>
