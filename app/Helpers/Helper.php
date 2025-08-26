@@ -24,6 +24,13 @@ function authUserName(){
     return $userName;
 }
 
+function authUserCountry(){
+    $userId = session('user_id');
+    $userSession = $userId ? Cache::get('user_session_' . $userId) : null;
+    $userName = $userSession->playerLoginInfo->country ?? '';
+    return $userName;
+}
+
 function callBackURL(){
      $callBackURL = urlencode("http://ala-new.winweaver.com/InstantGameEngineOLD/");
 }

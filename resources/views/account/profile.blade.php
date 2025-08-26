@@ -34,7 +34,7 @@
             </div>
             <div class="detail-row">
                 <span>🌍</span>
-                <p>United Arab Emirates</p>
+                <p>{{authUserCountry()}}</p>
             </div>
             <div class="detail-row">
                 <span>🔒</span>

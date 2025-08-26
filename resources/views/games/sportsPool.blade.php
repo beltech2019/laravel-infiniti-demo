@@ -4,8 +4,8 @@
     var _ic = _ic || [];
     _ic.push(['server', '{{ $url }}']);
     _ic.push(['gametype', 'sle']);
-    _ic.push(['player_id', '{{ $playerInfo->playerId }}']);
-    _ic.push(['player_name', '{{ $playerInfo->userName }}']);
+    _ic.push(['player_id', '{{ $playerInfo->playerId ?? '' }}']);
+    _ic.push(['player_name', '{{ $playerInfo->userName ?? '' }}']);
     _ic.push(['session_id', '{{ $playerToken }}']);
     _ic.push(['balance', '{{ $totalBalance }}']);
     _ic.push(['language', '{{ $lang }}']);
