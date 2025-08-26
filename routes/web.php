@@ -32,6 +32,8 @@ Route::prefix('games')->name('games.')->group(function () {
     Route::get('/slot', [NewIgeGameController::class, 'slotGaming'])->name('slotgames');
     Route::get('/crazyBillions', [NewIgeGameController::class, 'crazyBillions'])->name('crazyBillions');
     Route::get('/gameart', [NewIgeGameController::class, 'gameart'])->name('gameart');
+    Route::get('/sportsbetting', [NewIgeGameController::class, 'sportsbetting'])->name('sportsbetting');
+    Route::get('/bingo', [NewIgeGameController::class, 'bingo'])->name('bingo');
 });
 
 Route::prefix('account')->name('account.')->group(function () {

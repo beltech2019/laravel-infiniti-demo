@@ -16,10 +16,10 @@
                         <a class="nav-link" id="nav-link-sportsPool" href="#">Sportspool</a>
                     </li>
                     <li class="nav-item" id="nav-item-bingo">
-                        <a class="nav-link" id="nav-link-bingo" href="#">Bingo</a>
+                        <a class="nav-link" id="nav-link-bingo" href="{{route('games.bingo')}}">Bingo</a>
                     </li>
                     <li class="nav-item" id="nav-item-sportsBetting">
-                        <a class="nav-link" id="nav-link-sportsBetting" href="#">Sports betting</a>
+                        <a class="nav-link" id="nav-link-sportsBetting" href="{{route('games.sportsbetting')}}">Sports betting</a>
                     </li>
                     <li class="nav-item" id="nav-item-instant">
                         <a class="nav-link" id="nav-link-instant" href="{{route('games.instantgames')}}">Instant Games</a>

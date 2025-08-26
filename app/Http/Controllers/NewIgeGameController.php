@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use app\Helpers\Utilities;
 use app\Helpers\Configuration;
+use app\Helpers\Constants;
 use app\Helpers\Session;
 use Log;
 
@@ -12,7 +13,6 @@ class NewIgeGameController extends Controller
 {
     public function newIge(Request $request)
     {
-        // Fetch parameters from URL
         $vendor = htmlspecialchars($request->get('vendor', ''), ENT_QUOTES, 'UTF-8');
         $game = (int) $request->get('game', 0);
         $playType = htmlspecialchars($request->get('playType', ''), ENT_QUOTES, 'UTF-8');
@@ -54,9 +54,8 @@ class NewIgeGameController extends Controller
     }
 
 
-    public function slotGaming()
+    public function slotGaming(Request $request)
     {
-        // Example: Fetch from database, API, or mock data
         $slotList = Utilities::getCTGamelist();
 
         $token = '';
@@ -73,7 +72,7 @@ class NewIgeGameController extends Controller
         return view('games.slotgaming', compact('slotList', 'token', 'playerId', 'currency'));
     }
 
-    public function crazyBillions()
+    public function crazyBillions(Request $request)
     {
         $gamelist = Utilities::crazyBillionGames();
 
@@ -92,7 +91,7 @@ class NewIgeGameController extends Controller
     }
 
 
-    public function gameart()
+    public function gameart(Request $request)
     {
         $artlist = Utilities::getArtGameList();
 
@@ -108,6 +107,36 @@ class NewIgeGameController extends Controller
             $currency = $playerLoginResponse->walletBean->currency ?? '';
         }
         return view('games.gameart', compact('artlist', 'token', 'playerId', 'currency'));
+    }
+
+    public function sportsbetting(Request $request)
+    {
+        $lang = 'en';
+        $playerToken = Utilities::getPlayerToken();
+        $playerId = Utilities::getPlayerID();
+        $url = Configuration::SPORTS_BETTING_IFRAME;
+        $currencyInfo = Utilities::getCurrencyInfo();
+        $currency = $currencyInfo[0];
+        $dispCurrency = $currencyInfo[1];
+        if(empty($dispCurrency))
+        $dispCurrency = Constants::DEFAULT_CURRENCY_CODE;
+        $domain_main = Configuration::DOMAIN_NAME; 
+        return view('games.sportsbetting', compact('domain_main', 'lang', 'playerToken', 'playerId', 'url' , 'currencyInfo' , 'currency' , 'dispCurrency'));
+    }
+
+    public function bingo(Request $request)
+    {
+        $lang = 'en';
+        $playerToken = Utilities::getPlayerToken();
+        $playerId = Utilities::getPlayerID();
+        $url = Configuration::GAMES_DOMAIN;
+        $currencyInfo = Utilities::getCurrencyInfo();
+        $currency = $currencyInfo[0];
+        $dispCurrency = $currencyInfo[1];
+        $playerInfo = Utilities::getPlayerLoginResponse();
+        $totalBalance = (is_object($playerInfo) && isset($playerInfo->walletBean)) ? (float) ($playerInfo->walletBean->totalBalance ?? 0) : 0.0;
+        $domain_main = Configuration::DOMAIN_NAME; 
+        return view('games.bingo', compact('playerInfo', 'totalBalance', 'domain_main', 'lang', 'playerToken', 'playerId', 'url' , 'currencyInfo' , 'currency' , 'dispCurrency'));
     }
   
 
