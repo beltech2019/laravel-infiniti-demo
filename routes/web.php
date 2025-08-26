@@ -34,6 +34,8 @@ Route::prefix('games')->name('games.')->group(function () {
     Route::get('/gameart', [NewIgeGameController::class, 'gameart'])->name('gameart');
     Route::get('/sportsbetting', [NewIgeGameController::class, 'sportsbetting'])->name('sportsbetting');
     Route::get('/bingo', [NewIgeGameController::class, 'bingo'])->name('bingo');
+    Route::get('/lottery', [NewIgeGameController::class, 'lottery'])->name('lottery');
+    Route::get('/sportsPool', [NewIgeGameController::class, 'sportsPool'])->name('sportsPool');
 });
 
 Route::prefix('account')->name('account.')->group(function () {

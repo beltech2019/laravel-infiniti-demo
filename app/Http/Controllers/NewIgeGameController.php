@@ -140,4 +140,34 @@ class NewIgeGameController extends Controller
     }
   
 
+    public function lottery(Request $request)
+    {
+        $lang = 'en';
+        $playerToken = Utilities::getPlayerToken();
+        $playerId = Utilities::getPlayerID();
+        $url = Configuration::GAMES_DOMAIN;
+        $currencyInfo = Utilities::getCurrencyInfo();
+        $currency = $currencyInfo[0];
+        $dispCurrency = $currencyInfo[1];
+        $playerInfo = Utilities::getPlayerLoginResponse();
+        $totalBalance = (is_object($playerInfo) && isset($playerInfo->walletBean)) ? (float) ($playerInfo->walletBean->totalBalance ?? 0) : 0.0;
+        $domain_main = Configuration::DOMAIN_NAME; 
+        $userName = $playerInfo->userName ?? '';
+        return view('games.lottery', compact('userName', 'playerInfo', 'totalBalance', 'domain_main', 'lang', 'playerToken', 'playerId', 'url' , 'currencyInfo' , 'currency' , 'dispCurrency'));
+    }
+
+    public function sportsPool(Request $request)
+    {
+        $lang = 'en';
+        $playerToken = Utilities::getPlayerToken();
+        $playerId = Utilities::getPlayerID();
+        $url = 'https://dm-node1-wls.infinitilotto.com/';
+        $currencyInfo = Utilities::getCurrencyInfo();
+        $currency = $currencyInfo[0];
+        $dispCurrency = $currencyInfo[1];
+        $playerInfo = Utilities::getPlayerLoginResponse();
+        $totalBalance = (is_object($playerInfo) && isset($playerInfo->walletBean)) ? (float) ($playerInfo->walletBean->totalBalance ?? 0) : 0.0;
+        $domain_main = Configuration::DOMAIN_NAME; 
+        return view('games.sportsPool', compact('playerInfo', 'totalBalance', 'domain_main', 'lang', 'playerToken', 'playerId', 'url' , 'currencyInfo' , 'currency' , 'dispCurrency'));
+    }
 }

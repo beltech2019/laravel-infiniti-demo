@@ -10,10 +10,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item" id="nav-item-lottery">
-                        <a class="nav-link" id="nav-link-lottery" aria-current="page" href="#">Lottery</a>
+                        <a class="nav-link" id="nav-link-lottery" aria-current="page" href="{{route('games.lottery')}}">Lottery</a>
                     </li>
                     <li class="nav-item" id="nav-item-sportsPool">
-                        <a class="nav-link" id="nav-link-sportsPool" href="#">Sportspool</a>
+                        <a class="nav-link" id="nav-link-sportsPool" href="{{route('games.sportsPool')}}">Sportspool</a>
                     </li>
                     <li class="nav-item" id="nav-item-bingo">
                         <a class="nav-link" id="nav-link-bingo" href="{{route('games.bingo')}}">Bingo</a>
