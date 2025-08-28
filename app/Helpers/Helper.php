@@ -42,4 +42,7 @@ function playerToken(){
     return $token;
 }
         
-        
+function normalize_path($path) {
+    return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+}
+       

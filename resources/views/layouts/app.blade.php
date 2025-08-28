@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
     <link class="rounded-circle" rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
@@ -148,9 +149,11 @@
   </script>
   <script>
   // Open modal
+  @if(!session('user_id'))
   document.querySelector('.login-btn').addEventListener('click', function () {
     document.getElementById('loginModal').style.display = 'flex';
   });
+  @endif
 
   // Close modal on click outside content
   window.onclick = function(event) {
@@ -236,22 +239,23 @@
   });
 });
 
-
+@if(session('user_id'))
   // Toggle dropdown on amount click
-  document.getElementById('amount-button').addEventListener('click', function () {
-    const dropdown = document.getElementById('user-dropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  });
+  // document.getElementById('amount-button').addEventListener('click', function () {
+  //   const dropdown = document.getElementById('user-dropdown');
+  //   dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  // });
 
-  // Close dropdown on outside click
-  document.addEventListener('click', function (e) {
-    const button = document.getElementById('amount-button');
-    const dropdown = document.getElementById('user-dropdown');
+  // // Close dropdown on outside click
+  // document.addEventListener('click', function (e) {
+  //   const button = document.getElementById('amount-button');
+  //   const dropdown = document.getElementById('user-dropdown');
 
-    if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = 'none';
-    }
-  });
+  //   if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+  //     dropdown.style.display = 'none';
+  //   }
+  // });
+@endif  
 </script>
 <script>
     const scrollToTopBtn = document.getElementById("scrollToTopBtn");
@@ -368,6 +372,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+$(document).ready(function() {
+    toastr.options = {
+        "positionClass": "toast-top-center", // Show at top center (you can use toast-top-right, toast-top-left, toast-top-full-width too)
+        "closeButton": true,
+        "progressBar": true,
+        "timeOut": "5000"
+    };
+
+    @if(session('success'))
+        toastr.success(@json(session('success')), 'Success', {
+            "toastClass": "toast-success toast-top-center"
+        });
+    @endif
+
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            toastr.error(@json($error), 'Error', {
+                "toastClass": "toast-error toast-top-center"
+            });
+        @endforeach
+    @endif
+});
+</script>
+
 <script src="{{ asset('js/common.js') }}"></script>
 @stack('script')
 </body>

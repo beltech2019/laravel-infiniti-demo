@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function startTimer() {
         if (timer) clearInterval(timer);
         timer = setInterval(() => {
-            startAjax("/component/weaver/?task=account.getPlayerBalance", '', getUpdatedBalance, 'nottoshow');
+            startAjax("/account/getPlayerBalance", '', getBalance, 'nottoshow');
         }, 5000);
     }
 
@@ -37,12 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function launchGame(type, gameId) {
         const action = type === 'demo' ? 'get_demo' : 'get_game';
         if (type === 'real' && !document.body.classList.contains('post-login')) {
-            $('#home_login').modal('show');
+            document.getElementById('loginModal').style.display = 'flex';
             return;
         }
 
         const params = `action=${action}&game_id=${gameId}`;
-        startAjax("/component/weaver/?task=account.gamelaunchUrl", params, function (result) {
+        startAjax("/games/gamelaunchUrl", params, function (result) {
             const res = JSON.parse(result);
             if (res.status === 200 && res.response?.game_url) {
                 showIframe(res.response.game_url);

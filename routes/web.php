@@ -36,10 +36,13 @@ Route::prefix('games')->name('games.')->group(function () {
     Route::get('/bingo', [NewIgeGameController::class, 'bingo'])->name('bingo');
     Route::get('/lottery', [NewIgeGameController::class, 'lottery'])->name('lottery');
     Route::get('/sportsPool', [NewIgeGameController::class, 'sportsPool'])->name('sportsPool');
+    Route::any('/gamelaunchUrl', [NewIgeGameController::class, 'gamelaunchUrl'])->name('gamelaunchUrl');
 });
 
 Route::prefix('account')->name('account.')->group(function () {
     Route::any('/getPlayerBalance', [AccountController::class, 'getPlayerBalance'])->name('getPlayerBalance');
-    Route::get('/profile', function () {return view('account.profile');})->name('profile');
+    Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
     Route::any('/ticketsdetails', [AccountController::class, 'ticketsdetails'])->name('ticketsdetails');
+    Route::post('/uploadPlayerAvatar', [AccountController::class, 'uploadPlayerAvatar'])->name('uploadPlayerAvatar');
+    Route::post('/getTransactionDetails', [AccountController::class, 'getTransactionDetails'])->name('getTransactionDetails');
 });

@@ -48,7 +48,12 @@
                         <span id="amount-text">{{ authUserBalance() }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{route('account.profile')}}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=profile' }}">🌐 My Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=tickets' }}">🎟 My Tickets</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=wallet' }}">👛 My Wallet</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=transactions' }}">💳 My Transaction</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=inbox' }}">📥 Inbox</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=refer' }}">🌍 Refer a Friend</a></li>
                         <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </div>

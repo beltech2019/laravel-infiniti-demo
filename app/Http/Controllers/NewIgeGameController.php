@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use app\Helpers\Utilities;
+use app\Helpers\ServerCommunication;
 use app\Helpers\Configuration;
+use app\Helpers\ServerUrl;
+use app\Helpers\Validations;
 use app\Helpers\Constants;
 use app\Helpers\Session;
 use Log;
@@ -169,5 +172,20 @@ class NewIgeGameController extends Controller
         $totalBalance = (is_object($playerInfo) && isset($playerInfo->walletBean)) ? (float) ($playerInfo->walletBean->totalBalance ?? 0) : 0.0;
         $domain_main = Configuration::DOMAIN_NAME; 
         return view('games.sportsPool', compact('playerInfo', 'totalBalance', 'domain_main', 'lang', 'playerToken', 'playerId', 'url' , 'currencyInfo' , 'currency' , 'dispCurrency'));
+    }
+
+    public function gamelaunchUrl(Request $request){
+        $game_id = $request->input('game_id', '');
+        $action = $request->input('action', '');
+	     $requestData = array(
+	        "args[1][usr]" => "skilrock_ga_eur_s_dev",
+	        "args[1][passw]" => "skilrockimi0slpws9xob64",
+	        "action" => $action,
+	        "args[0][remote_id]" => Utilities::getPlayerId(),
+	        "args[0][remote_data]" => Utilities::getPlayerToken(),
+	     	"args[0][game_id]" => $game_id
+	     );
+        $response = ServerCommunication::sendCall(ServerUrl::ART_GAME_BASEURL, $requestData, Validations::$isAjax, true, array(),'GET');
+         exit(json_encode($response));
     }
 }

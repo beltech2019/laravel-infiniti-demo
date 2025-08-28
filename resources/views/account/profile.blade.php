@@ -2,771 +2,12 @@
 
 @section('content')
 
-<!-- Styles -->
-<style>
-#sp-left .sp-module-title {
-    font-size: 1.4em;
-    text-transform: capitalize;
-    font-weight: 500;
-    color: #123374;
-    padding: 20px 15px 20px;
-    border-bottom: 4px solid #123374;
-    /* margin: 0 -15px; */
-    position: relative;
-    text-align: center;
-    background-color: #ffffff;
-    /* box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); */
-}
-
-.sp-module .sp-module-title {
-    /* margin: 0 0 20px;
-    font-size: 14px;
-    text-transform: uppercase; */
-    line-height: 1;
-}
-
-.sp-component {
-    padding-bottom: 40px;
-    min-height: 300px;
-}
-
-/* Layout */
-.account-container {
-    display: flex;
-    background: #fff;
-    border: 1px solid #ddd;
-    min-height: 500px;
-    font-family: Arial, sans-serif;
-}
-
-/* Sidebar */
-.account-sidebar {
-    width: 25%;
-    background: #f8f9fa;
-    border-right: 1px solid #ddd;
-}
-.account-sidebar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-.account-sidebar ul li {
-    width: 50%; 
-    box-sizing: border-box;
-    border-bottom: 1px solid #eee;
-}
-.account-sidebar ul li a {
-    display: block;
-    padding: 12px 15px;
-    color: #333;
-    text-decoration: none;
-    font-weight: 500;
-}
-.account-sidebar ul li.active,
-.account-sidebar ul li a:hover {
-    background: #002060;
-    color: #fff;
-}
-
-/* Content */
-.account-content {
-    flex: 1;
-}
-
-/* Tab content */
-.tab-content {
-    display: none;
-    padding: 20px;
-}
-.tab-content.active {
-    display: block;
-}
-
-/* Profile banner */
-.profile-banner {
-    display: flex;
-    align-items: center;
-    background: #002060;
-    color: #fff;
-    padding: 20px;
-}
-.profile-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    background: #1c3a70 url('https://via.placeholder.com/80') center/cover no-repeat;
-    margin-right: 15px;
-}
-.profile-info h3 {
-    margin: 0;
-    font-size: 18px;
-}
-.profile-info p {
-    margin: 2px 0 0;
-    font-size: 14px;
-}
-
-/* Details */
-.profile-details {
-    padding: 20px;
-}
-.detail-row {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px dotted #ccc;
-    padding: 12px 0;
-    font-size: 14px;
-}
-.detail-row span {
-    margin-right: 10px;
-    font-size: 16px;
-}
-.detail-row p {
-    flex: 1;
-    margin: 0;
-}
-.btn-change {
-    background: #e91e1e;
-    border: none;
-    color: #fff;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-.btn-change:hover {
-    background: #c31717;
-}
-
-/* Update button */
-.btn-update {
-    background: #e91e1e;
-    border: none;
-    color: #fff;
-    width: 100%;
-    padding: 12px;
-    margin-top: 20px;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.btn-update:hover {
-    background: #c31717;
-}
-
-/* Wallet title */
-.wallet-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #000;
-}
-
-/* Wallet tabs */
-.wallet-tabs {
-    font-size: 30px; 
-    display: flex;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 20px;
-    gap: 40px; 
-}
-
-
-.wallet-tabs a:hover {
-    color: #ce1126;          /* red on hover */
-}
-
-.wallet-tab {
-    flex: 1;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 21px;
-    color: #0044cc;
-    text-decoration: none;
-    font-weight: 500;
-    position: relative;
-}
-.wallet-tab.active {
-    color: #d78f22;
-    font-weight: 600;
-}
-.wallet-tab.active::after {
-    content: "";
-    display: block;
-    height: 3px;
-    background: #d78f22; /* gold underline */
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-}
-
-.wallet-options {
-    display: flex;
-    gap: 20px;
-    margin: 15px 0;
-}
-
-.wallet-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20;
-    cursor: pointer;
-    padding: 10px 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-    transition: 0.2s;
-}
-
-.wallet-option:hover {
-    background: #f0f0f0;
-    border-color: #0448a8;
-}
-
-.wallet-option input {
-    accent-color: #0448a8
-}
-
-
-/* Wallet content */
-.wallet-content {
-    display: none;
-    padding: 20px 0;
-}
-.wallet-content.active {
-    display: block;
-}
-.wallet-subtitle {
-    font-size: 19px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #000;
-}
-
-/* Buttons */
-.wallet-actions {
-    display: flex;
-    justify-content: center; 
-    gap: 5px;
-    margin-top: 20px;
-}
-
-.btn-cancel, .btn-proceed {
-    background: #ce1126;
-    color: #fff;
-    border: none;
-    padding: 12px 40px;
-    border-radius: 30px;
-    font-size: 18px;
-    cursor: pointer;
-}
-.btn-cancel:hover, .btn-proceed:hover {
-    background: #a50e1e;
-}
-/* Inbox */
-.inbox-title {
-    font-size: 25px;
-    font-weight: 550;
-    margin-bottom: 20px;
-    color: #000;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
-}
-
-/* Ticket Title */
-.ticket-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #000;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-}
-
-/* Date Filter */
-.ticket-filters {
-    display: flex;
-    align-items: flex-end;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    width:250px;
-}
-.ticket-date {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    margin-top: 5px;
-}
-.btn-search {
-    background: #ce1126;
-    color: #fff;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    width: 250px;  
-}
-
-.tickets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 20px;
-    font-family: 'Roboto', Arial, sans-serif; 
-}
-
-
-/* Ticket Card */
-.ticket-card {
-    display: flex;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    min-height: 180px;
-    width: 100%; /* let grid handle width */
-    overflow: hidden; /* prevents child overflow */
-}
-
-/* Left Side */
-.ticket-left {
-    flex: 3;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.ticket-left h3 {
-    font-size: 15px;
-    font-weight: 500;
-    color: #000; 
-    margin: 0 0 5px;
-}
-
-.ticket-id,
-.ticket-time {
-    font-size: 12px;
-    color: #777; 
-    margin: 0;
-    line-height: 1.4;
-}
-
-/* Ticket Price */
-.ticket-price {
-    margin-top: 10px;
-    font-size: 22px;
-    font-weight: 600;
-    color: #666161;
-    margin-left: auto; /* pushes to right inside left section */
-}
-
-/* Divider */
-.ticket-divider {
-    width: 1px;
-    background: #ddd;
-    position: relative;
-}
-
-.ticket-divider::before,
-.ticket-divider::after {
-    content: "";
-    width: 16px;
-    height: 16px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    position: absolute;
-    left: -8px;
-}
-.ticket-divider::before { top: -8px; }
-.ticket-divider::after { bottom: -8px; }
-
-/* Right Side */
-.ticket-right {
-    flex: 1;
-    text-align: center;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.ticket-right img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 6px;
-}
-
-.ticket-right p {
-    font-size: 12px;
-    font-weight: 500;
-    color: #333; 
-    margin: 0;
-}
-
-
-/* Title */
-.transaction-title {
-    font-size: 25px;
-    font-weight: 550;
-    margin-bottom: 20px;
-    color: #000;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-}
-
-/* Filters */
-.transaction-filters {
-    display: flex;
-    align-items: flex-end;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.filter-groupp {
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-}
-
-/* Common style */
-.transaction-date,
-.transaction-select {
-    padding: 8px 14px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    min-width: 300px;
-    outline: none;
-}
-
-#from-date,
-#to-date {
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.transaction-select {
-    border-radius: 25px;
-}
-.ledger-table {
-    width: 100%;
-    margin-top: 10px;
-    font-size: 14px;
-    border-collapse: collapse;
-}
-
-.ledger-table th, 
-.ledger-table td {
-    border-top: 1px solid #ddd;  
-    border-bottom: 1px solid #ddd;
-    border-left: none;       
-    border-right: none; 
-    padding: 15px;
-    font-size: 18px;
-    text-align: center;
-    color: #333;
-}
-
-.ledger-table th {
-    font-size: 18px;
-    font-weight: bold;
-    border-top: none;              
-    border-bottom: 3px solid #000;
-
-}
-
-.wager-table {
-    width: 100%;
-    margin-top: 10px;
-    font-size: 14px;
-    border-collapse: collapse;
-}
-
-.wager-table th, 
-.wager-table td {
-    border-top: 1px solid #ddd;     
-    border-bottom: 1px solid #ddd;
-    border-left: none;      
-    border-right: none;
-    padding: 15px;
-    font-size: 18px;
-    text-align: center;
-    color: #333;
-}
-
-.wager-table th {
-    font-size: 18px;
-    font-weight: bold;
-    border-top: none;              
-    border-bottom: 3px solid #000;
-
-}
-
-.winning-table {
-    width: 100%;
-    margin-top: 10px;
-    font-size: 14px;
-    border-collapse: collapse;
-}
-
-.winning-table th, 
-.winning-table td {
-    border-top: 1px solid #ddd;     
-    border-bottom: 1px solid #ddd;
-    border-left: none;      
-    border-right: none;
-    padding: 15px;
-    font-size: 18px;
-    text-align: center;
-    color: #333;
-}
-
-.winning-table th {
-    font-size: 18px;
-    font-weight: bold;
-    border-top: none;              
-    border-bottom: 3px solid #000;
-
-}
-
-
-.btn-search {
-    background: #ce1126;
-    color: #fff;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 600;
-    width: 260px;
-}
-
-
-/* Refer Container */
-.refer-friend-title {
-    font-size: 25px;
-    font-weight: 550;
-    margin-bottom: 20px;
-    color: #000;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
-}
-
-.refer-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.refer-tabs {
-    display: flex;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 20px;
-}
-.refer-tab.active {
-    color: #d78f22;
-    border-bottom: 3px solid #d78f22;
-    font-weight: 600;
-    font-size: 23px;
-}
-.refer-tab {
-    flex: 1;
-    text-align: center;
-    padding: 10px;
-    font-size: 23px;
-    color: #0448a8;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.refer-content { display: none; }
-.refer-content.active { display: block; }
-
-.refer-title {
-    font-size: 24px;
-    color: #0448a8;
-    margin: 60px 0 40px;
-    text-align: center;
-}
-
-.refer-options {
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.refer-list {
-    display: flex;
-    gap: 15px;
-    list-style: none;
-    padding: 0;
-}
-
-.refer-btn {
-  flex: 1;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 18px;
-  font-weight: 530;
-  color: #333333;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.refer-btn i {
-  display: block;
-  font-size: 40px;
-  margin-bottom: 0px;
-}
-
-.refer-btn.gmail:hover {
-  background-color: #d93025; 
-  color: #fff;
-  border-color: #d93025;
-  border-radius:5px;
-}
-
-.refer-btn.facebook:hover {
-  background-color: #0448a8;
-  color: #fff;
-  border-color: #0448a8;
-  border-radius:5px;
-}
-
-.refer-btn.twitter:hover {
-  background-color: #1da1f2; 
-  color: #fff;
-  border-color: #1da1f2;
-  border-radius:5px;
-}
-
-
-.refer-copy {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.refer-code,
-.refer-link {
-    flex: 1;
-    padding: 10px ;
-    border: 1px solid grey;
-    border-radius: 25px;
-    font-size: 17px;
-    width:100px;
-    color: #555555;
-    background-color:#e6dfdf;
-}
-.copy-btn {
-    background: #ce1126;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: bold;
-}
-
-.copy-btn:hover {
-    background: white;
-    color: #ce1126;
-    border: 3px solid #ce1126;
-}
-
-.refer-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-.refer-form input {
-    flex: 1;
-    padding: 10px;
-    font-size:18px;
-    border: 1px solid grey;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
-}
-.add-btn {
-    background: #ce1126;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* Invite button */
-.invite-btn {
-    display: block;
-    margin: 60 auto 60px;
-    background: #ce1126;
-    color: #fff;
-    padding: 12px 40px;
-    border: none;
-    border-radius: 25px;
-    font-size: 20;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Note */
-.refer-note {
-    font-size: 19px;
-    color: #555;
-    line-height: 1.4;
-    text-align: center;
-}
-
-.refer_option ul {
-    list-style: none;
-    display: flex
-;
-    flex-wrap: wrap;
-}
-
-.refer_option ul {
-    border: 1px solid #dddddd;
-    padding: 15px 10px;
-}
-
- ul {
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-</style>
-
 <div class="account-container">
     <!-- Sidebar -->
     <div id = "sp-left" class="account-sidebar">
     <h3 class = "sp-module-title">My Account</h3>
         <ul>
-            <li class="active"><a href="#" data-tab="profile">🌐 My Profile</a></li>
+            <li class=""><a href="#" data-tab="profile">🌐 My Profile</a></li>
             <li><a href="#" data-tab="tickets">🎟 My Tickets</a></li>
             <li><a href="#" data-tab="wallet">👛 My Wallet</a></li>
             <li><a href="#" data-tab="transactions">💳 My Transaction</a></li>
@@ -781,27 +22,66 @@
         <!-- Profile Section -->
         <div class="tab-content active sp-component" id="profile">
             <div class="profile-banner">
-                <div class="profile-pic"></div>
+                <div class="profile-pic-wrapper">
+                    <div class="profile-pic">
+                        <img src="{{$playerInfo->avatarPath ?? 'https://image.freepik.com/free-vector/businessman-character-avatar-icon-vector-illustration-design_24877-18271.jpg'}}" alt="User Pic" />
+                    </div>
+                    <button class="edit-btn" id="editAvatarBtn" title="Edit">✏️</button>
+                </div>
                 <div class="profile-info">
-                    <h3>Mr. Player</h3>
-                    <p>{{ authUserName() }}</p>
+                    <h3>Mr. {{$playerInfo->firstName ?? 'Player'}} {{$playerInfo->lastName ?? ''}}</h3>
+                    <p>{{ $playerInfo->mobileNo ?? '' }}</p>
                 </div>
             </div>
-            <div class="profile-details">
+            <div class="profile-details" id="profileDetails">
+                @if(isset($playerInfo->emailId))
+                <div class="detail-row">
+                    <span>📧</span>
+                    <p>{{ $playerInfo->emailId ?? '' }}</p>
+                </div>
+                @endif
                 <div class="detail-row">
                     <span>📞</span>
-                    <p>{{ authUserName() }}</p>
+                    <p>{{ $playerInfo->mobileNo ?? '' }}</p>
                 </div>
+                @if(isset($playerInfo->country))
                 <div class="detail-row">
                     <span>🌍</span>
-                    <p>{{ authUserCountry() }}</p>
+                    <p>{{ $playerInfo->country ?? '' }}</p>
                 </div>
+                @endif
+                @if(isset($playerInfo->addressLine1))
                 <div class="detail-row">
+                    <span>📌</span>
+                    <p>{{ $playerInfo->addressLine1 ?? '' }}</p>
+                </div>
+                @endif
+                @if(isset($playerInfo->dob))
+                <div class="detail-row">
+                    <span>📅</span>
+                    <p>{{ $playerInfo->dob ?? '' }}</p>
+                </div>
+                @endif
+                <!-- <div class="detail-row">
                     <span>🔒</span>
                     <p>Password</p>
                     <button class="btn-change">Change</button>
                 </div>
-                <button class="btn-update">Update Details</button>
+                <button class="btn-update">Update Details</button> -->
+            </div>
+            <!-- 👇 Hidden Form for Avatar Upload -->
+            <div class="avatar-upload-form" id="avatarUploadForm" style="display: none;">
+                <form action="{{ route('account.uploadPlayerAvatar') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="avatar">Choose a new profile picture:</label>
+                        <input type="file" name="user_avatar" id="avatar" required accept=".jpg, .jpeg, .png, .gif">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Submit</button>
+                        <button type="button" class="btn-cancel" id="cancelAvatarUpload">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -811,15 +91,18 @@
 
             <!-- Date Filter -->
             <div class="ticket-filters">
+                <form>
                 <div class="filter-group">
                     <label for="from-date">From</label>
-                    <input type="date" id="from-date" class="ticket-date" value="{{ now()->subMonth()->format('Y-m-d') }}">
+                    <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}">
                 </div>
                 <div class="filter-group">
                     <label for="to-date">To</label>
-                    <input type="date" id="to-date" class="ticket-date" value="{{ now()->format('Y-m-d') }}">
+                    <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}">
                 </div>
+                <input type="hidden" name="limit" value="40">
                 <button class="btn-search">Search</button>
+                </form>
             </div>
 
                 <!-- Tickets Grid -->
@@ -837,21 +120,6 @@
                     <div class="ticket-right">
                         <img src="https://via.placeholder.com/50" alt="Game Logo">
                         <p>ROBINHOOD</p>
-                    </div>
-                </div>
-
-                <!-- Another Ticket -->
-                <div class="ticket-card">
-                    <div class="ticket-left">
-                        <h3>Big5</h3>
-                        <p class="ticket-id">2178399</p>
-                        <p class="ticket-time">Aug 25, 2025 10:19:35</p>
-                        <div class="ticket-price">EUR 1</div>
-                    </div>
-                    <div class="ticket-divider"></div>
-                    <div class="ticket-right">
-                        <img src="https://via.placeholder.com/50" alt="Game Logo">
-                        <p>BIG5</p>
                     </div>
                 </div>
 
@@ -1143,6 +411,8 @@
     </div>
 </div>
 
+@endsection
+
 
 <!-- Script for Sidebar Tab Switching -->
 <script>
@@ -1234,4 +504,62 @@ $(document).ready(function(){
 });
 
 </script>
-@endsection
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const links = document.querySelectorAll(".account-sidebar ul li a");
+        const contents = document.querySelectorAll(".tab-content");
+
+        // Get tabactive from backend
+        let activeTab = @json($tabactive ?? 'profile'); // fallback to profile if not set
+
+        // First reset everything
+        links.forEach(l => l.parentElement.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+
+        // Find matching sidebar link
+        const activeLink = document.querySelector(`.account-sidebar a[data-tab="${activeTab}"]`);
+        const activeContent = document.getElementById(activeTab);
+
+        if (activeLink && activeContent) {
+            activeLink.parentElement.classList.add("active");
+            activeContent.classList.add("active");
+        } else {
+            // fallback if tab not found
+            document.querySelector('.account-sidebar ul li:first-child').classList.add("active");
+            contents[0].classList.add("active");
+        }
+
+        // Now handle click switching as before
+        links.forEach(link => {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
+                links.forEach(l => l.parentElement.classList.remove("active"));
+                contents.forEach(c => c.classList.remove("active"));
+                this.parentElement.classList.add("active");
+                document.getElementById(this.dataset.tab).classList.add("active");
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const editBtn = document.getElementById('editAvatarBtn');
+        const cancelBtn = document.getElementById('cancelAvatarUpload');
+        const profileDetails = document.getElementById('profileDetails');
+        const avatarUploadForm = document.getElementById('avatarUploadForm');
+
+        if (editBtn) {
+            editBtn.addEventListener('click', function () {
+                profileDetails.style.display = 'none';
+                avatarUploadForm.style.display = 'block';
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function () {
+                avatarUploadForm.style.display = 'none';
+                profileDetails.style.display = 'block';
+            });
+        }
+    });
+</script>

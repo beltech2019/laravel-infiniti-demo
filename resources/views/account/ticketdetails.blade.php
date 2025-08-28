@@ -1,4 +1,6 @@
+@extends('layouts.app')
 
+@section('content')
 <div class="myaccount_body_section">
     <div class="entry-header has-post-format">
         <h2></h2>
@@ -67,7 +69,7 @@
     </div>
 
 </div>
-
+@endsection
 
 <script>
 
