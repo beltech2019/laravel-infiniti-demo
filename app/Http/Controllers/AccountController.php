@@ -13,6 +13,7 @@ use App\Helpers\ServerUrl;
 use App\Helpers\Utilities;
 use App\Helpers\Constants;
 use App\Helpers\Session as LegacySession;
+use Illuminate\Support\Facades\Session as LaravelSession;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use CURLFile;
@@ -496,7 +497,7 @@ class AccountController extends Controller
 
             $msg = Validations::getRespMsg();
             Utilities::playerLogout(['isManual' => false]);
-            Session::put('passwordChanged', true);
+            LegacySession::setSessionVariable('passwordChanged', true);
 
             if (Validations::$isAjax) {
                 $response->path = url()->previous();
@@ -511,7 +512,7 @@ class AccountController extends Controller
     public function updatePlayerProfile(Request $request)
     {
         if (LegacySession::sessionValidate()) {
-            $sessionVariable = Session::getId();
+            $sessionVariable = LaravelSession::getId();
 
             $firstName = $request->input('fname', '');
             $lastName = $request->input('lname', '');
@@ -552,33 +553,34 @@ class AccountController extends Controller
             ];
 
             $ramPlayerInfo = Utilities::getRamPlayerInfoResponse();
-
+            
             $playerStatus = false;
-            if ($ramPlayerInfo->emailVerified == 'Y' && $ramPlayerInfo->mobileVerified == 'Y') {
-                $playerStatus = 'FULL';
-            }
+            $requestData['updateType'] = 'REGISTRATION';
+            // if ($ramPlayerInfo->emailVerified == 'Y' && $ramPlayerInfo->mobileVerified == 'Y') {
+            //     $playerStatus = 'FULL';
+            // }
 
-            if ($ramPlayerInfo->profileType == 'ANONYMOUS') {
-                $requestData['updateType'] = 'REGISTRATION';
-                $requestData['userName'] = $mobileNo;
-                $requestData['password'] = $anonPassword;
-                $requestData['otp'] = $otp;
-            } elseif ($ramPlayerInfo->profileType == 'MINI') {
-                $requestData['updateType'] = 'REGISTRATION';
-            }
+            // if ($ramPlayerInfo->profileType == 'ANONYMOUS') {
+            //     $requestData['updateType'] = 'REGISTRATION';
+            //     $requestData['userName'] = $mobileNo;
+            //     $requestData['password'] = $anonPassword;
+            //     $requestData['otp'] = $otp;
+            // } elseif ($ramPlayerInfo->profileType == 'MINI') {
+            //     $requestData['updateType'] = 'REGISTRATION';
+            // }
 
             $response = Utilities::updatePlayerProfile($requestData, url()->previous(), $playerStatus, $isAjax);
 
-            if (isset($response->data->playerMaster)) {
-                Utilities::updateRamPlayerLoginResponse([
-                    'profileType' => $response->data->playerMaster->profileType,
-                    'mobileVerified' => $response->data->playerVerificationStatus->mobileVerified,
-                ]);
-            }
+            // if (isset($response->data->playerMaster)) {
+            //     Utilities::updateRamPlayerLoginResponse([
+            //         'profileType' => $response->data->playerMaster->profileType,
+            //         'mobileVerified' => $response->data->playerVerificationStatus->mobileVerified,
+            //     ]);
+            // }
 
-            if (Validations::$isAjax) {
-                return response()->json($response);
-            }
+            // if (Validations::$isAjax) {
+            //     return response()->json($response);
+            // }
 
             if ($response->errorCode == 0) {
                 return redirect()->back()->with('success', 'Player Profile Updated Successfully');

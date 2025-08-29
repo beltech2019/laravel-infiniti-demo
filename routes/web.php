@@ -49,6 +49,8 @@ Route::prefix('account')->name('account.')->group(function () {
     Route::post('/getBonusDetails', [AccountController::class, 'getBonusDetails'])->name('getBonusDetails');
     Route::post('/playerInbox', [AccountController::class, 'playerInbox'])->name('playerInbox');
     Route::post('/inboxActivity', [AccountController::class, 'inboxActivity'])->name('inboxActivity');
+    Route::post('/changePassword', [AccountController::class, 'changePassword'])->name('changePassword');
+    Route::post('/updatePlayerProfile', [AccountController::class, 'updatePlayerProfile'])->name('updatePlayerProfile');
 });
 
 Route::prefix('refer')->name('refer.')->group(function () {

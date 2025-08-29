@@ -24,7 +24,7 @@
             <div class="profile-banner">
                 <div class="profile-pic-wrapper">
                     <div class="profile-pic">
-                        <img src="{{$playerInfo->commonContentPath . $playerInfo->avatarPath . '?v=' . microtime()}}" alt="User Pic" />
+                        <img src="{{isset($playerInfo->commonContentPath) && isset($playerInfo->avatarPath) ? $playerInfo->commonContentPath . $playerInfo->avatarPath . '?v=' . microtime() : 'https://image.freepik.com/free-vector/businessman-character-avatar-icon-vector-illustration-design_24877-18271.jpg'}}" alt="User Pic" />
                     </div>
                     <button class="edit-btn" id="editAvatarBtn" title="Edit">✏️</button>
                 </div>
@@ -85,73 +85,95 @@
             </div>
 
             <!-- Update Details Form (initially hidden) -->
-            <div id="updateDetailsForm" style="display:none;">
-                <form>
-                    <div class="mb-3 mt-4">
-                    <label>First Name*</label>
-                    <input type="text" name="firstName" />
+            <div id="updateDetailsForm" style="display: none;" class="container mt-4">
+                <form class="row g-3" action="{{route('account.updatePlayerProfile')}}" method="POST">
+                @csrf 
+                    <div class="col-md-6">
+                        <label class="form-label">First Name*</label>
+                        <input type="text" class="form-control" name="fname" value="{{$playerInfo->firstName ?? ''}}" required/>
                     </div>
-                    <div class="mb-3">
-                    <label>Last Name*</label>
-                    <input type="text" name="lastName" />
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name*</label>
+                        <input type="text" class="form-control" name="lname" value="{{$playerInfo->lastName ?? ''}}" required/>
                     </div>
-                    <div class="mb-3">
-                    <label>Address*</label>
-                    <textarea name="address"></textarea>
+            
+                    <div class="col-12">
+                        <label class="form-label">Address*</label>
+                        <textarea class="form-control" name="address" rows="3" required>{{$playerInfo->addressLine1 ?? ''}}</textarea>
                     </div>
-                    <div class="mb-3">
-                    <label>Date of Birth*</label>
-                    <input type="text" name="dob" />
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Date of Birth*</label>
+                        <input type="date" class="form-control" name="dob" value="{{$playerInfo->dob ?? ''}}" />
                     </div>
-                    <div class="mb-3">
-                    <label for="country">Select Country*</label>
-                    <select id="country" name="countrycode" class="form-select" required>
-                        <option value="">Select Country*</option>
-                        @foreach($countries->data as $country)
-                        <option value="{{$country->countryCode}}">{{$country->countryName}}</option>
-                        @endforeach
-                    </select>
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Country*</label>
+                        <input type="text" class="form-control" value="{{$playerInfo->country ?? ''}}" disabled />
+                        <input type="hidden" class="form-control" name="country" value="{{$playerInfo->countryCode ?? ''}}" />
                     </div>
-                    <div class="mb-3">
-                    <label>Email Address*</label>
-                    <input type="email" name="email" />
+            
+                    <div class="col-md-8">
+                        <label class="form-label">Email Address*</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" name="email" value="{{$playerInfo->emailId ?? ''}}" required/>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                    <label>Mobile No*</label>
-                    <input type="text" name="mobileNo" />
+            
+                    <div class="col-md-4">
+                        <label class="form-label">Mobile No*</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="mobile" value="{{$playerInfo->mobileNo ?? ''}}" readonly />
+                        </div>
                     </div>
-                    <div class="mb-3">
-                    <label>Gender*</label>
-                    <input type="radio" name="gender" value="Male" /> Male
-                    <input type="radio" name="gender" value="Female" /> Female
+            
+                    <div class="col-12">
+                        <label class="form-label">Gender*</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="M" {{isset($playerInfo->gender) && $playerInfo->gender == "M" ? 'checked': ''}} />
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="F" {{isset($playerInfo->gender) && $playerInfo->gender == "F" ? 'checked': ''}}/>
+                            <label class="form-check-label">Female</label>
+                        </div>
                     </div>
-                    <div class="form-actions">
-                    <button type="submit">Save</button>
-                    <button type="button" id="cancelUpdateDetails">Cancel</button>
+            
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelUpdateDetails">Cancel</button>
                     </div>
+            
                 </form>
             </div>
 
             <!-- Change Password Form (initially hidden) -->
-            <div id="changePasswordForm" style="display:none;">
-            <form>
-                <div class="mb-3 mt-4">
-                <label>Current Password*</label>
-                <input type="password" name="currentPassword" />
-                </div>
-                <div class="mb-3">
-                <label>New Password*</label>
-                <input type="password" name="newPassword" />
-                </div>
-                <div class="mb-3">
-                <label>Confirm Password*</label>
-                <input type="password" name="confirmPassword" />
-                </div>
-                <div class="form-actions">
-                <button type="submit">Change</button>
-                <button type="button" id="cancelChangePassword">Cancel</button>
-                </div>
-            </form>
+            <div id="changePasswordForm" style="display: none;" class="container mt-4">
+                <form class="row g-3" action="{{route('account.changePassword')}}" method="POST">
+                @csrf
+                
+                    <div class="col-12">
+                        <label class="form-label">Current Password*</label>
+                        <input type="password" class="form-control" name="currentPassword" placeholder="Enter current password" required />
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label">New Password*</label>
+                        <input type="password" class="form-control" name="newPassword" placeholder="Enter new password" required />
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label">Confirm Password*</label>
+                        <input type="password" class="form-control" name="retypePassword" placeholder="Confirm new password" required />
+                    </div>
+                    
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary">Change</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelChangePassword">Cancel</button>
+                    </div>
+                
+                </form>
             </div>
 
         </div>
@@ -668,32 +690,36 @@ $(document).ready(function () {
 
 </script>
 <script>
-    $(document).ready(function() {
-  // Update Details button click
-        $('.btn-update').on('click', function() {
+    $(document).ready(function () {
+ 
+        // Show Update Details Form
+        $('.btn-update').on('click', function () {
             $('#profileDetails').hide();
             $('#changePasswordForm').hide();
             $('#updateDetailsForm').show();
         });
-
-        // Change Password button click
-        $('.btn-change').on('click', function() {
+ 
+        // Show Change Password Form
+        $('.btn-change').on('click', function () {
             $('#profileDetails').hide();
             $('#updateDetailsForm').hide();
             $('#changePasswordForm').show();
         });
-
-        // Cancel buttons in update details/change password forms
-        $('#cancelUpdateDetails').on('click', function() {
+ 
+        // Cancel Update Details
+        $('#cancelUpdateDetails').on('click', function () {
             $('#updateDetailsForm').hide();
             $('#profileDetails').show();
         });
-        $('#cancelChangePassword').on('click', function() {
+ 
+        // Cancel Change Password
+        $('#cancelChangePassword').on('click', function () {
             $('#changePasswordForm').hide();
             $('#profileDetails').show();
         });
+ 
     });
-
+ 
 </script>
  @endpush
 <script>

@@ -271,7 +271,7 @@ class Utilities {
         if ($playerStatus != false)
             $data['playerStatus'] = $playerStatus;
         $stateArr = Constants::STATE_LIST;
-        $data['state'] = $stateArr[$data['stateCode']];
+        // $data['state'] = $stateArr[$data['stateCode']];
         unset($stateArr);
         if($response->errorCode == 0){
         self::updatePlayerLoginResponse($data);
