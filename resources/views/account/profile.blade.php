@@ -24,7 +24,7 @@
             <div class="profile-banner">
                 <div class="profile-pic-wrapper">
                     <div class="profile-pic">
-                        <img src="{{$playerInfo->avatarPath ?? 'https://image.freepik.com/free-vector/businessman-character-avatar-icon-vector-illustration-design_24877-18271.jpg'}}" alt="User Pic" />
+                        <img src="{{$playerInfo->commonContentPath . $playerInfo->avatarPath . '?v=' . microtime()}}" alt="User Pic" />
                     </div>
                     <button class="edit-btn" id="editAvatarBtn" title="Edit">✏️</button>
                 </div>
@@ -62,12 +62,12 @@
                     <p>{{ $playerInfo->dob ?? '' }}</p>
                 </div>
                 @endif
-                <!-- <div class="detail-row">
+                <div class="detail-row">
                     <span>🔒</span>
                     <p>Password</p>
                     <button class="btn-change">Change</button>
                 </div>
-                <button class="btn-update">Update Details</button> -->
+                <button class="btn-update">Update Details</button>
             </div>
             <!-- 👇 Hidden Form for Avatar Upload -->
             <div class="avatar-upload-form" id="avatarUploadForm" style="display: none;">
@@ -83,6 +83,72 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Update Details Form (initially hidden) -->
+            <div id="updateDetailsForm" style="display:none;">
+                <form>
+                    <div class="detail-row">
+                    <label>First Name*</label>
+                    <input type="text" name="firstName" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Last Name*</label>
+                    <input type="text" name="lastName" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Address*</label>
+                    <textarea name="address"></textarea>
+                    </div>
+                    <div class="detail-row">
+                    <label>Date of Birth*</label>
+                    <input type="text" name="dob" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Country*</label>
+                    <input type="text" name="country" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Email Address*</label>
+                    <input type="email" name="email" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Mobile No*</label>
+                    <input type="text" name="mobileNo" />
+                    </div>
+                    <div class="detail-row">
+                    <label>Gender*</label>
+                    <input type="radio" name="gender" value="Male" /> Male
+                    <input type="radio" name="gender" value="Female" /> Female
+                    </div>
+                    <div class="form-actions">
+                    <button type="submit">Save</button>
+                    <button type="button" id="cancelUpdateDetails">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Change Password Form (initially hidden) -->
+            <div id="changePasswordForm" style="display:none;">
+            <form>
+                <div class="detail-row">
+                <label>Current Password*</label>
+                <input type="password" name="currentPassword" />
+                </div>
+                <div class="detail-row">
+                <label>New Password*</label>
+                <input type="password" name="newPassword" />
+                </div>
+                <div class="detail-row">
+                <label>Confirm Password*</label>
+                <input type="password" name="confirmPassword" />
+                </div>
+                <div class="form-actions">
+                <button type="submit">Change</button>
+                <button type="button" id="cancelChangePassword">Cancel</button>
+                </div>
+            </form>
+            </div>
+
         </div>
 
         <!-- Tickets Section -->
@@ -592,6 +658,34 @@ $(document).ready(function () {
                     toastr.error(error);
                 }
             });
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+  // Update Details button click
+        $('.btn-update').on('click', function() {
+            $('#profileDetails').hide();
+            $('#changePasswordForm').hide();
+            $('#updateDetailsForm').show();
+        });
+
+        // Change Password button click
+        $('.btn-change').on('click', function() {
+            $('#profileDetails').hide();
+            $('#updateDetailsForm').hide();
+            $('#changePasswordForm').show();
+        });
+
+        // Cancel buttons in update details/change password forms
+        $('#cancelUpdateDetails').on('click', function() {
+            $('#updateDetailsForm').hide();
+            $('#profileDetails').show();
+        });
+        $('#cancelChangePassword').on('click', function() {
+            $('#changePasswordForm').hide();
+            $('#profileDetails').show();
         });
     });
 

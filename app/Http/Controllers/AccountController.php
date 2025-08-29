@@ -68,7 +68,6 @@ class AccountController extends Controller
     public function uploadPlayerAvatar(Request $request)
     {
         try {
-            // Validate session (assuming your Utilities or Session helper has similar check)
             if (!LegacySession::sessionValidate()) {
                 return redirect()->back()->withErrors(['error' => 'Session expired. Please login again.']);
             }
@@ -471,6 +470,122 @@ class AccountController extends Controller
             'respMsg' => 'Session expired',
             'redirect' => route('login'),
         ], 401);
+    }
+
+    function changePassword(Request $request)
+    {
+        if (LegacySession::sessionValidate()) {
+            $isAjax = $request->input('isAjax', '');
+            $currentPassword = $request->input('currentPassword', '');
+            $newPassword = $request->input('newPassword', '');
+
+            Validations::$isAjax = ($isAjax === 'true');
+
+            $response = ServerCommunication::sendCall(ServerUrl::CHANGE_PASSWORD, [
+                'oldPassword' => $currentPassword,
+                'newPassword' => $newPassword,
+            ]);
+
+            if (Validations::getErrorCode() != 0) {
+                if (Validations::$isAjax) {
+                    return response()->json($response);
+                }
+                return redirect()->back()->withErrors(Validations::getRespMsg());
+            }
+
+            $msg = Validations::getRespMsg();
+            Utilities::playerLogout(['isManual' => false]);
+            Session::put('passwordChanged', true);
+
+            if (Validations::$isAjax) {
+                $response->path = url()->previous();
+                return response()->json($response);
+            }
+
+            return redirect()->back()->with('success', $msg);
+        }
+        return redirect()->back()->withErrors(Errors::SESSION_EXPIRED);
+    }
+
+    public function updatePlayerProfile(Request $request)
+    {
+        if (LegacySession::sessionValidate()) {
+            $sessionVariable = Session::getId();
+
+            $firstName = $request->input('fname', '');
+            $lastName = $request->input('lname', '');
+            $mobileNo = $request->input('mobile', 0);
+            $gender = $request->input('gender', '');
+            $dob = $request->input('dob', '');
+            $dobFormatted = date('Y-m-d', strtotime($dob));
+            $address = $request->input('address', '');
+            $email = $request->input('email', '');
+            $countryCode = $request->input('country', 'USA');
+            $playerToken = $request->input('Session_id', '');
+            $anonPassword = $request->input('anonPassword', '');
+            $otp = $request->input('otp', '');
+            $isAjax = $request->input('isAjax', '');
+
+            Validations::$isAjax = ($isAjax === 'true');
+
+            $playerTokenFlag = Utilities::getPlayerToken();
+            $sessionToken = md5($playerTokenFlag . $sessionVariable);
+
+            if ($playerToken == $sessionToken) {
+                Utilities::playerLogout();
+                if (Validations::$isAjax) {
+                    return response()->json(['error' => 'User Authentication failed'], 401);
+                }
+                return redirect()->back()->withErrors('User Authentication failed');
+            }
+
+            $requestData = [
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'gender' => $gender,
+                'dob' => $dobFormatted,
+                'addressLine1' => $address,
+                'emailId' => $email,
+                'country' => $countryCode,
+                'merchantPlayerId' => Utilities::getPlayerId(),
+            ];
+
+            $ramPlayerInfo = Utilities::getRamPlayerInfoResponse();
+
+            $playerStatus = false;
+            if ($ramPlayerInfo->emailVerified == 'Y' && $ramPlayerInfo->mobileVerified == 'Y') {
+                $playerStatus = 'FULL';
+            }
+
+            if ($ramPlayerInfo->profileType == 'ANONYMOUS') {
+                $requestData['updateType'] = 'REGISTRATION';
+                $requestData['userName'] = $mobileNo;
+                $requestData['password'] = $anonPassword;
+                $requestData['otp'] = $otp;
+            } elseif ($ramPlayerInfo->profileType == 'MINI') {
+                $requestData['updateType'] = 'REGISTRATION';
+            }
+
+            $response = Utilities::updatePlayerProfile($requestData, url()->previous(), $playerStatus, $isAjax);
+
+            if (isset($response->data->playerMaster)) {
+                Utilities::updateRamPlayerLoginResponse([
+                    'profileType' => $response->data->playerMaster->profileType,
+                    'mobileVerified' => $response->data->playerVerificationStatus->mobileVerified,
+                ]);
+            }
+
+            if (Validations::$isAjax) {
+                return response()->json($response);
+            }
+
+            if ($response->errorCode == 0) {
+                return redirect()->back()->with('success', 'Player Profile Updated Successfully');
+            } else {
+                return redirect()->back()->withErrors($response->errorMessage);
+            }
+        }
+        return redirect()->back()->withErrors('SESSION_EXPIRED');
     }
 
 
