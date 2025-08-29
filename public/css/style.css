@@ -367,15 +367,6 @@ img.size-icons {
   flex-direction: column;
 } */
 
-.toast-top-center {
-  top: 12px !important;
-  left: 50% !important;
-  margin-left: -150px !important; /* half toast width for center */
-  position: fixed !important;
-  right: auto !important;
-  bottom: auto !important;
-  z-index: 9999 !important;
-}
 
 .toast-success {
   background-color: #51A351 !important; /* green */
@@ -386,3 +377,4 @@ img.size-icons {
   background-color: #BD362F !important; /* red */
   color: white !important;
 }
+

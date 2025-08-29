@@ -91,38 +91,25 @@
 
             <!-- Date Filter -->
             <div class="ticket-filters">
-                <form>
+                <form id="ticketDeatil" action="#" autocomplete="off">
                 <div class="filter-group">
                     <label for="from-date">From</label>
-                    <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}">
+                    <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                 </div>
                 <div class="filter-group">
                     <label for="to-date">To</label>
-                    <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}">
+                    <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}" required>
                 </div>
-                <input type="hidden" name="limit" value="40">
-                <button class="btn-search">Search</button>
+                <input type="hidden" name="limit" value="100">
+                <input type="hidden" name="txnType" value="ticket">
+                <input type="hidden" name="offset" value="0">
+                <button type="button" class="btn-search" id="ajaxSearchBtn">Search</button>
                 </form>
             </div>
 
                 <!-- Tickets Grid -->
-            <div class="tickets-grid">
-                
-                <!-- Ticket Card -->
-                <div class="ticket-card">
-                    <div class="ticket-left">
-                        <h3>Robinhood</h3>
-                        <p class="ticket-id">2178422</p>
-                        <p class="ticket-time">Aug 26, 2025 09:04:56</p>
-                        <div class="ticket-price">EUR 1</div>
-                    </div>
-                    <div class="ticket-divider"></div>
-                    <div class="ticket-right">
-                        <img src="https://via.placeholder.com/50" alt="Game Logo">
-                        <p>ROBINHOOD</p>
-                    </div>
-                </div>
-
+            <div class="tickets-grid" id="tickettable">
+                <p id="messagetickettable" style="display:none; color:red; font-weight:bold; margin-top:15px;"></p>
             </div>
         </div>
 
@@ -163,18 +150,6 @@
             <div class="wallet-content" id="withdraw">
                 <h4 class="wallet-subtitle">CHOOSE PAYMENT MODE</h4>
 
-                <!-- Payment Options -->
-                <div class="wallet-options">
-                    <label class="wallet-option">
-                        <input type="radio" name="withdraw-method" value="paypal">
-                        <span>PayPal</span>
-                    </label>
-                    <label class="wallet-option">
-                        <input type="radio" name="withdraw-method" value="bank">
-                        <span>Bank Account</span>
-                    </label>
-                </div>
-
                 <div class="wallet-actions">
                     <button class="btn-cancel"><b>Cancel</b></button>
                     <button class="btn-proceed"><b>Proceed</b></button>
@@ -189,30 +164,24 @@
 
                     <div class="filter-groupp">
                         <label for="from-date">From</label>
-                        <input type="date" id="from-date" name="from_date" class="transaction-date">
+                        <input type="date" id="from-date" name="fromDate" class="transaction-date" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                     </div>
 
                     <div class="filter-groupp">
                         <label for="to-date">To</label>
-                        <input type="date" id="to-date" name="to_date" class="transaction-date">
+                        <input type="date" id="to-date" name="toDate" class="transaction-date" value="{{ now()->format('Y-m-d') }}" required>
                     </div>
 
                     <div class="filter-groupp">
                         <label for="transaction-type">Transaction Type</label>
-                        <select id="transaction-type" name="transaction_type" class="transaction-select">
-                            <option value="">Select</option>
-                            <option value="ledger">Ledger</option>
-                            <option value="deposit">Deposit</option>
-                            <option value="withdraw">Withdrawal</option>
-                            <option value="wager">Wager</option>
-                            <option value="wager-refund">Wager Refund</option>
-                            <option value="winning">Winning</option>
-                            <option value="withdraw-cancel">Withdrawal Cancel</option>
-                            <option value="bonus">Bonus Details</option>
+                        <select id="transaction-type" name="txnType" class="transaction-select">
+                            @foreach($transaction_option AS $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
                         </select>
                     </div>
 
-                    <button type="submit" class="btn-search">Search</button>
+                    <button type="button" id="transaction-filtersbtn" class="btn-search">Search</button>
                 </form>
 
 
@@ -338,10 +307,15 @@
         <!-- Inbox Section -->
         <div class="tab-content" id="inbox">
             <h2 class="inbox-title">Check Email</h2>
+            <div id="inbox-list"></div>
 
-            <!-- Messages -->
-            No Messages found.
+            <div id="message-view" style="display:none;">
+                <button id="back-to-inbox">Back to Inbox</button>
+                <div id="message-content"></div>
+                <button id="delete-message">Delete</button>
+            </div>
         </div>
+
 
         <!-- Refer Section -->
         <div class="tab-content" id="refer">
@@ -385,13 +359,17 @@
                     </div>
 
                     <h3 class="refer-title">Or Add Friends Manually</h3>
+                    <form id="refer-form-friend">
                     <div class="refer-form">
-                        <input type="text" placeholder="Friend’s Name">
-                        <input type="email" placeholder="Friend’s Email Address">
-                        <button class="add-btn">➕</button>
+                        <input type="text" placeholder="Friend’s Name" name="firstName">
+                        <input type="email" placeholder="Friend’s Email Address" name="emailId">
+                        <input type="hidden" name="referType" value="mailRefer">
+                        <input type="hidden" name="lastName" value="">
+                        <input type="hidden" name="mobileNo" value="">
+                        <input type="hidden" name="inviteMode" value="EMAIL" >
                     </div>
-                    <button class="invite-btn">Invite Friends Now</button>
-
+                    <button type="submit" class="invite-btn">Invite Friends Now</button>
+                    </form>
                     <p class="refer-note">
                         To be eligible for the bonus, please ensure that the friends you invite use the link located in the invitation sent to them. This is the only way they can be linked to your account.
                         <br>
@@ -414,7 +392,211 @@
 @endsection
 
 
-<!-- Script for Sidebar Tab Switching -->
+@push('script')
+ <script>
+   $(document).ready(function(){
+    $('#ajaxSearchBtn').on('click', function() {
+        var formData = $('#ticketDeatil').serialize();
+
+        $.ajax({
+            url: '/account/getTransactionDetails',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.view) {
+                    debugger;
+                    $('#tickettable').html(response.view);
+                    $('#messagetickettable').hide().text('');
+                } else {
+                    $('#messagetickettable').show().text(response.message);
+                    $('#tickettable').empty();
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#messagetickettable').show().text(error);
+            }
+        });
+    });
+});
+
+ </script>
+<script>
+$(document).ready(function () {
+    const token = $('meta[name="csrf-token"]').attr('content');
+
+    function loadInbox() {
+        $.ajax({
+            url: '{{ route("account.playerInbox") }}',
+            type: 'POST',
+            data: { _token: token, isAjax: 'true' },
+            dataType: 'json',
+            success: function (res) {
+                if (res.errorCode !== 0) {
+                    $('#inbox-list').html('<p>No messages found.</p>');
+                    return;
+                }
+                let html = '<ul>';
+                res.messages.plrInboxList.forEach(m => {
+                    html += `<li class="${m.status.toLowerCase()}" data-msgid="${m.inboxId}" data-contentid="${res.content[m.inboxId]}">
+                        <span>${m.subject}</span>
+                        <button class="read-btn">Read</button>
+                        <button class="delete-btn">Delete</button>
+                    </li>`;
+                });
+                html += '</ul>';
+                $('#inbox-list').html(html);
+                $('#message-view').hide();
+                $('#inbox-list').show();
+            },
+            error: function () {
+                $('#inbox-list').html('<p>Error loading messages.</p>');
+            }
+        });
+    }
+
+    // Load inbox on inbox tab click
+    $('a[data-tab="inbox"]').on('click', function (e) {
+        e.preventDefault();
+        loadInbox();
+    });
+
+    @if(($tabactive ?? 'profile') === 'inbox')
+        loadInbox();  // load inbox on page load if inbox tab active
+    @endif
+
+    // Read message event
+    $('#inbox-list').on('click', '.read-btn', function () {
+        const msgId = $(this).parent().data('msgid');
+        $.ajax({
+            url: '{{ route("account.inboxActivity") }}',
+            type: 'POST',
+            data: { _token: token, activity: 'READ', msgId: msgId, isAjax: 'true' },
+            dataType: 'json',
+            success: function (res) {
+                if (res.errorCode === 0) {
+                    $('#message-content').html(res.content || 'No content found.');
+                    $('#inbox-list').hide();
+                    $('#message-view').show();
+                    $('#delete-message').data('msgid', msgId);
+                } else {
+                    toastr.error(res.respMsg);
+                }
+            }
+        });
+    });
+
+    // Back to inbox button
+    $('#back-to-inbox').click(function () {
+        loadInbox();
+    });
+
+    // Delete message buttons
+    $('#inbox-list').on('click', '.delete-btn', function () {
+        if (!confirm('Are you sure you want to delete this message?')) return;
+        const msgId = $(this).parent().data('msgid');
+        $.ajax({
+            url: '{{ route("account.inboxActivity") }}',
+            type: 'POST',
+            data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
+            dataType: 'json',
+            success: function (res) {
+                if (res.errorCode === 0) {
+                    loadInbox();
+                } else {
+                    toastr.error(res.respMsg);
+                }
+            }
+        });
+    });
+
+    // Delete from message view
+    $('#delete-message').click(function () {
+        const msgId = $(this).data('msgid');
+        $.ajax({
+            url: '{{ route("account.inboxActivity") }}',
+            type: 'POST',
+            data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
+            dataType: 'json',
+            success: function (res) {
+                if (res.errorCode === 0) {
+                    loadInbox();
+                } else {
+                    toastr.error(res.respMsg);
+                }
+            }
+        });
+    });
+});
+</script>
+<script>
+    document.querySelectorAll('.refer-btn.gmail, .refer-btn.facebook, .refer-btn.twitter').forEach(btn => {
+        btn.addEventListener('click', function() {
+            let url = '';
+            let route = '';
+
+            if (this.classList.contains('gmail')) {
+                route = '/refer/gmail-refer';
+            } else if (this.classList.contains('facebook')) {
+                route = '/refer/facebook-refer';
+            } else if (this.classList.contains('twitter')) {
+                route = '/refer/twitter-refer';
+            }
+
+            fetch(route, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === 'success' && data.url) {
+                    window.open(data.url, '_blank', 'width=600,height=400');
+                } else {
+                    toastr.error(data.message);
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('#refer-form-friend').on('submit', function(e) {
+            e.preventDefault(); // prevent normal form submission
+
+            // Serialize form data
+            let formData = $(this).serialize();
+
+            $.ajax({
+                url: '/refer/invite-friend',    // Laravel route to post data
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // include CSRF token
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        $('#refer-form-friend')[0].reset(); // optionally reset form
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error(error);
+                }
+            });
+        });
+    });
+
+</script>
+ @endpush
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const links = document.querySelectorAll(".account-sidebar ul li a");

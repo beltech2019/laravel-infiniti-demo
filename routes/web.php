@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewIgeGameController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthorisationController;
+use App\Http\Controllers\ReferAFriendController;
 
 
 
@@ -45,4 +46,18 @@ Route::prefix('account')->name('account.')->group(function () {
     Route::any('/ticketsdetails', [AccountController::class, 'ticketsdetails'])->name('ticketsdetails');
     Route::post('/uploadPlayerAvatar', [AccountController::class, 'uploadPlayerAvatar'])->name('uploadPlayerAvatar');
     Route::post('/getTransactionDetails', [AccountController::class, 'getTransactionDetails'])->name('getTransactionDetails');
+    Route::post('/getBonusDetails', [AccountController::class, 'getBonusDetails'])->name('getBonusDetails');
+    Route::post('/playerInbox', [AccountController::class, 'playerInbox'])->name('playerInbox');
+    Route::post('/inboxActivity', [AccountController::class, 'inboxActivity'])->name('inboxActivity');
 });
+
+Route::prefix('refer')->name('refer.')->group(function () {
+    Route::post('/invite-friend', [ReferAFriendController::class, 'inviteFriend'])->name('inviteFriend');
+    Route::post('/gmail-refer', [ReferAFriendController::class, 'gmailRefer'])->name('gmailRefer');
+    Route::post('/facebook-refer', [ReferAFriendController::class, 'facebookRefer'])->name('facebookRefer');
+    Route::post('/twitter-refer', [ReferAFriendController::class, 'twitterRefer'])->name('twitterRefer');
+    Route::post('/send-reminder', [ReferAFriendController::class, 'sendReminder'])->name('sendReminder');
+    Route::post('/track-bonus', [ReferAFriendController::class, 'trackBonus'])->name('trackBonus');
+});
+
+

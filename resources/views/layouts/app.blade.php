@@ -17,6 +17,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
 
 @stack('style')       
 </head>
@@ -135,7 +139,38 @@
           <p class="msg">Default error message goes here.</p>
       </div>
   </div>
-</div>  
+</div>
+<script>
+$(document).ready(function() {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "4000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    @if(session('success'))
+        toastr.success(@json(session('success')), 'Success');
+    @endif
+
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            toastr.error(@json($error), 'Error',);
+        @endforeach
+    @endif
+});
+</script>  
    <script>
     // Shrink navbar on scroll
     window.addEventListener("scroll", function() {
@@ -372,34 +407,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script>
-$(document).ready(function() {
-    toastr.options = {
-        "positionClass": "toast-top-center", // Show at top center (you can use toast-top-right, toast-top-left, toast-top-full-width too)
-        "closeButton": true,
-        "progressBar": true,
-        "timeOut": "5000"
-    };
-
-    @if(session('success'))
-        toastr.success(@json(session('success')), 'Success', {
-            "toastClass": "toast-success toast-top-center"
-        });
-    @endif
-
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            toastr.error(@json($error), 'Error', {
-                "toastClass": "toast-error toast-top-center"
-            });
-        @endforeach
-    @endif
-});
-</script>
-
 <script src="{{ asset('js/common.js') }}"></script>
 @stack('script')
 </body>

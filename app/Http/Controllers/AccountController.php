@@ -45,7 +45,8 @@ class AccountController extends Controller
         $domain_main = Configuration::DOMAIN_NAME;
         $ticketDomain = Configuration::DOMAIN;
         $tabactive = $request->tab;
-        return view('account.profile', compact('tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+        $transaction_option = Constants::$txnTypes_TransactionDetails['EN']; 
+        return view('account.profile', compact('transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
     }
 
     public function ticketsdetails(Request $request)
@@ -179,8 +180,8 @@ class AccountController extends Controller
         }
     }
 
-    function getTransactionDetails() {
-        if (Session::sessionValidate()) {
+    function getTransactionDetails(Request $request) {
+        if (LegacySession::sessionValidate()) {
             $txnType = $request->input('txnType', '');
 
             // Validate transaction type
@@ -198,7 +199,8 @@ class AccountController extends Controller
             $toDate   = $request->input('toDate', '');
             $offset   = (int) $request->input('offset', 0);
             $limit    = $request->input('limit', '');
-
+            $fromDate = date('d/m/Y', strtotime($fromDate)); 
+            $toDate = date('d/m/Y', strtotime($toDate)); 
             // Date and parameter validation
             if (!Validations::validateDate($fromDate)) {
                 return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
@@ -220,7 +222,7 @@ class AccountController extends Controller
                 return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
             }
 
-            // Call server
+            Log::info("hellombjgjh");
             if ($txnType == Constants::TXNTYPE_TICKET_DETAILS) {
                 $response = ServerCommunication::sendCall(ServerUrl::TICKET_DETAILS, [
                     "txnType"  => $txnType,
@@ -279,10 +281,8 @@ class AccountController extends Controller
                     $response->withdrawableBalance = $withdrawableBal;
                 }
             }
-            return json_encode([
-                "status"   => "success",
-                "code"     => 0,
-                "response" => $response
+            return response()->json([
+                'view' => view('account.ticketdetails', compact('response'))->render(),
             ]);
         } else {
             return json_encode([
@@ -292,5 +292,186 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    function getBonusDetails(Request $request) {
+        if (LegacySession::sessionValidate()) {
+            $fromDate = $request->input('fromDate', '');
+            $toDate = $request->input('toDate', '');
+            $offset = $request->input('offset', '');
+            $limit = $request->input('limit', '');
+            $isAjax = $request->input('isAjax', '');
+            Validations::$isAjax = ($isAjax == 'true') ? true : false;
+            if (!Validations::validateDate($fromDate)) {
+                Redirection::ajaxSendDataToView(true, 1, 'Please enter valid from date.');
+            }
+            if (!Validations::validateDate($toDate)) {
+                Redirection::ajaxSendDataToView(true, 1, 'Please enter valid to date.');
+            }
+            if (!Validations::compareDate($fromDate, $toDate)) {
+                Redirection::ajaxSendDataToView(true, 1, 'To date must be greater than or equal to from date.');
+            }
+            if ($limit != Constants::MAX_ROW_LIMIT) {
+                Redirection::ajaxSendDataToView(true, 1, 'Invalid data received.');
+            }
+            if ($offset < 0) {
+                Redirection::ajaxSendDataToView(true, 1, 'Invalid data received.');
+            }
+            $response = ServerCommunication::sendCall(ServerUrl::BONUS_DETAILS, array(
+                        "fromDate" => $fromDate,
+                        "toDate" => $toDate,
+                        "offset" => $offset,
+                        "limit" => $limit
+                            ), Validations::$isAjax);
+            if (Validations::getErrorCode() == 0) {
+                if (!isset($response->bonusList)) {
+                    Redirection::ajaxSendDataToView(true, 1, 'Invalid response received.');
+                }
+                 if (count($response->bonusList) == 0) {
+                    Redirection::ajaxSendDataToView(true, 1, JText::_('WEAVER_NO_BONUS_FOUND_MSG'));
+                }
+            }
+            Redirection::ajaxSendDataToView($response);
+        } else {
+            Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+        }
+    }
+
+    public function playerInbox(Request $request) {
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax == 'true');
+        if (LegacySession::sessionValidate()) {
+            $offset = $request->input('offset', '');
+            $limit = $request->input('limit', '');
+            $responseArr = Utilities::playerInbox($offset, $limit);
+
+            $tmpContent = [];
+            foreach ($responseArr['content'] as $content) {
+                $tmpContent[$content['id']] = json_decode($content['params'])->content;
+            }
+
+            unset($responseArr['response']->errorCode);
+
+            $result = [
+                'messages' => $responseArr['response'],
+                'content' => $tmpContent,
+                'errorCode' => Validations::getErrorCode(),
+            ];
+
+            if (Validations::getErrorCode() != 0) {
+                $result['respMsg'] = Validations::getRespMsg();
+            }
+
+            return response()->json($result);
+        }
+
+        return response()->json([
+            'errorCode' => 1,
+            'respMsg' => 'Session expired',
+            'redirect' => route('login'),
+        ], 401);
+    }
+
+
+    public function inboxActivity(Request $request) {
+        $activity = $request->input('activity', '');
+        $msgId = $request->input('msgId', '');
+        $isAjax = $request->input('isAjax', '');
+        Validations::$isAjax = ($isAjax == 'true');
+        $lang = 'en';
+
+        if (LegacySession::sessionValidate()) {
+            $offset = '';
+            $limit = '';
+            if (strtoupper($activity) == "DELETE") {
+                $unreadCount = $request->input('unreadCount', 0);
+                $offset = $request->input('offset', '');
+                $limit = $request->input('limit', '');
+                $msgId = explode("AND", $msgId);
+                $tmpArr = [];
+                foreach ($msgId as $msg) {
+                    $tmpArr[] = (int) $msg;
+                }
+                $msgId = $tmpArr;
+            }
+
+            $requestArr = ["activity" => $activity];
+
+            if (strtoupper($activity) == "READ") {
+                $requestArr['inboxId'] = $msgId;
+                $requestArr['local'] = $lang;
+            } else {
+                $requestArr['inboxIdList'] = $msgId;
+                $requestArr['offset'] = $offset;
+                $requestArr['limit'] = $limit;
+                $requestArr['local'] = $lang;
+            }
+
+            $response = ServerCommunication::sendCall(ServerUrl::INBOX_ACTIVITY, $requestArr, Validations::$isAjax);
+
+            if (Validations::getErrorCode() == 0) {
+                Utilities::updatePlayerLoginResponse([
+                    "unreadMsgCount" => $response->unreadMsgCount
+                ]);
+
+                if (strtoupper($activity) != "READ") {
+                    if (Validations::getErrorCode() != 0) {
+                        return response()->json($response);
+                    }
+                    Utilities::updatePlayerLoginResponse([
+                        "unreadMsgCount" => $response->unreadMsgCount
+                    ]);
+
+                    if (count($response->plrInboxList) == 0) {
+                        return response()->json([
+                            'errorCode' => 1,
+                            'respMsg' => 'No messages in inbox',
+                        ]);
+                    }
+
+                    $ids = [];
+                    foreach ($response->plrInboxList as $msg) {
+                        $ids[] = $msg->content_id;
+                    }
+
+                    if (count($ids) == 0) {
+                        return response()->json([
+                            'errorCode' => 1,
+                            'respMsg' => 'No messages content found',
+                        ]);
+                    }
+
+                    $responseArr = [];
+                    $responseArr['response'] = $response;
+
+                    $tmpContent = [];
+                    foreach ($response->plrInboxList as $content) {
+                        $tmpContent[$content->inboxId] = $content->content_id;
+                    }
+
+                    unset($responseArr['response']->errorCode);
+
+                    $result = [
+                        'messages' => $responseArr['response'],
+                        'content' => $tmpContent,
+                        'errorCode' => Validations::getErrorCode(),
+                        'unreadMsgCount' => Utilities::getPlayerLoginResponse()->unreadMsgCount,
+                    ];
+
+                    if (Validations::getErrorCode() != 0) {
+                        $result['respMsg'] = Validations::getRespMsg();
+                    }
+                    return response()->json($result);
+                }
+            }
+            return response()->json($response);
+        }
+
+        return response()->json([
+            'errorCode' => 1,
+            'respMsg' => 'Session expired',
+            'redirect' => route('login'),
+        ], 401);
+    }
+
 
 }

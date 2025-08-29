@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\Utilities;
+use Carbon\Carbon;
 
 function authUserId(){
     $userId = session('user_id');
@@ -46,3 +47,21 @@ function normalize_path($path) {
     return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 }
        
+function formatDateTime($dateTime)
+{
+    if (empty($dateTime)) {
+        return null;
+    }
+
+    try {
+        return Carbon::parse($dateTime)->format('M d, Y H:i:s');
+    } catch (Exception $e) {
+        return null; // or return original string on parse failure
+    }
+}
+
+function getCurrencyDetailcode(){
+    $playerInfo = Utilities::getPlayerLoginResponse();
+    $currency = $playerInfo->walletBean->currency;
+    return $currency;
+}

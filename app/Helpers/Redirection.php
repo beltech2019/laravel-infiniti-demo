@@ -87,8 +87,8 @@ class Redirection {
     }
 
     public static function ajaxExit($url, $flag = false, $type = false, $msg = false) {
-        if ($msg !== false)
-            JFactory::getApplication()->enqueueMessage(JText::_($msg), $type);
+        // if ($msg !== false)
+        //     JFactory::getApplication()->enqueueMessage(JText::_($msg), $type);
 
         exit(json_encode(array(
             "flag" => $flag,
