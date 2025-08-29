@@ -33,6 +33,7 @@ class AccountController extends Controller
 
     public function profile(Request $request)
     {
+        $countries = Utilities::getCountryList();
         $transactionDetailsURL = "";
         $playerId = Utilities::getPlayerID();
         $playerToken = Utilities::getPlayerToken();
@@ -46,7 +47,7 @@ class AccountController extends Controller
         $ticketDomain = Configuration::DOMAIN;
         $tabactive = $request->tab;
         $transaction_option = Constants::$txnTypes_TransactionDetails['EN']; 
-        return view('account.profile', compact('transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+        return view('account.profile', compact('countries','transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
     }
 
     public function ticketsdetails(Request $request)

@@ -87,35 +87,40 @@
             <!-- Update Details Form (initially hidden) -->
             <div id="updateDetailsForm" style="display:none;">
                 <form>
-                    <div class="detail-row">
+                    <div class="mb-3 mt-4">
                     <label>First Name*</label>
                     <input type="text" name="firstName" />
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Last Name*</label>
                     <input type="text" name="lastName" />
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Address*</label>
                     <textarea name="address"></textarea>
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Date of Birth*</label>
                     <input type="text" name="dob" />
                     </div>
-                    <div class="detail-row">
-                    <label>Country*</label>
-                    <input type="text" name="country" />
+                    <div class="mb-3">
+                    <label for="country">Select Country*</label>
+                    <select id="country" name="countrycode" class="form-select" required>
+                        <option value="">Select Country*</option>
+                        @foreach($countries->data as $country)
+                        <option value="{{$country->countryCode}}">{{$country->countryName}}</option>
+                        @endforeach
+                    </select>
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Email Address*</label>
                     <input type="email" name="email" />
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Mobile No*</label>
                     <input type="text" name="mobileNo" />
                     </div>
-                    <div class="detail-row">
+                    <div class="mb-3">
                     <label>Gender*</label>
                     <input type="radio" name="gender" value="Male" /> Male
                     <input type="radio" name="gender" value="Female" /> Female
@@ -130,15 +135,15 @@
             <!-- Change Password Form (initially hidden) -->
             <div id="changePasswordForm" style="display:none;">
             <form>
-                <div class="detail-row">
+                <div class="mb-3 mt-4">
                 <label>Current Password*</label>
                 <input type="password" name="currentPassword" />
                 </div>
-                <div class="detail-row">
+                <div class="mb-3">
                 <label>New Password*</label>
                 <input type="password" name="newPassword" />
                 </div>
-                <div class="detail-row">
+                <div class="mb-3">
                 <label>Confirm Password*</label>
                 <input type="password" name="confirmPassword" />
                 </div>
