@@ -282,9 +282,11 @@ class AccountController extends Controller
                     $response->withdrawableBalance = $withdrawableBal;
                 }
             }
-            return response()->json([
-                'view' => view('account.ticketdetails', compact('response'))->render(),
-            ]);
+            
+            return response()->json(['response'=>$response]);
+            // return response()->json([
+            //     'view' => view('account.ticketdetails', compact('response'))->render(),
+            // ]);
         } else {
             return json_encode([
                 "status"  => "error",
@@ -303,19 +305,23 @@ class AccountController extends Controller
             $isAjax = $request->input('isAjax', '');
             Validations::$isAjax = ($isAjax == 'true') ? true : false;
             if (!Validations::validateDate($fromDate)) {
-                Redirection::ajaxSendDataToView(true, 1, 'Please enter valid from date.');
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
             }
+
             if (!Validations::validateDate($toDate)) {
-                Redirection::ajaxSendDataToView(true, 1, 'Please enter valid to date.');
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid to date."]);
             }
+
             if (!Validations::compareDate($fromDate, $toDate)) {
-                Redirection::ajaxSendDataToView(true, 1, 'To date must be greater than or equal to from date.');
+                return json_encode(["status"=>"error","code"=>1,"message"=>"To date must be greater than or equal to from date."]);
             }
+
             if ($limit != Constants::MAX_ROW_LIMIT) {
-                Redirection::ajaxSendDataToView(true, 1, 'Invalid data received.');
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
             }
+
             if ($offset < 0) {
-                Redirection::ajaxSendDataToView(true, 1, 'Invalid data received.');
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
             }
             $response = ServerCommunication::sendCall(ServerUrl::BONUS_DETAILS, array(
                         "fromDate" => $fromDate,
@@ -325,15 +331,19 @@ class AccountController extends Controller
                             ), Validations::$isAjax);
             if (Validations::getErrorCode() == 0) {
                 if (!isset($response->bonusList)) {
-                    Redirection::ajaxSendDataToView(true, 1, 'Invalid response received.');
+                    return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
                 }
                  if (count($response->bonusList) == 0) {
-                    Redirection::ajaxSendDataToView(true, 1, JText::_('WEAVER_NO_BONUS_FOUND_MSG'));
+                    return json_encode(["status"=>"error","code"=>1,"message"=>"No Bonus Found."]);
                 }
             }
-            Redirection::ajaxSendDataToView($response);
+            return response()->json(['response'=>$response]);
         } else {
-            Redirection::ajaxExit(Redirection::LOGIN, Constants::AJAX_FLAG_SESSION_EXPIRE, Errors::TYPE_ERROR, Errors::SESSION_EXPIRED);
+           return json_encode([
+                "status"  => "error",
+                "code"    => Constants::AJAX_FLAG_SESSION_EXPIRE,
+                "message" => Errors::SESSION_EXPIRED
+            ]);
         }
     }
 

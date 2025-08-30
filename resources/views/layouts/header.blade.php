@@ -41,7 +41,7 @@
                     <div class="countrycode">
                         <img src="{{asset('images/en_gb.gif')}}" class="">
                     </div>
-                    @if(session('user_id'))
+                    @if(sessionLogin())
                     <div id="user-info" class="dropdown">
                         <button id="amount-button" class="btn btn-sm btn-outline-primary dropdown-toggle fw-bold" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- <span id="amount-textaa">{{ authUserName() }}</span>    -->

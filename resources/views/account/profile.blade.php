@@ -278,80 +278,113 @@
                 </form>
 
 
-                <div id="ledger-table" style="display:none; margin-top:20px;">
-                    <h5>'Closing Balance: ' <b>EUR 10,012</b></h5>
-                    <table class="ledger-table">
-                        <thead>
-                            <tr>
-                                <th>Sr.No.</th>
-                                <th>Date & Time</th>
-                                <th>Transaction ID</th>
-                                <th>Particulars</th>
-                                <th>Cr.</th>
-                                <th>Dr.</th>
-                                <th>Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2025-08-26 09:05:02</td>
-                                <td>2178423</td>
-                                <td>Winning_INSTANT SCRATCH_Robinhood</td>
-                                <td>5</td>
-                                <td></td>
-                                <td>EUR 10,012</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2025-08-26 09:04:56</td>
-                                <td>2178422</td>
-                                <td>Wager_INSTANT SCRATCH_Robinhood</td>
-                                <td></td>
-                                <td>1</td>
-                                <td>EUR 10,007</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="wager-table" style="display:none; margin-top:20px;">
-                <h5>'Total wager for the selected period: ' <b>EUR 19</b></h5>
-                <table class="wager-table">
+                <table id="transaction-table" class="table" style="display:none">
                     <thead>
-                        <tr>    
-                            <th>Sr.No.</th>
-                            <th>Date & Time</th>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Date</th>
                             <th>Transaction ID</th>
-                            <th>Particulars</th>
+                            <th>Particular</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <div class="pagination" id="transaction-pagination"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+                <table id="bonus-table" class="table" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Bonus Code</th>
+                            <th>Amount</th>
+                            <th>Target</th>
+                            <th>WR Requirement</th>
+                            <th>Redeemed Amount</th>
+                            <th>Bonus Criteria</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">
+                                <div class="pagination" id="bonus-pagination"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table id="ticket-table" class="table" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Ticket Code</th>
+                            <th>Ticket Count</th>
+                            <th>Pending</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div class="pagination" id="ticket-pagination"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table id="wager-table" class="table" style="display: none">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Date</th>
+                            <th>Transaction ID</th>
+                            <th>Particular</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody></tbody>
+                    <tfoot>
                         <tr>
-                            <td>1</td>
-                            <td>2025-08-26 09:04:56</td>
-                            <td>2178422</td>
-                            <td>Wager_INSTANT SCRATCH_Robinhood_427417561990960844326</td>
-                            <td>1</td>
+                            <td colspan="5">
+                                <div class="pagination" id="wager-pagination"></div>
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2025-08-26 09:03:21</td>
-                            <td>2178420</td>
-                            <td>Wager_INSTANT SCRATCH_Robinhood_882517561990011934326</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>2025-08-26 09:03:10</td>
-                            <td>2178418</td>
-                            <td>Wager_INSTANT SCRATCH_Robinhood_783017561989896204326</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
+                    </tfoot>
                 </table>
-                </div>
+
+                <table id="dwwr-table" class="table" style="display: none">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Date</th>
+                            <th>Transaction ID</th>
+                            <th>Particular</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <div class="pagination" id="dwwr-pagination"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
 
                 <div id="winning-table" style="display:none; margin-top:20px;">
                 <h5>'Total winning for the selected period: ' <b>EUR 31</b></h5>
@@ -720,6 +753,218 @@ $(document).ready(function () {
  
     });
  
+</script>
+<script>
+    $('#transaction-filtersbtn').on('click', function() {
+    // Gather parameter values
+    let txnType = $('#transaction-type').val();
+    let fromDate = $('#from-date').val();
+    let toDate = $('#to-date').val();
+    let offset = 0; // Start offset
+    let limit = 100; // As per MAX_ROW_LIMIT
+    
+    let url = txnType === 'BONUS_DETAILS'
+        ? '/account/getBonusDetails'
+        : '/account/getTransactionDetails';
+    
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: {
+            txnType, fromDate, toDate, offset, limit,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(resp) {
+            // Hide all tables
+            $('#transaction-table, #bonus-table, #ticket-table, #wager-table, #dwwr-table').hide();
+            // Populate and show correct table
+            if (txnType == 'BONUS_DETAILS') {
+                populateBonusTable(resp.response);
+                $('#bonus-table').show();
+            } else if (txnType == 'TICKET_DETAILS') {
+                populateTicketTable(resp.response);
+                $('#ticket-table').show();
+            } else if (txnType == 'PLR_WAGER') {
+                populateWagerTable(resp.response);
+                $('#wager-table').show();
+            } else if (txnType == 'PLR_DEPOSIT' || txnType == 'PLR_WINNING' || txnType == 'PLR_WAGER_REFUND') {
+                populateDWWRTable(resp.response);
+                $('#dwwr-table').show();
+            } else {
+                populateTransactionTable(resp.response);
+                $('#transaction-table').show();
+            }
+        }
+    });
+});
+
+function populateBonusTable(response) {
+    let tbody = $('#bonus-table tbody');
+    tbody.empty();
+
+    // Check for bonusList presence
+    if (!response || !response.bonusList || response.bonusList.length === 0) {
+        tbody.append('<tr><td colspan="9">No Bonus Found.</td></tr>');
+        return;
+    }
+
+    response.bonusList.forEach(function(item) {
+        let receivedDate = formatDateTime(item.receivedDate);
+        let expiredDate = formatDate(item.expiredDate);
+        if (expiredDate && expiredDate.includes('3000')) expiredDate = 'NONE';
+
+        let row = `
+            <tr>
+                <td>${receivedDate}</td>
+                <td>${item.bonusCode || ''}</td>
+                <td>${item.amount || ''}</td>
+                <td>${item.target || ''}</td>
+                <td>${item.contribution || ''}</td>
+                <td>${item.redeemedAmount || ''}</td>
+                <td>${item.bonusCriteria || ''}</td>
+                <td>${expiredDate}</td>
+                <td>${item.status || ''}</td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+function populateTicketTable(response) {
+    let tbody = $('#ticket-table tbody');
+    tbody.empty();
+
+    if (!response || !response.ticketList || response.ticketList.length === 0) {
+        tbody.append('<tr><td colspan="6">No Ticket Details Found For Selected Date Range.</td></tr>');
+        return;
+    }
+
+    response.ticketList.forEach(function(item) {
+        let ticketDate = formatDate(item.receivedDate);
+        let expiryDate = formatDate(item.expiredDate);
+        if (expiryDate && expiryDate.includes('3000')) expiryDate = 'NONE';
+
+        let row = `
+            <tr>
+                <td>${ticketDate}</td>
+                <td>${item.ticketCode || ''}</td>
+                <td>${item.ticketCount || ''}</td>
+                <td>${item.pendingTickets || ''}</td>
+                <td>${expiryDate}</td>
+                <td>${item.status || ''}</td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+
+function populateWagerTable(response) {
+    let tbody = $('#wager-table tbody');
+    tbody.empty();
+
+    if (!response || !response.txnList || response.txnList.length === 0) {
+        tbody.append('<tr><td colspan="5">No Wager Data Found.</td></tr>');
+        return;
+    }
+
+    response.txnList.forEach(function(item, index) {
+        let txndate = formatDate(item.transactionDate);
+        let row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${txndate}</td>
+                <td>${item.transactionId || ''}</td>
+                <td>${item.particular || ''}</td>
+                <td>${item.txnAmount || ''}</td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+
+function populateDWWRTable(response) {
+    let tbody = $('#dwwr-table tbody');
+    tbody.empty();
+
+    if (!response || !response.txnList || response.txnList.length === 0) {
+        tbody.append('<tr><td colspan="5">No Data Found For Selected Transaction Type.</td></tr>');
+        return;
+    }
+
+    response.txnList.forEach(function(item, index) {
+        let txndate = formatDate(item.transactionDate);
+        let amount = item.creditAmount || item.debitAmount || '';
+        let row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${txndate}</td>
+                <td>${item.transactionId || ''}</td>
+                <td>${item.particular || ''}</td>
+                <td>${amount}</td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+
+function populateTransactionTable(response) {
+    let tbody = $('#transaction-table tbody');
+    tbody.empty();
+
+    if (!response || !response.txnList || response.txnList.length === 0) {
+        tbody.append('<tr><td colspan="7">No Transaction Details Found For Selected Date Range.</td></tr>');
+        return;
+    }
+
+    response.txnList.forEach(function(item, index) {
+        let txndate = formatDate(item.transactionDate);
+        let balance = item.balance ? formatCurrency(item.balance) : '';
+        let row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${txndate}</td>
+                <td>${item.transactionId || ''}</td>
+                <td>${item.particular || ''}</td>
+                <td>${item.creditAmount || ''}</td>
+                <td>${item.debitAmount || ''}</td>
+                <td>${balance}</td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    let d = dateStr.split(' ');
+    let t = dateStr.split(' ')[1] || '';
+    if (d.includes('-')) {
+        let parts = d.split('-');
+        if (parts.length === 3) {
+            return parts + '/' + parts[1] + '/' + parts + (t ? (' ' + t) : '');
+        }
+    }
+    if (d.includes('/')) return d + (t ? (' ' + t) : '');
+    return dateStr;
+}
+
+function formatDateTime(dtStr) {
+    if (!dtStr) return '';
+    let tmp = dtStr.indexOf('.');
+    if (tmp !== -1) dtStr = dtStr.substring(0, tmp);
+    return formatDate(dtStr);
+}
+
+function formatCurrency(val) {
+    if (!val) return '';
+    val = parseFloat(val).toFixed(2);
+    return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 </script>
  @endpush
 <script>

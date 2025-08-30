@@ -2,12 +2,21 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\Session as LegacySession;
 use App\Helpers\Utilities;
 use Carbon\Carbon;
 
 function authUserId(){
     $userId = session('user_id');
     return $userId;
+}
+
+function sessionLogin(){
+    if (LegacySession::sessionValidate()) {
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function authUserBalance(){
