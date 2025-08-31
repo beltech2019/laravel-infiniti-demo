@@ -408,6 +408,25 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script src="{{ asset('js/common.js') }}"></script>
+<script>
+  function checkSessionBeforeAjax(onSuccess) {
+      $.ajax({
+          url: '{{ route("sessionLogincheck") }}',
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+              if (response.loggedIn) {
+                  onSuccess();  // Call the actual AJAX function if logged in
+              } else {
+                  window.location.href = '/'; // Redirect to login page if not logged in
+              }
+          },
+          error: function() {
+              window.location.href = '/'; // Redirect on error as fallback
+          }
+      });
+  }
+</script>
 @stack('script')
 </body>
 

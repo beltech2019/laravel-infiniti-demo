@@ -15,6 +15,7 @@ Route::match(['GET','POST'], '/component/weaver', [AuthorisationController::clas
 Route::post('/login', [AuthorisationController::class, 'playerLogin'])->name('weaver.login');
 Route::post('/weaver/authorisation/reset-password', [AuthorisationController::class, 'resetPassword'])->name('weaver.reset');
 Route::get('/weaver/authorisation/token', [AuthorisationController::class, 'getToken'])->name('weaver.token');
+Route::get('/sessionLogincheck', [AuthorisationController::class, 'sessionLogincheck'])->name('sessionLogincheck');
 Route::get('/', [AuthorisationController::class, 'loginWindow'])->name('loginPage');
 Route::get('/logout', [AuthorisationController::class, 'logout'])->name('logout');
 

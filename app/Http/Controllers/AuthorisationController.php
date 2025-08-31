@@ -143,6 +143,15 @@ class AuthorisationController extends Controller
         return response()->view('weaver.login-window');
     }
 
+    public function sessionLogincheck(Request $request)
+    {
+        if (sessionLogin()) {
+            return response()->json(['loggedIn' => true]);
+        } else {
+            return response()->json(['loggedIn' => false]);
+        }
+    }
+
     public function logout(Request $request)
     {
         $userId = session('user_id');

@@ -573,28 +573,29 @@ $(document).ready(function(){
 });
 function loadTickets(){
     var formData = $('#ticketDeatil').serialize();
-
-    $.ajax({
-        url: '/account/getTransactionDetailsForTicket',
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-            if (response.view) {
-                $('#tickettable').html(response.view);
-                $('#messagetickettable').hide().text('');
-            } else {
-                $('#messagetickettable').show().text(response.message);
-                $('#tickettable').empty();
+    checkSessionBeforeAjax(function() {
+        $.ajax({
+            url: '/account/getTransactionDetailsForTicket',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.view) {
+                    $('#tickettable').html(response.view);
+                    $('#messagetickettable').hide().text('');
+                } else {
+                    $('#messagetickettable').show().text(response.message);
+                    $('#tickettable').empty();
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#messagetickettable').show().text(error);
             }
-        },
-        error: function(xhr, status, error) {
-            $('#messagetickettable').show().text(error);
-        }
-    });
+        });
+    });    
 }
  </script>
 <script>
@@ -602,32 +603,34 @@ $(document).ready(function () {
     const token = $('meta[name="csrf-token"]').attr('content');
 
     function loadInbox() {
-        $.ajax({
-            url: '{{ route("account.playerInbox") }}',
-            type: 'POST',
-            data: { _token: token, isAjax: 'true' },
-            dataType: 'json',
-            success: function (res) {
-                if (res.errorCode !== 0) {
-                    $('#inbox-list').html('<p>No messages found.</p>');
-                    return;
+        checkSessionBeforeAjax(function() {
+            $.ajax({
+                url: '{{ route("account.playerInbox") }}',
+                type: 'POST',
+                data: { _token: token, isAjax: 'true' },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.errorCode !== 0) {
+                        $('#inbox-list').html('<p>No messages found.</p>');
+                        return;
+                    }
+                    let html = '<ul>';
+                    res.messages.plrInboxList.forEach(m => {
+                        html += `<li class="${m.status.toLowerCase()}" data-msgid="${m.inboxId}" data-contentid="${res.content[m.inboxId]}">
+                            <span>${m.subject}</span>
+                            <button class="read-btn">Read</button>
+                            <button class="delete-btn">Delete</button>
+                        </li>`;
+                    });
+                    html += '</ul>';
+                    $('#inbox-list').html(html);
+                    $('#message-view').hide();
+                    $('#inbox-list').show();
+                },
+                error: function () {
+                    $('#inbox-list').html('<p>Error loading messages.</p>');
                 }
-                let html = '<ul>';
-                res.messages.plrInboxList.forEach(m => {
-                    html += `<li class="${m.status.toLowerCase()}" data-msgid="${m.inboxId}" data-contentid="${res.content[m.inboxId]}">
-                        <span>${m.subject}</span>
-                        <button class="read-btn">Read</button>
-                        <button class="delete-btn">Delete</button>
-                    </li>`;
-                });
-                html += '</ul>';
-                $('#inbox-list').html(html);
-                $('#message-view').hide();
-                $('#inbox-list').show();
-            },
-            error: function () {
-                $('#inbox-list').html('<p>Error loading messages.</p>');
-            }
+            });
         });
     }
 
@@ -644,22 +647,24 @@ $(document).ready(function () {
     // Read message event
     $('#inbox-list').on('click', '.read-btn', function () {
         const msgId = $(this).parent().data('msgid');
-        $.ajax({
-            url: '{{ route("account.inboxActivity") }}',
-            type: 'POST',
-            data: { _token: token, activity: 'READ', msgId: msgId, isAjax: 'true' },
-            dataType: 'json',
-            success: function (res) {
-                if (res.errorCode === 0) {
-                    $('#message-content').html(res.content || 'No content found.');
-                    $('#inbox-list').hide();
-                    $('#message-view').show();
-                    $('#delete-message').data('msgid', msgId);
-                } else {
-                    toastr.error(res.respMsg);
+        checkSessionBeforeAjax(function() {
+            $.ajax({
+                url: '{{ route("account.inboxActivity") }}',
+                type: 'POST',
+                data: { _token: token, activity: 'READ', msgId: msgId, isAjax: 'true' },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.errorCode === 0) {
+                        $('#message-content').html(res.content || 'No content found.');
+                        $('#inbox-list').hide();
+                        $('#message-view').show();
+                        $('#delete-message').data('msgid', msgId);
+                    } else {
+                        toastr.error(res.respMsg);
+                    }
                 }
-            }
-        });
+            });
+        });    
     });
 
     // Back to inbox button
@@ -671,37 +676,41 @@ $(document).ready(function () {
     $('#inbox-list').on('click', '.delete-btn', function () {
         if (!confirm('Are you sure you want to delete this message?')) return;
         const msgId = $(this).parent().data('msgid');
-        $.ajax({
-            url: '{{ route("account.inboxActivity") }}',
-            type: 'POST',
-            data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
-            dataType: 'json',
-            success: function (res) {
-                if (res.errorCode === 0) {
-                    loadInbox();
-                } else {
-                    toastr.error(res.respMsg);
+        checkSessionBeforeAjax(function() {
+            $.ajax({
+                url: '{{ route("account.inboxActivity") }}',
+                type: 'POST',
+                data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.errorCode === 0) {
+                        loadInbox();
+                    } else {
+                        toastr.error(res.respMsg);
+                    }
                 }
-            }
-        });
+            });
+        });    
     });
 
     // Delete from message view
     $('#delete-message').click(function () {
         const msgId = $(this).data('msgid');
-        $.ajax({
-            url: '{{ route("account.inboxActivity") }}',
-            type: 'POST',
-            data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
-            dataType: 'json',
-            success: function (res) {
-                if (res.errorCode === 0) {
-                    loadInbox();
-                } else {
-                    toastr.error(res.respMsg);
+        checkSessionBeforeAjax(function() {
+            $.ajax({
+                url: '{{ route("account.inboxActivity") }}',
+                type: 'POST',
+                data: { _token: token, activity: 'DELETE', msgId: msgId, isAjax: 'true' },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.errorCode === 0) {
+                        loadInbox();
+                    } else {
+                        toastr.error(res.respMsg);
+                    }
                 }
-            }
-        });
+            });
+        });    
     });
 });
 </script>
@@ -718,21 +727,22 @@ $(document).ready(function () {
             } else if (this.classList.contains('twitter')) {
                 route = '/refer/twitter-refer';
             }
-
-            fetch(route, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            }).then(response => response.json())
-            .then(data => {
-                if (data.status === 'success' && data.url) {
-                    window.open(data.url, '_blank', 'width=600,height=400');
-                } else {
-                    toastr.error(data.message);
-                }
-            });
+            checkSessionBeforeAjax(function() {
+                fetch(route, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success' && data.url) {
+                        window.open(data.url, '_blank', 'width=600,height=400');
+                    } else {
+                        toastr.error(data.message);
+                    }
+                });
+            });    
         });
     });
 
@@ -744,27 +754,28 @@ $(document).ready(function () {
 
             // Serialize form data
             let formData = $(this).serialize();
-
-            $.ajax({
-                url: '/refer/invite-friend',    // Laravel route to post data
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // include CSRF token
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        toastr.success(response.message);
-                        $('#refer-form-friend')[0].reset(); // optionally reset form
-                    } else {
-                        toastr.error(response.message);
+            checkSessionBeforeAjax(function() {
+                $.ajax({
+                    url: '/refer/invite-friend',    // Laravel route to post data
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // include CSRF token
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+                            $('#refer-form-friend')[0].reset(); // optionally reset form
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        toastr.error(error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    toastr.error(error);
-                }
-            });
+                });
+            });    
         });
     });
 
@@ -813,36 +824,37 @@ $(document).ready(function () {
     let url = txnType === 'BONUS_DETAILS'
         ? '/account/getBonusDetails'
         : '/account/getTransactionDetails';
-    
-    $.ajax({
-        method: 'POST',
-        url: url,
-        data: {
-            txnType, fromDate, toDate, offset, limit,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(resp) {
-            // Hide all tables
-            $('#transaction-table, #bonus-table, #ticket-table, #wager-table, #dwwr-table').hide();
-            // Populate and show correct table
-            if (txnType == 'BONUS_DETAILS') {
-                populateBonusTable(resp.response);
-                $('#bonus-table').show();
-            } else if (txnType == 'TICKET_DETAILS') {
-                populateTicketTable(resp.response);
-                $('#ticket-table').show();
-            } else if (txnType == 'PLR_WAGER') {
-                populateWagerTable(resp.response);
-                $('#wager-table').show();
-            } else if (txnType == 'PLR_DEPOSIT' || txnType == 'PLR_WINNING' || txnType == 'PLR_WAGER_REFUND') {
-                populateDWWRTable(resp.response);
-                $('#dwwr-table').show();
-            } else {
-                populateTransactionTable(resp.response);
-                $('#transaction-table').show();
+    checkSessionBeforeAjax(function() {
+        $.ajax({
+            method: 'POST',
+            url: url,
+            data: {
+                txnType, fromDate, toDate, offset, limit,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(resp) {
+                // Hide all tables
+                $('#transaction-table, #bonus-table, #ticket-table, #wager-table, #dwwr-table').hide();
+                // Populate and show correct table
+                if (txnType == 'BONUS_DETAILS') {
+                    populateBonusTable(resp.response);
+                    $('#bonus-table').show();
+                } else if (txnType == 'TICKET_DETAILS') {
+                    populateTicketTable(resp.response);
+                    $('#ticket-table').show();
+                } else if (txnType == 'PLR_WAGER') {
+                    populateWagerTable(resp.response);
+                    $('#wager-table').show();
+                } else if (txnType == 'PLR_DEPOSIT' || txnType == 'PLR_WINNING' || txnType == 'PLR_WAGER_REFUND') {
+                    populateDWWRTable(resp.response);
+                    $('#dwwr-table').show();
+                } else {
+                    populateTransactionTable(resp.response);
+                    $('#transaction-table').show();
+                }
             }
-        }
-    });
+        });
+    });    
 });
 
 function populateBonusTable(response) {
@@ -1034,13 +1046,15 @@ function formatCurrency(val) {
             return;
         }
         document.getElementById('deposit-error').style.display='none';
-        fetch('{{ route('account.requestCashierDeposit') }}', {
-            method: 'POST',
-            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
-            body: JSON.stringify({payTypeCode: method.value, deposit: amount})
-        }).then(r => r.json()).then(resp => {
-            if(resp.errorCode==0) alert('Deposit Success');
-            else document.getElementById('deposit-error').innerText = resp.respMsg;
+        checkSessionBeforeAjax(function() {
+            fetch('{{ route('account.requestCashierDeposit') }}', {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+                body: JSON.stringify({payTypeCode: method.value, deposit: amount})
+            }).then(r => r.json()).then(resp => {
+                if(resp.errorCode==0) alert('Deposit Success');
+                else document.getElementById('deposit-error').innerText = resp.respMsg;
+            });
         });
     };
 
@@ -1053,26 +1067,30 @@ function formatCurrency(val) {
             return;
         }
         document.getElementById('withdraw-error').style.display='none';
-        fetch('{{ route('account.requestWithdrawalDetails') }}', {
-            method: 'POST',
-            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
-            body: JSON.stringify({paymentTypeId: method.value, amount: amount})
-        }).then(r => r.json()).then(resp => {
-            if(resp.errorCode==0) alert('Withdrawal Success');
-            else document.getElementById('withdraw-error').innerText = resp.respMsg;
-        });
+        checkSessionBeforeAjax(function() {
+            fetch('{{ route('account.requestWithdrawalDetails') }}', {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+                body: JSON.stringify({paymentTypeId: method.value, amount: amount})
+            }).then(r => r.json()).then(resp => {
+                if(resp.errorCode==0) alert('Withdrawal Success');
+                else document.getElementById('withdraw-error').innerText = resp.respMsg;
+            });
+        });    
     };
 
     document.querySelectorAll('.btn-cancel').forEach(button => {
         button.onclick = function() {
-            fetch('{{ route('account.cancelPendingWithdrawal') }}', {
-                method: 'POST',
-                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
-                body: JSON.stringify({transactionId: button.dataset.id, cancelAmount: button.dataset.amount})
-            }).then(r=>r.json()).then(resp=>{
-                if(resp.errorCode==0) alert('Withdrawal Cancelled');
-                else alert(resp.respMsg);
-            });
+            checkSessionBeforeAjax(function() {
+                fetch('{{ route('account.cancelPendingWithdrawal') }}', {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+                    body: JSON.stringify({transactionId: button.dataset.id, cancelAmount: button.dataset.amount})
+                }).then(r=>r.json()).then(resp=>{
+                    if(resp.errorCode==0) alert('Withdrawal Cancelled');
+                    else alert(resp.respMsg);
+                });
+            });    
         };
     });
 
