@@ -209,46 +209,89 @@
 
         <!-- Wallet Section -->
         <div class="tab-content" id="wallet">
-            <h1 class="wallet-title">My Wallet</h1>
-
-            <!-- Deposit / Withdraw Tabs -->
+            <h1 class="wallet-title">My Wallet ({{ $currencyCode }})</h1>
             <div class="wallet-tabs">
                 <a href="#" class="wallet-tab active" data-wallet="deposit">Deposit</a>
                 <a href="#" class="wallet-tab" data-wallet="withdraw">Withdrawal</a>
             </div>
 
-            <!-- Deposit Content -->
+            <!-- Deposit Tab -->
             <div class="wallet-content active" id="deposit">
-                <h4 class="wallet-subtitle">CHOOSE PAYMENT MODE</h4>
-
-                <!-- Payment Options -->
-                <div class="wallet-options">
-                    <label class="wallet-option">
-                        <input type="radio" name="deposit-method" value="paypal">
-                        <span>PayPal</span>
-                    </label>
-                    <label class="wallet-option">
-                        <input type="radio" name="deposit-method" value="bank">
-                        <span>Bank Account</span>
-                    </label>
-                </div>
-
-                <div class="wallet-actions">
-                    <button class="btn-cancel"><b>Cancel</b></button>
-                    <button class="btn-proceed"><b>Proceed</b></button>
-                </div>
+                <h4>CHOOSE PAYMENT MODE</h4>
+                <form id="deposit-form">
+                    @foreach ($options->payTypeMap ?? [] as $payType)
+                        <div>
+                            <label>
+                                <input type="radio" name="depositMethod"
+                                    value="{{ $payType->payTypeId }}">
+                                {{ $payType->payTypeDispCode }}
+                            </label>
+                        </div>
+                    @endforeach
+                    @if(isset($options->payTypeMap) && count($options->payTypeMap) >0 ) 
+                        <input type="number" id="deposit-amount" name="amount" placeholder="Amount ({{ $currencyCode }})" required>
+                        <button type="submit" class="btn-proceed">Proceed</button>
+                    @endif
+                    <div class="error_tooltip" id="deposit-error" style="color:red;display:none"></div>
+                </form>
             </div>
 
-            <!-- Withdraw Content -->
+            <!-- Withdrawal Tab -->
             <div class="wallet-content" id="withdraw">
-                <h4 class="wallet-subtitle">CHOOSE PAYMENT MODE</h4>
+                <h4>CHOOSE PAYMENT MODE</h4>
+                @if(isset($withdrawalOptions->payTypeMap) && count($withdrawalOptions->payTypeMap) >0 ) 
+                <form id="withdraw-form">
+                    @foreach ($withdrawalOptions->payTypeMap ?? [] as $payType)
+                        <div>
+                            <label>
+                                <input type="radio" name="withdrawMethod"
+                                    value="{{ $payType->payTypeId }}">
+                                {{ $payType->payTypeDispCode }}
+                            </label>
+                        </div>
+                    @endforeach
+   
+                    <input type="number" id="withdraw-amount" name="amount"
+                        placeholder="Amount ({{ $currencyCode }})" required>
+                    <button type="submit" class="btn-proceed">Proceed</button>
+                    <div class="error_tooltip" id="withdraw-error" style="color:red;display:none"></div>
+                </form>
 
-                <div class="wallet-actions">
-                    <button class="btn-cancel"><b>Cancel</b></button>
-                    <button class="btn-proceed"><b>Proceed</b></button>
-                </div>
+                <h3>Pending Withdrawals</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>SNO</th>
+                            <th>Date</th>
+                            <th>Withdrawal Id</th>
+                            <th>Amount</th>
+                            <th>Pin Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(isset($pendingWithdrawals->data))
+                            @forelse($pendingWithdrawals->data as $w)
+                                <tr>
+                                    <td>{{ $i+1 }}</td>
+                                    <td>{{ $w->createdAt ?? '' }}</td>
+                                    <td>{{ $w->requestId ?? '' }}</td>
+                                    <td>{{ $w->amount ?? '' }}</td>
+                                    <td>
+                                        <button data-id="{{ $w->userTxnId }}" class="btn-getpin">GET PIN</button>
+                                        <span style="display:none" id="pin-{{ $w->userTxnId }}">{{ $w->otp ?? '' }}</span>
+                                        <button data-id="{{ $w->requestId }}" data-amount="{{ $w->amount }}" class="btn-cancel">Cancel</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="5">No pending withdrawals found.</td></tr>
+                            @endforelse
+                        @endif
+                    </tbody>
+                </table>
+                @endif
             </div>
         </div>
+
 
         <!-- Transactions Section -->
         <div class="tab-content" id="transactions">
@@ -966,6 +1009,78 @@ function formatCurrency(val) {
 
 
 </script>
+
+<script>
+    document.querySelectorAll('.wallet-tab').forEach(tab => {
+        tab.onclick = function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.wallet-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.wallet-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.getAttribute('data-wallet')).classList.add('active');
+        };
+    });
+
+    document.getElementById('deposit-form').onsubmit = function(e) {
+        e.preventDefault();
+        let method = document.querySelector('input[name="depositMethod"]:checked');
+        let amount = document.getElementById('deposit-amount').value;
+        if (!method || !amount) {
+            document.getElementById('deposit-error').innerText = "Select method and enter valid amount."; document.getElementById('deposit-error').style.display='block';
+            return;
+        }
+        document.getElementById('deposit-error').style.display='none';
+        fetch('{{ route('account.requestCashierDeposit') }}', {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+            body: JSON.stringify({payTypeCode: method.value, deposit: amount})
+        }).then(r => r.json()).then(resp => {
+            if(resp.errorCode==0) alert('Deposit Success');
+            else document.getElementById('deposit-error').innerText = resp.respMsg;
+        });
+    };
+
+    document.getElementById('withdraw-form').onsubmit = function(e) {
+        e.preventDefault();
+        let method = document.querySelector('input[name="withdrawMethod"]:checked');
+        let amount = document.getElementById('withdraw-amount').value;
+        if (!method || !amount) {
+            document.getElementById('withdraw-error').innerText = "Select method and enter valid amount."; document.getElementById('withdraw-error').style.display='block';
+            return;
+        }
+        document.getElementById('withdraw-error').style.display='none';
+        fetch('{{ route('account.requestWithdrawalDetails') }}', {
+            method: 'POST',
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+            body: JSON.stringify({paymentTypeId: method.value, amount: amount})
+        }).then(r => r.json()).then(resp => {
+            if(resp.errorCode==0) alert('Withdrawal Success');
+            else document.getElementById('withdraw-error').innerText = resp.respMsg;
+        });
+    };
+
+    document.querySelectorAll('.btn-cancel').forEach(button => {
+        button.onclick = function() {
+            fetch('{{ route('account.cancelPendingWithdrawal') }}', {
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
+                body: JSON.stringify({transactionId: button.dataset.id, cancelAmount: button.dataset.amount})
+            }).then(r=>r.json()).then(resp=>{
+                if(resp.errorCode==0) alert('Withdrawal Cancelled');
+                else alert(resp.respMsg);
+            });
+        };
+    });
+
+    // For GET PIN button, (simulate PIN fetch)
+    document.querySelectorAll('.btn-getpin').forEach(button => {
+        button.onclick = function() {
+            let pinSpan = document.getElementById('pin-' + button.dataset.id);
+            if(pinSpan) pinSpan.style.display = 'inline';
+        };
+    });
+</script>
+
  @endpush
 <script>
 document.addEventListener("DOMContentLoaded", function() {

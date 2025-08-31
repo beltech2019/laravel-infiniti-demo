@@ -42,7 +42,7 @@ class ServerCommunication {
             $url == ServerUrl::withdrawal_Poc ||
             $url == ServerUrl::WITHDRAWAL_OTP_RESEND){
             $ramPlayerInfo = Utilities::getRamPlayerInfoResponse();
-            if($ramPlayerInfo->aliasName == "poc.igamew.com"){
+            if(isset($ramPlayerInfo->aliasName) && $ramPlayerInfo->aliasName == "poc.igamew.com"){
             	$data['domainName'] = 'poc.igamew.com';
             }
             //$data['domainName'] = 'poc.igamew.com';	

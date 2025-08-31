@@ -46,9 +46,18 @@ class AccountController extends Controller
         $maxrowlimit = Constants::MAX_ROW_LIMIT;
         $domain_main = Configuration::DOMAIN_NAME;
         $ticketDomain = Configuration::DOMAIN;
+        $CURRENCY = Configuration::getCurrencyDetails();
+        $options = Utilities::paymentOptions("DEPOSIT");
+        $withdrawalOptions = Utilities::paymentOptions("WITHDRAWAL");
+        $configResponse = Utilities::pamConfig();
         $tabactive = $request->tab;
-        $transaction_option = Constants::$txnTypes_TransactionDetails['EN']; 
-        return view('account.profile', compact('countries','transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+        $transaction_option = Constants::$txnTypes_TransactionDetails['EN'];
+        $pendingWithdrawals = Utilities::fetchPendingWithdrawal();
+        $dataSize = (isset($pendingWithdrawals->data) && is_array($pendingWithdrawals->data)) 
+            ? sizeof($pendingWithdrawals->data) 
+            : 0;
+        $i = 0; 
+        return view('account.profile', compact('i','dataSize','pendingWithdrawals','configResponse','withdrawalOptions','options','CURRENCY','countries','transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
     }
 
     public function ticketsdetails(Request $request)
@@ -599,6 +608,162 @@ class AccountController extends Controller
             }
         }
         return redirect()->back()->withErrors('SESSION_EXPIRED');
+    }
+
+
+    function cancelPendingWithdrawal(Request $request) {
+        if (LegacySession::sessionValidate()) {
+            $transactionId = $request->input('transactionId', '');
+            $cancelAmount = $request->input('cancelAmount', '');
+            $response = ServerCommunication::sendCall(ServerUrl::CANCEL_WITHDRAWAL, array(
+                        "transactionId" => $transactionId
+                            ), true);
+            if (Validations::getErrorCode() == 0) {
+                $walletBean = Utilities::getPlayerLoginResponse()->walletBean;
+                $current_cashBalance = floatval($walletBean->cashBalance);
+                $current_withdrawBal  = floatval($walletBean->withdrawableBal);
+
+                $to_update_cashBalance = floatval($cancelAmount);
+                $new_cashBalance = floatval($current_cashBalance + $to_update_cashBalance);
+		$new_withdrawBal = floatval($current_withdrawBal + $to_update_cashBalance);
+                $walletBean->cashBalance = $new_cashBalance;
+                $walletBean->withdrawableBal = $new_withdrawBal;
+                Utilities::updatePlayerLoginResponse(array(
+                    "walletBean" => $walletBean
+                ));
+                $response->cashBalance =  $new_cashBalance;
+		$response->withdrawableBal = $new_withdrawBal;
+            }
+            return response()->json($response);
+        } else {
+            return response()->json([
+                'errorCode' => 1,
+                'respMsg' => 'Session expired',
+                'redirect' => route('login'),
+            ], 401);
+        }
+    }
+
+
+    function requestWithdrawalDetails(Request $request){
+        if (LegacySession::sessionValidate()) {  
+            $paymentTypeId = $request->input('paymentTypeId', 0);   
+            $paymentTypeCode = $request->input('paymentTypeCode', '');   
+            $subTypeId = $request->input('subTypeId', 0);
+            $amount = $request->input('amount', 0);
+            $redeemAccId = $request->input('redeemAccId', 0);
+            $isAjax = $request->input('isAjax', '');
+            Validations::$isAjax = ($isAjax == 'true') ? true : false;
+            $isCashierurl = $request->input('isCashierUrl', ''); 
+            $currencyCode = $request->input('CurrencyCode','');
+            if($isCashierurl){
+
+             $playerLoginResponse = Utilities::getPlayerLoginResponse();
+            $withdrawalRequest = array(
+                    "txnType" => 'WITHDRAWAL',
+                    "paymentTypeId" => $paymentTypeId,
+                    "paymentTypeCode" => $paymentTypeCode,
+                    "currencyCode" =>  $currencyCode,
+                    "paymentAccId" =>  $redeemAccId,
+                    "subTypeId" => $subTypeId,
+                    "amount" => $amount,
+                );    
+            }else{
+            $withdrawalRequest = array(
+                    "currencyId" => Configuration::getCurrencyDetails()['id'],
+                    "paymentTypeId" => $paymentTypeId,
+                    "paymentTypeCode" => $paymentTypeCode,
+                    "subTypeId" => $subTypeId,
+                    "amount" => $amount,
+                    "redeemAccountId" => $redeemAccId,
+                );
+            $requestArray = array(
+              "requestBean" => $withdrawalRequest
+               );
+            }
+            Utilities::getPlayerBalance(true, true);
+            $playerLoginResponse = Utilities::getPlayerLoginResponse();
+            $withdrawableBalance = $playerLoginResponse->walletBean->withdrawableBal;
+            $cashBalance = $playerLoginResponse->walletBean->cashBalance;
+            if ((float) $cashBalance < (float) $withdrawableBalance) {
+                $withdrawableBalance = $cashBalance;
+            }
+            if($isCashierurl){
+            $response = ServerCommunication::sendCall(ServerUrl::CASHIER_WITHDRAWAL_REQUEST, $withdrawalRequest, Validations::$isAjax,true, array('merchantCode' => 'infiniti','playerId' => Utilities::getPlayerId(),'playerToken' => Utilities::getPlayerToken()));
+            }else{
+            $response = ServerCommunication::sendCall(ServerUrl::WITHDRAWAL_REQUEST_MOMO, $requestArray, Validations::$isAjax);
+            }
+            if (Validations::getErrorCode() != 0) {
+                Redirection::ajaxSendDataToView($response);
+            }
+            $walletBean = Utilities::getPlayerLoginResponse()->walletBean;
+            $current_cashBalance = floatval($walletBean->cashBalance);
+            $current_withdrawBal = floatval($walletBean->withdrawableBal);
+            $to_update_cashBalance = floatval($response->amount);
+            $new_cashBalance = floatval($current_cashBalance - $to_update_cashBalance);
+            $new_withdrawBal = floatval($current_withdrawBal - $to_update_cashBalance);
+            $walletBean->cashBalance =  $new_cashBalance;
+            $walletBean->withdrawableBal = $new_withdrawBal;		
+            Utilities::updatePlayerLoginResponse(array(
+                "walletBean" => $walletBean
+            ));
+            $response->cashBalance = $new_cashBalance;
+            $response->withdrawableBal = $new_withdrawBal;
+            Session::setSessionVariable('withdrawalAmount', $response->amount);
+            return response()->json($response);
+        } else {
+            return response()->json([
+                'errorCode' => 1,
+                'respMsg' => 'Session expired',
+                'redirect' => route('login'),
+            ], 401);
+        }         
+    }
+    
+    function requestCashierDeposit(Request $request) {
+        if (LegacySession::sessionValidate()) {
+            $depositPaymentTypeCode = $request->input('payTypeCode', '');
+            $amount = $request->input('deposit', '');
+            $redeemAccountId = $request->input('paymentAccount', '');
+            $paymentTypeId = $request->input('paytypeId', 0);
+            $playerLoginResponse = Utilities::getPlayerLoginResponse();
+            $subTypeId = $request->input('subType', 0);
+            $currency = $request->input('currency', '');
+            $url = Redirection::AFTER_PAY_CALLBACK_SUCCESS;
+            $depositRequest = array(
+                "paymentTypeId" => $paymentTypeId,
+                "txnType" => 'DEPOSIT',
+                "paymentTypeCode" => $depositPaymentTypeCode,
+                "amount" => $amount,
+                "domainName" => Configuration::DOMAIN_NAME,
+                "currencyCode" => $currency,
+                "subTypeId" => $subTypeId,
+                "deviceType" => Configuration::getDeviceType(),
+                "playerId" => Utilities::getPlayerId(),
+                "playerToken" =>  Utilities::getPlayerToken(),
+                "respSuccess" => $url,
+                "respError" => $url,
+                "merchantCode" => 'infiniti'
+            );
+            if($redeemAccountId != ''){
+                $depositRequest['paymentAccId'] = $redeemAccountId;   
+            }
+            
+            Session::setSessionVariable('before_payment', true);
+            Session::setSessionVariable('type', 'ONLINEDEPOSIT');
+            Session::setSessionVariable('url', ServerUrl::CASHIER_BASE_URL . ServerUrl::CASHIER_DEPOSIT_REQUEST);
+            Session::setSessionVariable('depositRequest', $depositRequest);
+            return response()->json([
+                'errorCode' => 0,
+                'respMsg' => 'Successs',
+            ]);
+        } else {
+            return response()->json([
+                'errorCode' => 1,
+                'respMsg' => 'Session expired',
+                'redirect' => route('login'),
+            ], 401);
+        }  
     }
 
 

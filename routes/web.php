@@ -51,6 +51,9 @@ Route::prefix('account')->name('account.')->group(function () {
     Route::post('/inboxActivity', [AccountController::class, 'inboxActivity'])->name('inboxActivity');
     Route::post('/changePassword', [AccountController::class, 'changePassword'])->name('changePassword');
     Route::post('/updatePlayerProfile', [AccountController::class, 'updatePlayerProfile'])->name('updatePlayerProfile');
+    Route::any('/cancelPendingWithdrawal', [AccountController::class, 'cancelPendingWithdrawal'])->name('cancelPendingWithdrawal');
+    Route::any('/requestWithdrawalDetails', [AccountController::class, 'requestWithdrawalDetails'])->name('requestWithdrawalDetails');
+    Route::any('/requestCashierDeposit', [AccountController::class, 'requestCashierDeposit'])->name('requestCashierDeposit');
 });
 
 Route::prefix('refer')->name('refer.')->group(function () {
