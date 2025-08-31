@@ -46,6 +46,7 @@ Route::prefix('account')->name('account.')->group(function () {
     Route::any('/ticketsdetails', [AccountController::class, 'ticketsdetails'])->name('ticketsdetails');
     Route::post('/uploadPlayerAvatar', [AccountController::class, 'uploadPlayerAvatar'])->name('uploadPlayerAvatar');
     Route::post('/getTransactionDetails', [AccountController::class, 'getTransactionDetails'])->name('getTransactionDetails');
+    Route::post('/getTransactionDetailsForTicket', [AccountController::class, 'getTransactionDetailsForTicket'])->name('getTransactionDetailsForTicket');
     Route::post('/getBonusDetails', [AccountController::class, 'getBonusDetails'])->name('getBonusDetails');
     Route::post('/playerInbox', [AccountController::class, 'playerInbox'])->name('playerInbox');
     Route::post('/inboxActivity', [AccountController::class, 'inboxActivity'])->name('inboxActivity');

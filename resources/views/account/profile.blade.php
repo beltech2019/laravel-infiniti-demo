@@ -562,36 +562,40 @@
 
 
 @push('script')
- <script>
-   $(document).ready(function(){
+ <script>   
+$(document).ready(function(){
+@if($tabactive == 'tickets')
+ loadTickets();
+@endif
     $('#ajaxSearchBtn').on('click', function() {
-        var formData = $('#ticketDeatil').serialize();
-
-        $.ajax({
-            url: '/account/getTransactionDetails',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.view) {
-                    debugger;
-                    $('#tickettable').html(response.view);
-                    $('#messagetickettable').hide().text('');
-                } else {
-                    $('#messagetickettable').show().text(response.message);
-                    $('#tickettable').empty();
-                }
-            },
-            error: function(xhr, status, error) {
-                $('#messagetickettable').show().text(error);
-            }
-        });
+        loadTickets()
     });
 });
+function loadTickets(){
+    var formData = $('#ticketDeatil').serialize();
 
+    $.ajax({
+        url: '/account/getTransactionDetailsForTicket',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.view) {
+                $('#tickettable').html(response.view);
+                $('#messagetickettable').hide().text('');
+            } else {
+                $('#messagetickettable').show().text(response.message);
+                $('#tickettable').empty();
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#messagetickettable').show().text(error);
+        }
+    });
+}
  </script>
 <script>
 $(document).ready(function () {

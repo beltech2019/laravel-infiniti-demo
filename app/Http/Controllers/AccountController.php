@@ -34,30 +34,35 @@ class AccountController extends Controller
 
     public function profile(Request $request)
     {
-        $countries = Utilities::getCountryList();
-        $transactionDetailsURL = "";
-        $playerId = Utilities::getPlayerID();
-        $playerToken = Utilities::getPlayerToken();
-        $playerInfo = Utilities::getPlayerLoginResponse();
-        $lang = 'en';
-        $currencyInfo = Utilities::getCurrencyInfo();
-        $currencyCode = $currencyInfo[0] ?? '';
-        $dispCurrency = $currencyInfo[1] ?? '';
-        $maxrowlimit = Constants::MAX_ROW_LIMIT;
-        $domain_main = Configuration::DOMAIN_NAME;
-        $ticketDomain = Configuration::DOMAIN;
-        $CURRENCY = Configuration::getCurrencyDetails();
-        $options = Utilities::paymentOptions("DEPOSIT");
-        $withdrawalOptions = Utilities::paymentOptions("WITHDRAWAL");
-        $configResponse = Utilities::pamConfig();
-        $tabactive = $request->tab;
-        $transaction_option = Constants::$txnTypes_TransactionDetails['EN'];
-        $pendingWithdrawals = Utilities::fetchPendingWithdrawal();
-        $dataSize = (isset($pendingWithdrawals->data) && is_array($pendingWithdrawals->data)) 
-            ? sizeof($pendingWithdrawals->data) 
-            : 0;
-        $i = 0; 
-        return view('account.profile', compact('i','dataSize','pendingWithdrawals','configResponse','withdrawalOptions','options','CURRENCY','countries','transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+        if (LegacySession::sessionValidate()) {
+            $countries = Utilities::getCountryList();
+            $transactionDetailsURL = "";
+            $playerId = Utilities::getPlayerID();
+            $playerToken = Utilities::getPlayerToken();
+            $playerInfo = Utilities::getPlayerLoginResponse();
+            $lang = 'en';
+            $currencyInfo = Utilities::getCurrencyInfo();
+            $currencyCode = $currencyInfo[0] ?? '';
+            $dispCurrency = $currencyInfo[1] ?? '';
+            $maxrowlimit = Constants::MAX_ROW_LIMIT;
+            $domain_main = Configuration::DOMAIN_NAME;
+            $ticketDomain = Configuration::DOMAIN;
+            $CURRENCY = Configuration::getCurrencyDetails();
+            $options = Utilities::paymentOptions("DEPOSIT");
+            $withdrawalOptions = Utilities::paymentOptions("WITHDRAWAL");
+            $configResponse = Utilities::pamConfig();
+            $tabactive = $request->tab;
+            $transaction_option = Constants::$txnTypes_TransactionDetails['EN'];
+            $pendingWithdrawals = Utilities::fetchPendingWithdrawal();
+            $dataSize = (isset($pendingWithdrawals->data) && is_array($pendingWithdrawals->data)) 
+                ? sizeof($pendingWithdrawals->data) 
+                : 0;
+            $i = 0; 
+            return view('account.profile', compact('i','dataSize','pendingWithdrawals','configResponse','withdrawalOptions','options','CURRENCY','countries','transaction_option', 'tabactive', 'ticketDomain', 'domain_main', 'maxrowlimit', 'playerInfo',  'lang', 'playerToken', 'playerId', 'transactionDetailsURL' , 'currencyInfo' , 'currencyCode' , 'dispCurrency'));
+   
+        }else{
+            return redirect()->route('loginPage');
+        }
     }
 
     public function ticketsdetails(Request $request)
@@ -304,6 +309,121 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    function getTransactionDetailsForTicket(Request $request) {
+        if (LegacySession::sessionValidate()) {
+            $txnType = $request->input('txnType', '');
+
+            // Validate transaction type
+            if ($txnType != Constants::TXNTYPE_TICKET_DETAILS) {
+                if (array_key_exists($txnType, Constants::$txnTypes_TransactionDetails['EN']) === false) {
+                    return json_encode([
+                        "status" => "error",
+                        "code"   => 1,
+                        "message"=> "Invalid Transaction Type Received."
+                    ]);
+                }
+            }
+
+            $fromDate = $request->input('fromDate', '');
+            $toDate   = $request->input('toDate', '');
+            $offset   = (int) $request->input('offset', 0);
+            $limit    = $request->input('limit', '');
+            $fromDate = date('d/m/Y', strtotime($fromDate)); 
+            $toDate = date('d/m/Y', strtotime($toDate)); 
+            // Date and parameter validation
+            if (!Validations::validateDate($fromDate)) {
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
+            }
+
+            if (!Validations::validateDate($toDate)) {
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid to date."]);
+            }
+
+            if (!Validations::compareDate($fromDate, $toDate)) {
+                return json_encode(["status"=>"error","code"=>1,"message"=>"To date must be greater than or equal to from date."]);
+            }
+
+            if ($limit != Constants::MAX_ROW_LIMIT) {
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+            }
+
+            if ($offset < 0) {
+                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+            }
+
+            Log::info("hellombjgjh");
+            if ($txnType == Constants::TXNTYPE_TICKET_DETAILS) {
+                $response = ServerCommunication::sendCall(ServerUrl::TICKET_DETAILS, [
+                    "txnType"  => $txnType,
+                    "fromDate" => $fromDate,
+                    "toDate"   => $toDate,
+                    "offset"   => $offset,
+                    "limit"    => $limit
+                ], true);
+            } else {
+                $response = ServerCommunication::sendCall(ServerUrl::TRANSACTION_DETAILS, [
+                    "txnType"  => $txnType,
+                    "fromDate" => $fromDate,
+                    "toDate"   => $toDate,
+                    "offset"   => $offset,
+                    "limit"    => $limit
+                ], true);
+            }
+
+            // Error handling
+            if (Validations::getErrorCode() == 0) {
+                if ($txnType == Constants::TXNTYPE_TICKET_DETAILS) {
+                    if (!isset($response->ticketList)) {
+                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                    }
+                    if (count($response->ticketList) == 0) {
+                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Ticket Details Found For Selected Date Range."]);
+                    }
+                } else {
+                    if (!isset($response->txnList)) {
+                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                    }
+                    if (count($response->txnList) == 0) {
+                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Transaction Details Found For Selected Date Range."]);
+                    }
+                }
+
+                // Wallet update logic
+                if ($offset == 0 && $txnType != Constants::TXNTYPE_TICKET_DETAILS) {
+                    $walletBean = Utilities::getPlayerLoginResponse()->walletBean;
+                    $cashBalance = $response->txnList[0]->balance;
+                    $withdrawableBal = $walletBean->withdrawableBal;
+                    $totalBal = $walletBean->totalBalance;
+
+                    if (strpos($withdrawableBal, ".") !== false) {
+                        $withdrawableBal = substr($withdrawableBal, 0, strpos($withdrawableBal, "."));
+                    }
+
+                    $walletBean->cashBalance = $cashBalance;
+                    $walletBean->withdrawableBalance = $withdrawableBal;
+                    $walletBean->totalBalance = $totalBal;
+
+                    Utilities::updatePlayerLoginResponse(["walletBean" => $walletBean]);
+
+                    $response->cashBalance = $cashBalance;
+                    $response->totalBalance = $totalBal;
+                    $response->withdrawableBalance = $withdrawableBal;
+                }
+            }
+            
+            return response()->json([
+                'view' => view('account.ticketdetails', compact('response'))->render(),
+            ]);
+        } else {
+            return json_encode([
+                "status"  => "error",
+                "code"    => Constants::AJAX_FLAG_SESSION_EXPIRE,
+                "message" => Errors::SESSION_EXPIRED
+            ]);
+        }
+    }
+
 
     function getBonusDetails(Request $request) {
         if (LegacySession::sessionValidate()) {
