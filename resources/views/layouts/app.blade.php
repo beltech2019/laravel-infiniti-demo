@@ -184,11 +184,9 @@ $(document).ready(function() {
   </script>
   <script>
   // Open modal
-  @if(!session('user_id'))
   document.querySelector('.login-btn').addEventListener('click', function () {
     document.getElementById('loginModal').style.display = 'flex';
   });
-  @endif
 
   // Close modal on click outside content
   window.onclick = function(event) {

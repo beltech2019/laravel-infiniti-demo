@@ -825,3 +825,13 @@
     background-color: #ccc;
     color: black;
 }
+.transaction-filters{
+    display: inherit !important;
+}
+.transaction-date{
+    min-width: 100% !important;
+}
+.transaction-select{
+    min-width: 100% !important;
+
+}

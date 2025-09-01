@@ -1,18 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="account-container">
     <!-- Sidebar -->
     <div id = "sp-left" class="account-sidebar">
     <h3 class = "sp-module-title">My Account</h3>
         <ul>
-            <li class=""><a href="#" data-tab="profile">🌐 My Profile</a></li>
-            <li><a href="#" data-tab="tickets">🎟 My Tickets</a></li>
-            <li><a href="#" data-tab="wallet">👛 My Wallet</a></li>
-            <li><a href="#" data-tab="transactions">💳 My Transaction</a></li>
-            <li><a href="#" data-tab="inbox">📥 Inbox</a></li>
-            <li><a href="#" data-tab="refer">🌍 Refer a Friend</a></li>
+            <li class=""><a href="{{ route('account.profile') . '?tab=profile' }}" data-tab="profile">🌐 My Profile</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=tickets' }}" data-tab="tickets">🎟 My Tickets</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=wallet' }}" data-tab="wallet">👛 My Wallet</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=transactions' }}" data-tab="transactions">💳 My Transaction</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=inbox' }}" data-tab="inbox">📥 Inbox</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=refer' }}" data-tab="refer">🌍 Refer a Friend</a></li>
         </ul>
     </div>
 
@@ -185,18 +184,25 @@
             <!-- Date Filter -->
             <div class="ticket-filters">
                 <form id="ticketDeatil" action="#" autocomplete="off">
-                <div class="filter-group">
-                    <label for="from-date">From</label>
-                    <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
+                <div class="row">
+         
+                        <div class="col-md-4 filter-group">
+                            <label for="from-date">From</label>
+                            <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
+                        </div>
+                        <div class="col-md-4 filter-group">
+                            <label for="to-date">To</label>
+                            <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}" required>
+                        </div>
+                        <input type="hidden" name="limit" value="100">
+                        <input type="hidden" name="txnType" value="ticket">
+                        <input type="hidden" name="offset" value="0">
+                        <div class="col-md-4 align-items-end d-flex">
+                        
+                              <button type="button" class="btn-search" id="ajaxSearchBtn">Search</button>
+                        </div>
+                  
                 </div>
-                <div class="filter-group">
-                    <label for="to-date">To</label>
-                    <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}" required>
-                </div>
-                <input type="hidden" name="limit" value="100">
-                <input type="hidden" name="txnType" value="ticket">
-                <input type="hidden" name="offset" value="0">
-                <button type="button" class="btn-search" id="ajaxSearchBtn">Search</button>
                 </form>
             </div>
 
@@ -297,18 +303,22 @@
         <div class="tab-content" id="transactions">
             <h2 class="transaction-title">Transactions Details</h2>
                 <form class="transaction-filters">
-
-                    <div class="filter-groupp">
+                <div class="row">
+                    <div class="col-md-3">
+                             <div class="filter-groupp">
                         <label for="from-date">From</label>
                         <input type="date" id="from-date" name="fromDate" class="transaction-date" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                     </div>
-
+                    </div>
+                    <div class="col-md-3">
+                        
                     <div class="filter-groupp">
                         <label for="to-date">To</label>
                         <input type="date" id="to-date" name="toDate" class="transaction-date" value="{{ now()->format('Y-m-d') }}" required>
                     </div>
-
-                    <div class="filter-groupp">
+                    </div>
+                    <div class="col-md-3">
+                                <div class="filter-groupp">
                         <label for="transaction-type">Transaction Type</label>
                         <select id="transaction-type" name="txnType" class="transaction-select">
                             @foreach($transaction_option AS $key => $value)
@@ -316,8 +326,17 @@
                             @endforeach
                         </select>
                     </div>
-
+                    </div>
+                    <div class="col-md-3 align-items-end d-flex">
+                        
                     <button type="button" id="transaction-filtersbtn" class="btn-search">Search</button>
+                    </div>
+                </div>
+               
+
+
+            
+
                 </form>
 
 
@@ -635,10 +654,10 @@ $(document).ready(function () {
     }
 
     // Load inbox on inbox tab click
-    $('a[data-tab="inbox"]').on('click', function (e) {
-        e.preventDefault();
-        loadInbox();
-    });
+    // $('a[data-tab="inbox"]').on('click', function (e) {
+    //     e.preventDefault();
+    //     loadInbox();
+    // });
 
     @if(($tabactive ?? 'profile') === 'inbox')
         loadInbox();  // load inbox on page load if inbox tab active
@@ -813,8 +832,14 @@ $(document).ready(function () {
  
 </script>
 <script>
+    @if($tabactive == 'transactions')
+        getTransactionFilterDatas();
+    @endif
     $('#transaction-filtersbtn').on('click', function() {
-    // Gather parameter values
+        getTransactionFilterDatas();        
+    });
+
+function getTransactionFilterDatas(){
     let txnType = $('#transaction-type').val();
     let fromDate = $('#from-date').val();
     let toDate = $('#to-date').val();
@@ -835,7 +860,7 @@ $(document).ready(function () {
             success: function(resp) {
                 // Hide all tables
                 $('#transaction-table, #bonus-table, #ticket-table, #wager-table, #dwwr-table').hide();
-                // Populate and show correct table
+                
                 if (txnType == 'BONUS_DETAILS') {
                     populateBonusTable(resp.response);
                     $('#bonus-table').show();
@@ -854,9 +879,8 @@ $(document).ready(function () {
                 }
             }
         });
-    });    
-});
-
+    });
+}    
 function populateBonusTable(response) {
     let tbody = $('#bonus-table tbody');
     tbody.empty();
@@ -1104,7 +1128,7 @@ function formatCurrency(val) {
 </script>
 
  @endpush
-<script>
+<!-- <script>
 document.addEventListener("DOMContentLoaded", function() {
     const links = document.querySelectorAll(".account-sidebar ul li a");
     const contents = document.querySelectorAll(".tab-content");
@@ -1119,7 +1143,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-</script>
+</script> -->
 
 <!-- Script for Wallet Tab Switching -->
 <script>
@@ -1219,15 +1243,15 @@ $(document).ready(function(){
         }
 
         // Now handle click switching as before
-        links.forEach(link => {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-                links.forEach(l => l.parentElement.classList.remove("active"));
-                contents.forEach(c => c.classList.remove("active"));
-                this.parentElement.classList.add("active");
-                document.getElementById(this.dataset.tab).classList.add("active");
-            });
-        });
+        // links.forEach(link => {
+        //     link.addEventListener("click", function(e) {
+        //         e.preventDefault();
+        //         links.forEach(l => l.parentElement.classList.remove("active"));
+        //         contents.forEach(c => c.classList.remove("active"));
+        //         this.parentElement.classList.add("active");
+        //         document.getElementById(this.dataset.tab).classList.add("active");
+        //     });
+        // });
     });
 </script>
 <script>

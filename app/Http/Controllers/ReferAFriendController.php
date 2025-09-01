@@ -225,4 +225,5 @@ class ReferAFriendController extends Controller
             'message' => Errors::SESSION_EXPIRED
         ]);
     }
+
 }
