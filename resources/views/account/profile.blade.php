@@ -88,47 +88,47 @@
                 <form class="row g-3" action="{{ route('account.updatePlayerProfile') }}" method="POST">
                     @csrf 
                     <div class="col-md-6">
-                        <label class="form-label">{{ __('message2.FIRST_NAME') }}*</label>
+                        <label class="form-label">{{ __('message2.FIRST_NAME') }}</label>
                         <input type="text" class="form-control" name="fname" value="{{ $playerInfo->firstName ?? '' }}" required />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">{{ __('message2.LAST_NAME') }}*</label>
+                        <label class="form-label">{{ __('message2.LAST_NAME') }}</label>
                         <input type="text" class="form-control" name="lname" value="{{ $playerInfo->lastName ?? '' }}" required />
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">{{ __('message2.ADDRESS') }}*</label>
+                        <label class="form-label">{{ __('message2.ADDRESS') }}</label>
                         <textarea class="form-control" name="address" rows="3" required>{{ $playerInfo->addressLine1 ?? '' }}</textarea>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">{{ __('message2.DATE_OF_BIRTH') }}*</label>
+                        <label class="form-label">{{ __('message2.DATE_OF_BIRTH') }}</label>
                         <input type="date" class="form-control" name="dob" value="{{ $playerInfo->dob ?? '' }}" />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">{{ __('message2.COUNTRY') }}*</label>
+                        <label class="form-label">{{ __('message2.COUNTRY') }}</label>
                         <input type="text" class="form-control" value="{{ $playerInfo->country ?? '' }}" disabled />
                         <input type="hidden" class="form-control" name="country" value="{{ $playerInfo->countryCode ?? '' }}" />
                     </div>
 
                     <div class="col-md-8">
-                        <label class="form-label">{{ __('message2.EMAIL_ADDRESS') }}*</label>
+                        <label class="form-label">{{ __('message2.EMAIL_ADDRESS') }}</label>
                         <div class="input-group">
                             <input type="email" class="form-control" name="email" value="{{ $playerInfo->emailId ?? '' }}" required />
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">{{ __('message2.MOBILE_NO') }}*</label>
+                        <label class="form-label">{{ __('message2.MOBILE_NO') }}</label>
                         <div class="input-group">
                             <input type="text" class="form-control" name="mobile" value="{{ $playerInfo->mobileNo ?? '' }}" readonly />
                         </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">{{ __('message2.GENDER') }}*</label><br />
+                        <label class="form-label">{{ __('message2.GENDER') }}</label><br />
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" value="M" {{ isset($playerInfo->gender) && $playerInfo->gender == "M" ? 'checked' : '' }} />
                             <label class="form-check-label">{{ __('message2.MALE') }}</label>
@@ -152,17 +152,17 @@
                 @csrf
                 
                     <div class="col-12">
-                        <label class="form-label">{{ __('message2.CURRENT_PASSWORD') }}*</label>
+                        <label class="form-label">{{ __('message2.CURRENT_PASSWORD') }}</label>
                         <input type="password" class="form-control" name="currentPassword" placeholder="{{ __('message2.CURRENT_PASSWORD') }}" required />
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label">{{ __('message2.NEW_PASSWORD') }}*</label>
+                        <label class="form-label">{{ __('message2.NEW_PASSWORD') }}</label>
                         <input type="password" class="form-control" name="newPassword" placeholder="{{ __('message2.NEW_PASSWORD') }}" required />
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label">{{ __('message2.CONFIRM_PASSWORD') }}*</label>
+                        <label class="form-label">{{ __('message2.CONFIRM_PASSWORD') }}</label>
                         <input type="password" class="form-control" name="retypePassword" placeholder="{{ __('message2.CONFIRM_PASSWORD') }}" required />
                     </div>
                     
@@ -186,7 +186,7 @@
                 <div class="row">
          
                         <div class="col-md-4 filter-group">
-                            <label for="from-date">{{ __('message2.FROM ') }}</label>
+                            <label for="from-date">{{ __('message2.FROM') }}</label>
                             <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-4 filter-group">
@@ -198,7 +198,7 @@
                         <input type="hidden" name="offset" value="0">
                         <div class="col-md-4 align-items-end d-flex">
                         
-                              <button type="button" class="btn-search" id="ajaxSearchBtn">{{ __('message2.{{ __('message2.BTN_SEARCH ') }}') }}</button>
+                              <button type="button" class="btn-search" id="ajaxSearchBtn">{{ __('message2.BTN_SEARCH')  }}</button>
                         </div>
                   
                 </div>
@@ -561,7 +561,7 @@
                         {{ __('message2.REFER_NOTE') }}.
                         <br>
                         <br>
-                            {{ __('message2.DESCRIPTION ') }}.
+                            {{ __('message2.DESCRIPTION') }}.
                     </p>
                 </div>
 

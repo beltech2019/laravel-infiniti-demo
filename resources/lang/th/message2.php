@@ -13,7 +13,7 @@ return[
     'UPDATE_DETAILS'  => 'อัปเดตรายละเอียด',
     'NEW_PROFILE_PICTURE' => 'เลือกรูปโปรไฟล์ใหม่:',
     'BTN_SUBMIT'          => 'ส่ง',
-    'BTN _CANCEL'          => 'ยกเลิก',
+    'BTN_CANCEL'          => 'ยกเลิก',
     'FIRST_NAME'      => 'ชื่อ*',
     'LAST_NAME'       => 'นามสกุล*',
     'ADDRESS'         => 'ที่อยู่*',
@@ -155,6 +155,7 @@ return[
     'INVALID_ERROR_CODE' => 'ข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง [รหัสข้อผิดพลาด]',
     'PLEASE_LOGIN_FIRST' => 'กรุณาเข้าสู่ระบบก่อน',
     'REFER_A_FRIEND_REMINDER_SENT' => 'ส่งการเตือนการแนะนำเพื่อนเรียบร้อยแล้ว',
+    'DATA_NOT_FOUND' => 'ไม่พบข้อมูลสำหรับประเภทธุรกรรมที่เลือก',
 
     
     'MOBILE_NUMBER_VALIDATION' => 'หมายเลขโทรศัพท์มือถือจะต้องมี 10 หลักเท่านั้น',

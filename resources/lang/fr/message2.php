@@ -13,7 +13,7 @@ return[
     'UPDATE_DETAILS'  => 'Mettre à jour les détails',
     'NEW_PROFILE_PICTURE' => 'Choisissez une nouvelle photo de profil :',
     'BTN_SUBMIT'          => 'Soumettre',
-    'BTN _CANCEL'          => 'Annuler',
+    'BTN_CANCEL'          => 'Annuler',
     'FIRST_NAME'      => 'Prénom*',
     'LAST_NAME'       => 'Nom de famille*',
     'ADDRESS'         => 'Adresse*',
@@ -155,6 +155,7 @@ return[
     'INVALID_ERROR_CODE' => "Erreur système. Veuillez réessayer. [Code d'erreur]",
     'PLEASE_LOGIN_FIRST' => "Veuillez vous connecter d'abord",
     'REFER_A_FRIEND_REMINDER_SENT' => "Rappel envoyé avec succès.",
+    'DATA_NOT_FOUND' => 'Aucune donnée trouvée pour le type de transaction sélectionné.',
 
 
     'MOBILE_NUMBER_VALIDATION' => "Le numéro de mobile doit comporter exactement 10 chiffres.",

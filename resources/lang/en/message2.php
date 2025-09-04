@@ -5,7 +5,7 @@ return[
     'MY_PROFILE' => "My Profile",
     'MY_TICKETS' => "My Tickets",
     'MY_WALLET' => "My Wallet",
-    'MY_TRANSACTION' => "My Transaction",
+    'MY_TRANSACTIONS' => "My Transaction",
     'INBOX' => "Inbox",
     'REFER_A_FRIEND' => "Refer a Friend",
     'PASSWORD' => "Password",
@@ -152,7 +152,7 @@ return[
     'NO_MESSAGE_CONTENT_FOUND' => 'No message content found',
     'AUTH_FAILED' => 'User authentication failed',
     'PROFILE_UPDATED' => 'Player profile updated successfully',
-
+    'DATA_NOT_FOUND' => 'No Data Found For Selected Transaction Type.',
 
 
      'INVITATION_SENT' => 'Invitation sent successfully.',

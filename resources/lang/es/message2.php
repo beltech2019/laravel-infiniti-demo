@@ -5,7 +5,7 @@ return[
     'MY_PROFILE' => "Mi Perfil",
     'MY_TICKETS' => "Mis Boletos",
     'MY_WALLET' => "Mi Billetera",
-    'MY_TRANSACTION' => "Mi Transacción",
+    'MY_TRANSACTIONS' => "Mi Transacción",
     'INBOX' => "Bandeja de Entrada",
     'REFER_A_FRIEND' => "Recomendar a un Amigo",
     'PASSWORD' => "Contraseña",
@@ -152,6 +152,7 @@ return[
     'NO_MESSAGE_CONTENT_FOUND' => "No se encontró contenido del mensaje",
     'AUTH_FAILED' => "Falló la autenticación del usuario",
     'PROFILE_UPDATED' => "Perfil del jugador actualizado exitosamente",
+    'DATA_NOT_FOUND' => 'No se encontraron datos para el tipo de transacción seleccionado.',
 
 
     'INVITATION_SENT' => "Invitación enviada exitosamente.",
