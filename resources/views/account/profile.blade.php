@@ -178,7 +178,7 @@
 
         <!-- Tickets Section -->
         <div class="tab-content" id="tickets">
-            <h2 class="ticket-title">{{ __('message2.TICKET_DETAILS ') }}</h2>
+            <h2 class="ticket-title">{{ __('message2.TICKET_DETAILS') }}</h2>
 
             <!-- Date Filter -->
             <div class="ticket-filters">

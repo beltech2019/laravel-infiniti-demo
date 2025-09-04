@@ -78,7 +78,7 @@
 <div id="forgotPasswordModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}</h2>
     
     <form method="post" action="{{route('forget.password')}}">
       @csrf
@@ -91,7 +91,7 @@
       <p id="forgetpasserror" style="color:red"></p>
       <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        {{ __('message2.DONT_HAVE_ACCOUNT') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT') }} <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
       </p>
     </form>
   </div>
@@ -100,7 +100,7 @@
 <div id="forgotPasswordOTPModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeResetForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}</h2>
     
     <form method="post" action="{{route('resetPassword.Forgot')}}">
       @csrf

@@ -21,6 +21,7 @@ return[
     'COUNTRY' => "Country*",
     'EMAIL_ADDRESS' => "Email Address*",
     'MOBILE_NO' => "Mobile No*",
+    'TRANSACTION_TYPE' => 'Transaction Type',
     'GENDER' => "Gender*",
     'MALE' => "Male",
     'FEMALE' => "Female",

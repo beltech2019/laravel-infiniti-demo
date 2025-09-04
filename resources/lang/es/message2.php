@@ -37,6 +37,7 @@ return[
     'PAYMENT_MODE' => "ELEGIR MÉTODO DE PAGO",
     'BTN_PROCEED' => "Continuar",
     'PENDING_WITHDRAWALS' => "Retiros Pendientes",
+    'TRANSACTION_TYPE' => 'Tipo de transacción',
     'SNO' => "N°",
     'DATE' => "Fecha",
     'WITHDRAWAL_ID' => "ID de Retiro",
