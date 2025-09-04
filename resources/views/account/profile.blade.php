@@ -3,15 +3,15 @@
 @section('content')
 <div class="account-container">
     <!-- Sidebar -->
-    <div id = "sp-left" class="account-sidebar">
-    <h3 class = "sp-module-title">{{ __('message2.MY_ACCOUNT') }}</h3>
+    <div id="sp-left" class="account-sidebar">
+        <h3 class="sp-module-title">{{ __('message2.MY_ACCOUNT') }}</h3>
         <ul>
-            <li class=""><a href="{{ route('account.profile') . '?tab=profile' }}" data-tab="profile">🌐 My Profile</a></li>
-            <li><a href="{{ route('account.profile') . '?tab=tickets' }}" data-tab="tickets">🎟 My Tickets</a></li>
-            <li><a href="{{ route('account.profile') . '?tab=wallet' }}" data-tab="wallet">👛 My Wallet</a></li>
-            <li><a href="{{ route('account.profile') . '?tab=transactions' }}" data-tab="transactions">💳 My Transaction</a></li>
-            <li><a href="{{ route('account.profile') . '?tab=inbox' }}" data-tab="inbox">📥 Inbox</a></li>
-            <li><a href="{{ route('account.profile') . '?tab=refer' }}" data-tab="refer">🌍 Refer a Friend</a></li>
+            <li class=""><a href="{{ route('account.profile') . '?tab=profile' }}" data-tab="profile">🌐 {{ __('message2.MY_PROFILE') }}</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=tickets' }}" data-tab="tickets">🎟 {{ __('message2.MY_TICKETS') }}</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=wallet' }}" data-tab="wallet">👛 {{ __('message2.MY_WALLET') }}</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=transactions' }}" data-tab="transactions">💳 {{ __('message2.MY_TRANSACTIONS') }}</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=inbox' }}" data-tab="inbox">📥 {{ __('message2.INBOX') }}</a></li>
+            <li><a href="{{ route('account.profile') . '?tab=refer' }}" data-tab="refer">🌍 {{ __('message2.REFER_A_FRIEND') }}</a></li>
         </ul>
     </div>
 
@@ -63,87 +63,86 @@
                 @endif
                 <div class="detail-row">
                     <span>🔒</span>
-                    <p>Password</p>
-                    <button class="btn-change">Change</button>
+                    <p>{{ __('message2.PASSWORD') }}</p>
+                    <button class="btn-change">{{ __('message2.BTN_CHANGE') }}</button>
                 </div>
-                <button class="btn-update">Update Details</button>
+                <button class="btn-update">{{ __('message2.UPDATE_DETAILS') }}</button>
             </div>
             <!-- 👇 Hidden Form for Avatar Upload -->
             <div class="avatar-upload-form" id="avatarUploadForm" style="display: none;">
                 <form action="{{ route('account.uploadPlayerAvatar') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="avatar">Choose a new profile picture:</label>
+                        <label for="avatar">{{ __('message2.NEW_PROFILE_PICTURE') }}</label>
                         <input type="file" name="user_avatar" id="avatar" required accept=".jpg, .jpeg, .png, .gif">
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn-submit">Submit</button>
-                        <button type="button" class="btn-cancel" id="cancelAvatarUpload">Cancel</button>
+                        <button type="submit" class="btn-submit">{{ __('message2.BTN_SUBMIT') }}</button>
+                        <button type="button" class="btn-cancel" id="cancelAvatarUpload">{{ __('message2.BTN_CANCEL') }}</button>
                     </div>
                 </form>
             </div>
 
             <!-- Update Details Form (initially hidden) -->
             <div id="updateDetailsForm" style="display: none;" class="container mt-4">
-                <form class="row g-3" action="{{route('account.updatePlayerProfile')}}" method="POST">
-                @csrf 
+                <form class="row g-3" action="{{ route('account.updatePlayerProfile') }}" method="POST">
+                    @csrf 
                     <div class="col-md-6">
-                        <label class="form-label">First Name*</label>
-                        <input type="text" class="form-control" name="fname" value="{{$playerInfo->firstName ?? ''}}" required/>
+                        <label class="form-label">{{ __('message2.FIRST_NAME') }}*</label>
+                        <input type="text" class="form-control" name="fname" value="{{ $playerInfo->firstName ?? '' }}" required />
                     </div>
-            
+
                     <div class="col-md-6">
-                        <label class="form-label">Last Name*</label>
-                        <input type="text" class="form-control" name="lname" value="{{$playerInfo->lastName ?? ''}}" required/>
+                        <label class="form-label">{{ __('message2.LAST_NAME') }}*</label>
+                        <input type="text" class="form-control" name="lname" value="{{ $playerInfo->lastName ?? '' }}" required />
                     </div>
-            
+
                     <div class="col-12">
-                        <label class="form-label">Address*</label>
-                        <textarea class="form-control" name="address" rows="3" required>{{$playerInfo->addressLine1 ?? ''}}</textarea>
+                        <label class="form-label">{{ __('message2.ADDRESS') }}*</label>
+                        <textarea class="form-control" name="address" rows="3" required>{{ $playerInfo->addressLine1 ?? '' }}</textarea>
                     </div>
-            
+
                     <div class="col-md-6">
-                        <label class="form-label">Date of Birth*</label>
-                        <input type="date" class="form-control" name="dob" value="{{$playerInfo->dob ?? ''}}" />
+                        <label class="form-label">{{ __('message2.DATE_OF_BIRTH') }}*</label>
+                        <input type="date" class="form-control" name="dob" value="{{ $playerInfo->dob ?? '' }}" />
                     </div>
-            
+
                     <div class="col-md-6">
-                        <label class="form-label">Country*</label>
-                        <input type="text" class="form-control" value="{{$playerInfo->country ?? ''}}" disabled />
-                        <input type="hidden" class="form-control" name="country" value="{{$playerInfo->countryCode ?? ''}}" />
+                        <label class="form-label">{{ __('message2.COUNTRY') }}*</label>
+                        <input type="text" class="form-control" value="{{ $playerInfo->country ?? '' }}" disabled />
+                        <input type="hidden" class="form-control" name="country" value="{{ $playerInfo->countryCode ?? '' }}" />
                     </div>
-            
+
                     <div class="col-md-8">
-                        <label class="form-label">Email Address*</label>
+                        <label class="form-label">{{ __('message2.EMAIL_ADDRESS') }}*</label>
                         <div class="input-group">
-                            <input type="email" class="form-control" name="email" value="{{$playerInfo->emailId ?? ''}}" required/>
+                            <input type="email" class="form-control" name="email" value="{{ $playerInfo->emailId ?? '' }}" required />
                         </div>
                     </div>
-            
+
                     <div class="col-md-4">
-                        <label class="form-label">Mobile No*</label>
+                        <label class="form-label">{{ __('message2.MOBILE_NO') }}*</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="mobile" value="{{$playerInfo->mobileNo ?? ''}}" readonly />
+                            <input type="text" class="form-control" name="mobile" value="{{ $playerInfo->mobileNo ?? '' }}" readonly />
                         </div>
                     </div>
-            
+
                     <div class="col-12">
-                        <label class="form-label">Gender*</label><br />
+                        <label class="form-label">{{ __('message2.GENDER') }}*</label><br />
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" value="M" {{isset($playerInfo->gender) && $playerInfo->gender == "M" ? 'checked': ''}} />
-                            <label class="form-check-label">Male</label>
+                            <input class="form-check-input" type="radio" name="gender" value="M" {{ isset($playerInfo->gender) && $playerInfo->gender == "M" ? 'checked' : '' }} />
+                            <label class="form-check-label">{{ __('message2.MALE') }}</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" value="F" {{isset($playerInfo->gender) && $playerInfo->gender == "F" ? 'checked': ''}}/>
-                            <label class="form-check-label">Female</label>
+                            <input class="form-check-input" type="radio" name="gender" value="F" {{ isset($playerInfo->gender) && $playerInfo->gender == "F" ? 'checked' : '' }} />
+                            <label class="form-check-label">{{ __('message2.FEMALE') }}</label>
                         </div>
                     </div>
-            
+
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-outline-secondary" id="cancelUpdateDetails">Cancel</button>
+                        <button type="submit" class="btn btn-primary">{{ __('message2.BTN_SAVE') }}</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelUpdateDetails">{{ __('message2.BTN_CANCEL') }}</button>
                     </div>
-            
                 </form>
             </div>
 
@@ -153,23 +152,23 @@
                 @csrf
                 
                     <div class="col-12">
-                        <label class="form-label">Current Password*</label>
-                        <input type="password" class="form-control" name="currentPassword" placeholder="Enter current password" required />
+                        <label class="form-label">{{ __('message2.CURRENT_PASSWORD') }}*</label>
+                        <input type="password" class="form-control" name="currentPassword" placeholder="{{ __('message2.CURRENT_PASSWORD') }}" required />
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label">New Password*</label>
-                        <input type="password" class="form-control" name="newPassword" placeholder="Enter new password" required />
+                        <label class="form-label">{{ __('message2.NEW_PASSWORD') }}*</label>
+                        <input type="password" class="form-control" name="newPassword" placeholder="{{ __('message2.NEW_PASSWORD') }}" required />
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label">Confirm Password*</label>
-                        <input type="password" class="form-control" name="retypePassword" placeholder="Confirm new password" required />
+                        <label class="form-label">{{ __('message2.CONFIRM_PASSWORD') }}*</label>
+                        <input type="password" class="form-control" name="retypePassword" placeholder="{{ __('message2.CONFIRM_PASSWORD') }}" required />
                     </div>
                     
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary">Change</button>
-                        <button type="button" class="btn btn-outline-secondary" id="cancelChangePassword">Cancel</button>
+                        <button type="submit" class="btn btn-primary">{{ __('message2.BTN_CHANGE') }}</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelChangePassword">{{ __('message2.BTN_CANCEL') }}</button>
                     </div>
                 
                 </form>
@@ -179,7 +178,7 @@
 
         <!-- Tickets Section -->
         <div class="tab-content" id="tickets">
-            <h2 class="ticket-title">'Ticket Details'</h2>
+            <h2 class="ticket-title">{{ __('message2.TICKET_DETAILS ') }}</h2>
 
             <!-- Date Filter -->
             <div class="ticket-filters">
@@ -187,11 +186,11 @@
                 <div class="row">
          
                         <div class="col-md-4 filter-group">
-                            <label for="from-date">From</label>
+                            <label for="from-date">{{ __('message2.FROM ') }}</label>
                             <input type="date" id="from-date" class="ticket-date" name="fromDate" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-4 filter-group">
-                            <label for="to-date">To</label>
+                            <label for="to-date">{{ __('message2.TO') }}</label>
                             <input type="date" id="to-date" class="ticket-date" name="toDate" value="{{ now()->format('Y-m-d') }}" required>
                         </div>
                         <input type="hidden" name="limit" value="100">
@@ -199,7 +198,7 @@
                         <input type="hidden" name="offset" value="0">
                         <div class="col-md-4 align-items-end d-flex">
                         
-                              <button type="button" class="btn-search" id="ajaxSearchBtn">Search</button>
+                              <button type="button" class="btn-search" id="ajaxSearchBtn">{{ __('message2.{{ __('message2.BTN_SEARCH ') }}') }}</button>
                         </div>
                   
                 </div>
@@ -215,15 +214,15 @@
 
         <!-- Wallet Section -->
         <div class="tab-content" id="wallet">
-            <h1 class="wallet-title">My Wallet ({{ $currencyCode }})</h1>
+            <h1 class="wallet-title">{{ __('message2.MY_WALLET') }} ({{ $currencyCode }})</h1>
             <div class="wallet-tabs">
-                <a href="#" class="wallet-tab active" data-wallet="deposit">Deposit</a>
-                <a href="#" class="wallet-tab" data-wallet="withdraw">Withdrawal</a>
+                <a href="#" class="wallet-tab active" data-wallet="deposit">{{ __('message2.DEPOSIT') }}</a>
+                <a href="#" class="wallet-tab" data-wallet="withdraw">{{ __('message2.WITHDRAW') }}</a>
             </div>
 
             <!-- Deposit Tab -->
             <div class="wallet-content active" id="deposit">
-                <h4>CHOOSE PAYMENT MODE</h4>
+                <h4>{{ __('message2.PAYMENT_MODE') }}</h4>
                 <form id="deposit-form">
                     @foreach ($options->payTypeMap ?? [] as $payType)
                         <div>
@@ -235,8 +234,8 @@
                         </div>
                     @endforeach
                     @if(isset($options->payTypeMap) && count($options->payTypeMap) >0 ) 
-                        <input type="number" id="deposit-amount" name="amount" placeholder="Amount ({{ $currencyCode }})" required>
-                        <button type="submit" class="btn-proceed">Proceed</button>
+                        <input type="number" id="deposit-amount" name="amount" placeholder="{{ __('message2.AMOUNT ') }} ({{ $currencyCode }})" required>
+                        <button type="submit" class="btn-proceed">{{ __('message2.BTN_PROCEED') }}</button>
                     @endif
                     <div class="error_tooltip" id="deposit-error" style="color:red;display:none"></div>
                 </form>
@@ -244,7 +243,7 @@
 
             <!-- Withdrawal Tab -->
             <div class="wallet-content" id="withdraw">
-                <h4>CHOOSE PAYMENT MODE</h4>
+                <h4>{{ __('message2.PAYMENT_MODE') }}</h4>
                 @if(isset($withdrawalOptions->payTypeMap) && count($withdrawalOptions->payTypeMap) >0 ) 
                 <form id="withdraw-form">
                     @foreach ($withdrawalOptions->payTypeMap ?? [] as $payType)
@@ -258,42 +257,42 @@
                     @endforeach
    
                     <input type="number" id="withdraw-amount" name="amount"
-                        placeholder="Amount ({{ $currencyCode }})" required>
-                    <button type="submit" class="btn-proceed">Proceed</button>
+                        placeholder="{{ __('message2.AMOUNT ') }} ({{ $currencyCode }})" required>
+                    <button type="submit" class="btn-proceed">{{ __('message2.BTN_PROCEED') }}</button>
                     <div class="error_tooltip" id="withdraw-error" style="color:red;display:none"></div>
                 </form>
 
-                <h3>Pending Withdrawals</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>SNO</th>
-                            <th>Date</th>
-                            <th>Withdrawal Id</th>
-                            <th>Amount</th>
-                            <th>Pin Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($pendingWithdrawals->data))
-                            @forelse($pendingWithdrawals->data as $w)
-                                <tr>
-                                    <td>{{ $i+1 }}</td>
-                                    <td>{{ $w->createdAt ?? '' }}</td>
-                                    <td>{{ $w->requestId ?? '' }}</td>
-                                    <td>{{ $w->amount ?? '' }}</td>
-                                    <td>
-                                        <button data-id="{{ $w->userTxnId }}" class="btn-getpin">GET PIN</button>
-                                        <span style="display:none" id="pin-{{ $w->userTxnId }}">{{ $w->otp ?? '' }}</span>
-                                        <button data-id="{{ $w->requestId }}" data-amount="{{ $w->amount }}" class="btn-cancel">Cancel</button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr><td colspan="5">No pending withdrawals found.</td></tr>
-                            @endforelse
-                        @endif
-                    </tbody>
-                </table>
+                    <h3>{{ __('message2.PENDING_WITHDRAWALS') }}</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ __('message2.SNO') }}</th>
+                                <th>{{ __('message2.DATE') }}</th>
+                                <th>{{ __('message2.WITHDRAWAL_ID') }}</th>
+                                <th>{{ __('message2.AMOUNT') }}</th>
+                                <th>{{ __('message2.PIN_ACTION') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($pendingWithdrawals->data))
+                                @forelse($pendingWithdrawals->data as $w)
+                                    <tr>
+                                        <td>{{ $i+1 }}</td>
+                                        <td>{{ $w->createdAt ?? '' }}</td>
+                                        <td>{{ $w->requestId ?? '' }}</td>
+                                        <td>{{ $w->amount ?? '' }}</td>
+                                        <td>
+                                            <button data-id="{{ $w->userTxnId }}" class="btn-getpin">{{ __('message2.GET PIN') }}</button>
+                                            <span style="display:none" id="pin-{{ $w->userTxnId }}">{{ $w->otp ?? '' }}</span>
+                                            <button data-id="{{ $w->requestId }}" data-amount="{{ $w->amount }}" class="btn-cancel">{{ __('message2.BTN_CANCEL') }}</button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="5">{{ __('message2.WITHDRAWALS_MESSAGE') }}</td></tr>
+                                @endforelse
+                            @endif
+                        </tbody>
+                    </table>
                 @endif
             </div>
         </div>
@@ -301,25 +300,25 @@
 
         <!-- Transactions Section -->
         <div class="tab-content" id="transactions">
-            <h2 class="transaction-title">Transactions Details</h2>
+            <h2 class="transaction-title">{{ __('message2.TRANSACTIONS_DETAILS') }}</h2>
                 <form class="transaction-filters">
                 <div class="row">
                     <div class="col-md-3">
                              <div class="filter-groupp">
-                        <label for="from-date">From</label>
+                        <label for="from-date">{{ __('message2.FROM') }}</label>
                         <input type="date" id="from-date" name="fromDate" class="transaction-date" value="{{ now()->subMonth()->format('Y-m-d') }}" required>
                     </div>
                     </div>
                     <div class="col-md-3">
                         
                     <div class="filter-groupp">
-                        <label for="to-date">To</label>
+                        <label for="to-date">{{ __('message2.TO') }}</label>
                         <input type="date" id="to-date" name="toDate" class="transaction-date" value="{{ now()->format('Y-m-d') }}" required>
                     </div>
                     </div>
                     <div class="col-md-3">
                                 <div class="filter-groupp">
-                        <label for="transaction-type">Transaction Type</label>
+                        <label for="transaction-type">{{ __('message2.TRANSACTION_TYPE') }}</label>
                         <select id="transaction-type" name="txnType" class="transaction-select">
                             @foreach($transaction_option AS $key => $value)
                                 <option value="{{$key}}">{{$value}}</option>
@@ -329,7 +328,7 @@
                     </div>
                     <div class="col-md-3 align-items-end d-flex">
                         
-                    <button type="button" id="transaction-filtersbtn" class="btn-search">Search</button>
+                    <button type="button" id="transaction-filtersbtn" class="btn-search">{{ __('message2.BTN_SEARCH') }}</button>
                     </div>
                 </div>
                
@@ -343,13 +342,13 @@
                 <table id="transaction-table" class="table" style="display:none">
                     <thead>
                         <tr>
-                            <th>S. No.</th>
-                            <th>Date</th>
-                            <th>Transaction ID</th>
-                            <th>Particular</th>
-                            <th>Credit</th>
-                            <th>Debit</th>
-                            <th>Balance</th>
+                            <th>{{ __('message2.SNO') }}</th>
+                            <th>{{ __('message2.DATE') }}</th>
+                            <th>{{ __('message2.TRANSACTION_ID') }}</th>
+                            <th>{{ __('message2.PARTICULAR') }}</th>
+                            <th>{{ __('message2.CREDIT') }}</th>
+                            <th>{{ __('message2.DEBIT') }}</th>
+                            <th>{{ __('message2.BALANCE') }}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -366,15 +365,15 @@
                 <table id="bonus-table" class="table" style="display:none">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Bonus Code</th>
-                            <th>Amount</th>
-                            <th>Target</th>
-                            <th>WR Requirement</th>
-                            <th>Redeemed Amount</th>
-                            <th>Bonus Criteria</th>
-                            <th>Expiry</th>
-                            <th>Status</th>
+                            <th>{{ __('message2.DATE') }}</th>
+                            <th>{{ __('message2.BONUS_CODE') }}</th>
+                            <th>{{ __('message2.AMOUNT') }}</th>
+                            <th>{{ __('message2.TARGET') }}</th>
+                            <th>{{ __('message2.WR_REQUIREMENT') }}</th>
+                            <th>{{ __('message2.REDEEMED_AMOUNT') }}</th>
+                            <th>{{ __('message2.BONUS_CRITERIA') }}</th>
+                            <th>{{ __('message2.EXPIRY') }}</th>
+                            <th>{{ __('message2.STATUS') }}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -390,12 +389,12 @@
                 <table id="ticket-table" class="table" style="display:none">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Ticket Code</th>
-                            <th>Ticket Count</th>
-                            <th>Pending</th>
-                            <th>Expiry</th>
-                            <th>Status</th>
+                            <th>{{ __('message2.DATE') }}</th>
+                            <th>{{ __('message2.TICKET_CODE') }}</th>
+                            <th>{{ __('message2.TICKET_COUNT') }}</th>
+                            <th>{{ __('message2.PENDING') }}</th>
+                            <th>{{ __('message2.EXPIRY') }}</th>
+                            <th>{{ __('message2.STATUS') }}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -411,11 +410,11 @@
                 <table id="wager-table" class="table" style="display: none">
                     <thead>
                         <tr>
-                            <th>S. No.</th>
-                            <th>Date</th>
-                            <th>Transaction ID</th>
-                            <th>Particular</th>
-                            <th>Amount</th>
+                            <th>{{ __('message2.SNO') }}</th>
+                            <th>{{ __('message2.DATE') }}</th>
+                            <th>{{ __('message2.TRANSACTION_ID') }}</th>
+                            <th>{{ __('message2.PARTICULAR') }}</th>
+                            <th>{{ __('message2.AMOUNT') }}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -431,11 +430,11 @@
                 <table id="dwwr-table" class="table" style="display: none">
                     <thead>
                         <tr>
-                            <th>S. No.</th>
-                            <th>Date</th>
-                            <th>Transaction ID</th>
-                            <th>Particular</th>
-                            <th>Amount</th>
+                            <th>{{ __('message2.SNO') }}</th>
+                            <th>{{ __('message2.DATE') }}</th>
+                            <th>{{ __('message2.TRANSACTION_ID') }}</th>
+                            <th>{{ __('message2.PARTICULAR') }}</th>
+                            <th>{{ __('message2.AMOUNT') }}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -449,15 +448,15 @@
                 </table>
 
                 <div id="winning-table" style="display:none; margin-top:20px;">
-                <h5>'Total winning for the selected period: ' <b>EUR 31</b></h5>
+                    <h5>{{ __('message2.TOTAL_WINNING_PERIOD') }}</h5>
                 <table class="winning-table">
                     <thead>
                         <tr>    
-                            <th>Sr.No.</th>
-                            <th>Date & Time</th>
-                            <th>Transaction ID</th>
-                            <th>Particulars</th>
-                            <th>Amount</th>
+                            <th>{{ __('message2.SNO') }}</th>
+                            <th>{{ __('message2.DATE_TIME') }}</th>
+                            <th>{{ __('message2.TRANSACTION_ID') }}</th>
+                            <th>{{ __('message2.PARTICULAR') }}</th>
+                            <th>{{ __('message2.AMOUNT') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -494,82 +493,81 @@
 
         <!-- Inbox Section -->
         <div class="tab-content" id="inbox">
-            <h2 class="inbox-title">Check Email</h2>
+            <h2 class="inbox-title">{{ __('message2.CHECK_EMAIL') }}</h2>
             <div id="inbox-list"></div>
 
             <div id="message-view" style="display:none;">
-                <button id="back-to-inbox">Back to Inbox</button>
+                <button id="back-to-inbox">{{ __('message2.BACK_TO_INBOX') }}</button>
                 <div id="message-content"></div>
-                <button id="delete-message">Delete</button>
+                <button id="delete-message">{{ __('message2.BTN_DELETE') }}</button>
             </div>
         </div>
 
 
         <!-- Refer Section -->
         <div class="tab-content" id="refer">
-            <h2 class="refer-friend-title">Refer Now</h2>
+            <h2 class="refer-friend-title">{{ __('message2.REFER_NOW') }}</h2>
             <div class="refer-container">
                 <!-- Top Tabs -->
                 <div class="refer-tabs">
-                    <a href="#" class="refer-tab active" data-refer="now">Refer Now</a>
-                    <a href="#" class="refer-tab" data-refer="status">Track Status</a>
+                    <a href="#" class="refer-tab active" data-refer="now">{{ __('message2.REFER_NOW') }}</a>
+                    <a href="#" class="refer-tab" data-refer="status">{{ __('message2.TRACK_STATUS') }}</a>
                 </div>
 
                 <!-- Refer Now Content -->
                 <div class="refer-content active" id="refer-now">
-                    <h3 class="refer-title">Choose How You’d Like To Invite!</h3>
+                    <h3 class="refer-title">{{ __('message2.CHOOSE_INVITE_METHOD') }}</h3>
                     <div class="col-md-12 col-sm-12 col-xs-12 refer_option refer-options">
                     <ul class="refer-list">
                         <li class="refer-btn gmail ">
-                            <i class="bi bi-envelope"></i><br>Gmail
+                            <i class="bi bi-envelope"></i><br>{{ __('message2.GMAIL') }}
                         </li>
                         <li class="refer-btn facebook">
-                            <i class="bi bi-facebook"></i><br>WEAVER_FACEBOOK
+                            <i class="bi bi-facebook"></i><br>{{ __('message2.FACEBOOK') }}
                         </li>
                         <li class="refer-btn twitter">
-                            <i class="bi bi-twitter"></i><br>Twitter
+                            <i class="bi bi-twitter"></i><br>{{ __('message2.TWITTER') }}
                         </li>
                         </ul>
                     </div>
 
-                    <h3 class="refer-title">Or Share The Link Below With Your Friends</h3>
+                    <h3 class="refer-title">{{ __('message2.SHARE_LINK') }}</h3>
                     <div class="refer-copy">
-                        <label class="refer-label">Refer Code:</label>
+                        <label class="refer-label">{{ __('message2.REFER_CODE') }}:</label>
                         <div class="input-group">
                             <input type="text" readonly value="Q6B10" class="refer-code">
-                            <button class="copy-btn">COPY</button>
+                            <button class="copy-btn">{{ __('message2.BTN_COPY') }}</button>
                         </div>
-                        <label class="refer-label">Referral link:</label>
+                        <label class="refer-label">{{ __('message2.REFERRAL_LINK') }}:</label>
                         <div class="input-group">
                             <input type="text" readonly value="https://www.wls.infinitolotto.com/refer-friend?data=Q6B10" class="refer-link">
-                            <button class="copy-btn">COPY</button>
+                            <button class="copy-btn">{{ __('message2.BTN_COPY') }}</button>
                         </div>
                     </div>
 
-                    <h3 class="refer-title">Or Add Friends Manually</h3>
+                    <h3 class="refer-title">{{ __('message2.ADD_FRIENDS') }}</h3>
                     <form id="refer-form-friend">
                     <div class="refer-form">
-                        <input type="text" placeholder="Friend’s Name" name="firstName">
-                        <input type="email" placeholder="Friend’s Email Address" name="emailId">
+                        <input type="text" placeholder="{{ __('message2.FRIEND_NAME') }}" name="firstName">
+                        <input type="email" placeholder="{{ __('message2.FRIEND_EMAIL') }}" name="emailId">
                         <input type="hidden" name="referType" value="mailRefer">
                         <input type="hidden" name="lastName" value="">
                         <input type="hidden" name="mobileNo" value="">
                         <input type="hidden" name="inviteMode" value="EMAIL" >
                     </div>
-                    <button type="submit" class="invite-btn">Invite Friends Now</button>
+                    <button type="submit" class="invite-btn">{{ __('message2.INVITE_FRIENDS') }}</button>
                     </form>
                     <p class="refer-note">
-                        To be eligible for the bonus, please ensure that the friends you invite use the link located in the invitation sent to them. This is the only way they can be linked to your account.
+                        {{ __('message2.REFER_NOTE') }}.
                         <br>
                         <br>
-
-                        Just choose your email provider or social networking site(s) and invite your friends to join Khelplayrummy. Please be informed that no information shall be shared with anyone, please read our privacy policy to gain more understanding in this respect.
+                            {{ __('message2.DESCRIPTION ') }}.
                     </p>
                 </div>
 
                 <!-- Track Status Content -->
                 <div class="refer-content" id="refer-status">
-                    <p>No referral history found.</p>
+                    <p>{{ __('message2.REFERRAL_HISTORY') }}.</p>
                 </div>
             </div>
         </div>

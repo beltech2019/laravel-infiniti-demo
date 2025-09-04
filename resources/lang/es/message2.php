@@ -162,5 +162,14 @@ return[
     'COPYRIGHT_DECRIPTION' => 'Copyright © 2025 | Skilrock Technologies Pvt. Ltd. Todos los derechos reservados.',
 
 
-
+    'MOBILE_NUMBER_VALIDATION' => 'El número de móvil debe tener exactamente 10 dígitos',
+    'PASSWORD_ALPHANUMERIC' => 'La contraseña solo puede contener letras y números (no se permiten caracteres especiales)',
+    'PASSWORD_MISMATCH' => 'La contraseña y la confirmación de la contraseña no coinciden',
+    'COUNTRY_VALIDATION' => 'Por favor seleccione un país',
+    'CURRENCY_VALIDATION' => 'Por favor seleccione una moneda',
+    'AGREE_TERMS_CONDITIONS' => 'Debe aceptar los Términos y Condiciones',
+    'FRIEND_NAME' => 'Nombre del amigo',
+    'FRIEND_EMAIL' => 'Correo electrónico del amigo',
+    'OTP' => 'OTP',
+    'USERNAME_MOBILE' => 'Usuario / Móvil',
 ];

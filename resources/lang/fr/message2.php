@@ -157,4 +157,15 @@ return[
     'REFER_A_FRIEND_REMINDER_SENT' => "Rappel envoyé avec succès.",
 
 
+    'MOBILE_NUMBER_VALIDATION' => "Le numéro de mobile doit comporter exactement 10 chiffres.",
+    'PASSWORD_ALPHANUMERIC' => "Le mot de passe ne peut contenir que des lettres et des chiffres (pas de caractères spéciaux).",
+    'PASSWORD_MISMATCH' => "Le mot de passe et la confirmation du mot de passe ne correspondent pas.",
+    'COUNTRY_VALIDATION' => "Veuillez sélectionner un pays.",
+    'CURRENCY_VALIDATION' => "Veuillez sélectionner une devise.",
+    'AGREE_TERMS_CONDITIONS' => "Vous devez accepter les Conditions générales.",
+    'FRIEND_NAME' => "Nom de l'ami",
+    'FRIEND_EMAIL' => "Adresse e-mail de l'ami",
+    'OTP' => 'OTP',
+    'USERNAME_MOBILE' => 'Nom d’utilisateur / Mobile',
+
 ];

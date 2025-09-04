@@ -161,4 +161,15 @@ return[
      'PLEASE_LOGIN_FIRST' => "Please log-in first",
      'REFER_A_FRIEND_REMINDER_SENT' => "Reminder sent successfully.",
      'COPYRIGHT_DECRIPTION' => 'Copyright © 2025 | Skilrock Technologies Pvt. Ltd. All Rights Reserved.',
+
+    'MOBILE_NUMBER_VALIDATION' => 'Mobile number must be exactly 10 digits',
+    'PASSWORD_ALPHANUMERIC' => 'Password can only contain letters and numbers (no special characters allowed)',
+    'PASSWORD_MISMATCH' => 'Password and Confirm Password do not match',
+    'COUNTRY_VALIDATION' => 'Please select a country',
+    'CURRENCY_VALIDATION' => 'Please select a currency',
+    'AGREE_TERMS_CONDITIONS' => 'You must agree to the Terms and Conditions',
+    'FRIEND_NAME' => 'Friend\'s Name',
+    'FRIEND_EMAIL' => 'Friend\'s Email Address',
+    'OTP' => 'OTP',
+    'USERNAME_MOBILE' => 'Username / Mobile',
 ];

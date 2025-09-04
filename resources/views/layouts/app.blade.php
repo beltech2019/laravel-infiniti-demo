@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-    <title>Infiniti Demo</title>
+    <title>{{ __('message2.TITLE_INFINITI_DEMO ') }}</title>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,17 +45,17 @@
             id="login-form-ige">
       @csrf      
       <div class="form-group">
-        <label>Mobile</label>
+        <label>{{ __('message2.MOBILE') }}</label>
         <div class="input-wrapper">
           <span class="icon">⇨</span>
-          <input type="text" placeholder="Mobile" name="userName_email" id="userName_email" autocomplete="off">
+          <input type="text" placeholder="{{ __('message2.MOBILE') }}" name="userName_email" id="userName_email" autocomplete="off">
         </div>
       </div>
       <div class="form-group">
-        <label>Password</label>
+        <label>{{ __('message2.PASSWORD') }}</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="Password" name="password" id="password" autocomplete="off">
+          <input type="password" placeholder="{{ __('message2.PASSWORD') }}" name="password" id="password" autocomplete="off">
         </div>
       </div>
       <p style="color:red"></p>
@@ -65,11 +65,11 @@
       <input type="hidden" name="encPwd" id="encPwd" value="" />
       <input type="hidden" name="submiturl" id="submiturl" value="{{ callBackURL() }}" />
       <div style="text-align:right; margin-bottom: 10px;">
-        <a href="#forgot" style="color:#0056cc; font-size: 14px;">Forgot Password?</a>
+        <a href="#forgot" style="color:#0056cc; font-size: 14px;">{{ __('message2.FORGOT_PASSWORD ') }}?</a>
       </div>
-      <button type="submit" class="pms_button login-submit"  name="commit" value="Login">Log-in</button>
+      <button type="submit" class="pms_button login-submit"  name="commit" value="Login">{{ __('message2.LOGIN ') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        Don’t have an account? <a href="{{route('registerview')}}" style="color: #0056cc;">Signup</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT ') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP ') }}</a>
       </p>
     </form>
   </div>
@@ -78,20 +78,20 @@
 <div id="forgotPasswordModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Forget Password?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD ') }}?</h2>
     
     <form method="post" action="{{route('forget.password')}}">
       @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">👤</span>
-          <input type="text" placeholder="Username/mobile" name="forget_mobile">
+          <input type="text" placeholder="{{ __('message2.USERNAME_MOBILE ') }}" name="forget_mobile">
         </div>
       </div>
       <p id="forgetpasserror" style="color:red"></p>
-      <button type="submit" class="login-submit">Submit</button>
+      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT ') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        Don’t have a account? <a href="{{route('registerview')}}" style="color: #0056cc;">Signup</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT ') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP ') }}</a>
       </p>
     </form>
   </div>
@@ -100,43 +100,43 @@
 <div id="forgotPasswordOTPModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeResetForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Forget Password?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD ') }}?</h2>
     
     <form method="post" action="{{route('resetPassword.Forgot')}}">
       @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="number" placeholder="OTP" name="playerotp" id="playerotp">
+          <input type="number" placeholder="{{ __('message2.OTP ') }}" name="playerotp" id="playerotp">
         </div>
       </div>
       
       <div class="form-group">
-        <label>New Password</label>
+        <label>{{ __('message2.NEW_PASSWORD ') }}</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="New Password" name="newPassword" id="newPassword" autocomplete="off">
+          <input type="password" placeholder="{{ __('message2.NEW_PASSWORD ') }}" name="newPassword" id="newPassword" autocomplete="off">
         </div>
       </div>
       
       <div class="form-group">
-        <label>Confirm Password</label>
+        <label>{{ __('message2.CONFIRM_PASSWORD ') }}</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="Confirm Password" name="retypePassword" id="retypePassword" autocomplete="off">
+          <input type="password" placeholder="{{ __('message2.CONFIRM_PASSWORD ') }}" name="retypePassword" id="retypePassword" autocomplete="off">
         </div>
       </div>
       <p id="forgetpassotperror" style="color:red"></p>
-      <button type="submit" class="login-submit">Submit</button>
+      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT ') }}</button>
     </form>
   </div>
 </div> 
 <div id="error_popup" class="modal">
   <div class="modal-content">
       <span class="close-btn" onclick="closeErrorModal()">&times;</span>
-      <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Error</h2>
+      <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.ERROR ') }}</h2>
       <div class="modal-body">
-          <p class="msg">Default error message goes here.</p>
+          <p class="msg">{{ __('message2.DEFAULT_ERROR_MESSAGE ') }}.</p>
       </div>
   </div>
 </div>
