@@ -627,16 +627,17 @@ $(document).ready(function () {
                 data: { _token: token, isAjax: 'true' },
                 dataType: 'json',
                 success: function (res) {
+                    debugger;
                     if (res.errorCode !== 0) {
-                        $('#inbox-list').html('<p>No messages found.</p>');
+                        $('#inbox-list').html(`<p>${langmsag.noMessages}</p>`);
                         return;
                     }
                     let html = '<ul>';
                     res.messages.plrInboxList.forEach(m => {
                         html += `<li class="${m.status.toLowerCase()}" data-msgid="${m.inboxId}" data-contentid="${res.content[m.inboxId]}">
                             <span>${m.subject}</span>
-                            <button class="read-btn">Read</button>
-                            <button class="delete-btn">Delete</button>
+                            <button class="read-btn">${langmsag.readBtn}</button>
+                            <button class="delete-btn">${langmsag.deleteBtn}</button>
                         </li>`;
                     });
                     html += '</ul>';
@@ -645,7 +646,7 @@ $(document).ready(function () {
                     $('#inbox-list').show();
                 },
                 error: function () {
-                    $('#inbox-list').html('<p>Error loading messages.</p>');
+                    $('#inbox-list').html(`<p>${langmsag.errorLoading}</p>`);
                 }
             });
         });
@@ -672,7 +673,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (res) {
                     if (res.errorCode === 0) {
-                        $('#message-content').html(res.content || 'No content found.');
+                        $('#message-content').html(res.content || langmsag.noContent);
                         $('#inbox-list').hide();
                         $('#message-view').show();
                         $('#delete-message').data('msgid', msgId);
@@ -691,7 +692,7 @@ $(document).ready(function () {
 
     // Delete message buttons
     $('#inbox-list').on('click', '.delete-btn', function () {
-        if (!confirm('Are you sure you want to delete this message?')) return;
+        if (!confirm(langmsag.confirmDelete)) return;
         const msgId = $(this).parent().data('msgid');
         checkSessionBeforeAjax(function() {
             $.ajax({
@@ -885,7 +886,7 @@ function populateBonusTable(response) {
 
     // Check for bonusList presence
     if (!response || !response.bonusList || response.bonusList.length === 0) {
-        tbody.append('<tr><td colspan="9">No Bonus Found.</td></tr>');
+        tbody.append(`<tr><td colspan="9">${langmsag.noBonus}</td></tr>`);
         return;
     }
 
@@ -916,7 +917,7 @@ function populateTicketTable(response) {
     tbody.empty();
 
     if (!response || !response.ticketList || response.ticketList.length === 0) {
-        tbody.append('<tr><td colspan="6">No Ticket Details Found For Selected Date Range.</td></tr>');
+        tbody.append(`<tr><td colspan="6">${langmsag.noTicket}</td></tr>`);
         return;
     }
 
@@ -945,7 +946,7 @@ function populateWagerTable(response) {
     tbody.empty();
 
     if (!response || !response.txnList || response.txnList.length === 0) {
-        tbody.append('<tr><td colspan="5">No Wager Data Found.</td></tr>');
+        tbody.append(`<tr><td colspan="5">${langmsag.noWager}</td></tr>`);
         return;
     }
 
@@ -970,7 +971,7 @@ function populateDWWRTable(response) {
     tbody.empty();
 
     if (!response || !response.txnList || response.txnList.length === 0) {
-        tbody.append('<tr><td colspan="5">No Data Found For Selected Transaction Type.</td></tr>');
+        tbody.append(`<tr><td colspan="5">${langmsag.noTransactionData}</td></tr>`);
         return;
     }
 
@@ -996,7 +997,7 @@ function populateTransactionTable(response) {
     tbody.empty();
 
     if (!response || !response.txnList || response.txnList.length === 0) {
-        tbody.append('<tr><td colspan="7">No Transaction Details Found For Selected Date Range.</td></tr>');
+        tbody.append(`<tr><td colspan="7">${langmsag.noTransactionDetails}</td></tr>`);
         return;
     }
 
@@ -1064,7 +1065,7 @@ function formatCurrency(val) {
         let method = document.querySelector('input[name="depositMethod"]:checked');
         let amount = document.getElementById('deposit-amount').value;
         if (!method || !amount) {
-            document.getElementById('deposit-error').innerText = "Select method and enter valid amount."; document.getElementById('deposit-error').style.display='block';
+            document.getElementById('deposit-error').innerText = langmsag.selectMethodAmount; document.getElementById('deposit-error').style.display='block';
             return;
         }
         document.getElementById('deposit-error').style.display='none';
@@ -1074,7 +1075,7 @@ function formatCurrency(val) {
                 headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
                 body: JSON.stringify({payTypeCode: method.value, deposit: amount})
             }).then(r => r.json()).then(resp => {
-                if(resp.errorCode==0) alert('Deposit Success');
+                if(resp.errorCode==0) alert(langmsag.depositSuccess);
                 else document.getElementById('deposit-error').innerText = resp.respMsg;
             });
         });
@@ -1085,7 +1086,7 @@ function formatCurrency(val) {
         let method = document.querySelector('input[name="withdrawMethod"]:checked');
         let amount = document.getElementById('withdraw-amount').value;
         if (!method || !amount) {
-            document.getElementById('withdraw-error').innerText = "Select method and enter valid amount."; document.getElementById('withdraw-error').style.display='block';
+            document.getElementById('withdraw-error').innerText = langmsag.selectMethodAmount; document.getElementById('withdraw-error').style.display='block';
             return;
         }
         document.getElementById('withdraw-error').style.display='none';
@@ -1095,7 +1096,7 @@ function formatCurrency(val) {
                 headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
                 body: JSON.stringify({paymentTypeId: method.value, amount: amount})
             }).then(r => r.json()).then(resp => {
-                if(resp.errorCode==0) alert('Withdrawal Success');
+                if(resp.errorCode==0) alert(langmsag.withdrawalSuccess);
                 else document.getElementById('withdraw-error').innerText = resp.respMsg;
             });
         });    
@@ -1109,7 +1110,7 @@ function formatCurrency(val) {
                     headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type':'application/json'},
                     body: JSON.stringify({transactionId: button.dataset.id, cancelAmount: button.dataset.amount})
                 }).then(r=>r.json()).then(resp=>{
-                    if(resp.errorCode==0) alert('Withdrawal Cancelled');
+                    if(resp.errorCode==0) alert(langmsag.withdrawalCancelled);
                     else alert(resp.respMsg);
                 });
             });    
@@ -1209,7 +1210,7 @@ $(document).ready(function(){
             $("#winning-table").show();
         }
         else {
-            $("#message").text("No Transaction Details Found For Selected Date Range.").show();
+            $("#message").text(langmsag.noTransactionDetails).show();
         }
     });
 });

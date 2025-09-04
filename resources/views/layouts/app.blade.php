@@ -140,6 +140,27 @@
       </div>
   </div>
 </div>
+
+<script>
+  const langmsag = {
+      noMessages: "{{ __('message2.NO_MESSAGES_FOUND') }}",
+      readBtn: "{{ __('message2.BTN_READ') }}",
+      deleteBtn: "{{ __('message2.BTN_DELETE') }}",
+      errorLoading: "{{ __('message2.ERROR_LOADING_MESSAGES') }}",
+      noContent: "{{ __('message2.NO_CONTENT_FOUND') }}",
+      confirmDelete: "{{ __('message2.CONFIRM_DELETE_MESSAGE') }}",
+      noBonus: "{{ __('message2.NO_BONUS_FOUND') }}",
+      noTicket: "{{ __('message2.NO_TICKET_DETAILS') }}",
+      noWager: "{{ __('message2.NO_WAGER_DATA') }}",
+      noTransactionData: "{{ __('message2.NO_DATA_FOR_TRANSACTION') }}",
+      noTransactionDetails: "{{ __('message2.NO_TRANSACTION_DETAILS') }}",
+      selectMethodAmount: "{{ __('message2.SELECT_METHOD_AMOUNT') }}",
+      depositSuccess: "{{ __('message2.DEPOSIT_SUCCESS') }}",
+      withdrawalSuccess: "{{ __('message2.WITHDRAWAL_SUCCESS') }}",
+      withdrawalCancelled: "{{ __('message2.WITHDRAWAL_CANCELLED') }}"
+  };
+
+</script>
 <script>
 $(document).ready(function() {
     toastr.options = {
