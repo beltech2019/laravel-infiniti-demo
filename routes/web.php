@@ -5,9 +5,12 @@ use App\Http\Controllers\NewIgeGameController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthorisationController;
 use App\Http\Controllers\ReferAFriendController;
+use App\Http\Middleware\SetLocale;
+use Illuminate\Support\Facades\Log;
 
 
 
+Route::middleware([SetLocale::class])->group(function () {
 Route::match(['GET','POST'], '/component/weaver', [AuthorisationController::class, 'dispatch'])
     ->name('weaver.dispatch');
 
@@ -68,3 +71,14 @@ Route::prefix('refer')->name('refer.')->group(function () {
 });
 
 
+Route::get('lang/{locale}', function ($locale) {
+    Log::info($locale);
+    if (in_array($locale, ['en', 'fr'])) {
+        Log::info(strtoupper(app()->getLocale()));
+        session(['locale' => $locale]);
+        Log::info(strtoupper(app()->getLocale()));
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+});

@@ -164,11 +164,6 @@ $(document).ready(function() {
         toastr.success(@json(session('success')), 'Success');
     @endif
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            toastr.error(@json($error), 'Error',);
-        @endforeach
-    @endif
 });
 </script>  
    <script>

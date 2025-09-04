@@ -4,7 +4,7 @@
 <div class="account-container">
     <!-- Sidebar -->
     <div id = "sp-left" class="account-sidebar">
-    <h3 class = "sp-module-title">My Account</h3>
+    <h3 class = "sp-module-title">{{ __('message2.MY_ACCOUNT') }}</h3>
         <ul>
             <li class=""><a href="{{ route('account.profile') . '?tab=profile' }}" data-tab="profile">🌐 My Profile</a></li>
             <li><a href="{{ route('account.profile') . '?tab=tickets' }}" data-tab="tickets">🎟 My Tickets</a></li>

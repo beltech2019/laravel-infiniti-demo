@@ -38,9 +38,15 @@
 
                 </ul>
                 <form class="d-flex align-items-center">
-                    <div class="countrycode">
-                        <img src="{{asset('images/en_gb.gif')}}" class="">
-                    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown">
+                            {{ strtoupper(app()->getLocale()) }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">Français</a></li>
+                        </ul>
+                    </li>
                     @if(sessionLogin())
                     <div id="user-info" class="dropdown">
                         <button id="amount-button" class="btn btn-sm btn-outline-primary dropdown-toggle fw-bold" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,7 +64,7 @@
                         </ul>
                     </div>
                     @else
-                    <button class="btn btn-danger login-btn" type="button">Login/Signup</button>
+                    <button class="btn btn-danger login-btn" type="button">{{ __('message2.LOGIN_SIGNUP') }}</button>
                     @endif
                 </form>
             </div>

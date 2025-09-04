@@ -13,6 +13,8 @@ use App\Helpers\ServerUrl;
 use App\Helpers\Utilities;
 use App\Helpers\Constants;
 use App\Helpers\Session as LegacySession;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session as LaravelSession;
 use Illuminate\Support\Facades\Cache;
 
 
