@@ -171,4 +171,19 @@ return[
     'SUCCESS' => 'Succès',
     'SOMETHING_WENT_WRONG' => 'Une erreur s’est produite, veuillez réessayer.',
 
+    'NO_MESSAGES_FOUND' => 'Aucun message trouvé',
+    'BTN_READ' => 'Lire',
+    'ERROR_LOADING_MESSAGES' => 'Erreur lors du chargement des messages',
+    'NO_CONTENT_FOUND' => 'Aucun contenu trouvé',
+    'CONFIRM_DELETE_MESSAGE' => 'Êtes-vous sûr de vouloir supprimer ce message ?',
+    'NO_BONUS_FOUND' => 'Aucun bonus trouvé',
+    'NO_TICKET_DETAILS' => 'Aucun détail de ticket trouvé pour la plage de dates sélectionnée',
+    'NO_WAGER_DATA' => 'Aucune donnée de pari trouvée',
+    'NO_DATA_FOR_TRANSACTION' => 'Aucune donnée trouvée pour le type de transaction sélectionné',
+    'NO_TRANSACTION_DETAILS' => 'Aucun détail de transaction trouvé pour la plage de dates sélectionnée',
+    'SELECT_METHOD_AMOUNT' => 'Sélectionnez une méthode et saisissez un montant valide.',
+    'DEPOSIT_SUCCESS' => 'Dépôt réussi',
+    'WITHDRAWAL_SUCCESS' => 'Retrait réussi',
+    'WITHDRAWAL_CANCELLED' => 'Retrait annulé',
+
 ];

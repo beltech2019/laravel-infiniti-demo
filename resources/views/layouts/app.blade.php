@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-    <title>{{ __('message2.TITLE_INFINITI_DEMO ') }}</title>
+    <title>{{ __('message2.TITLE_INFINITI_DEMO') }}</title>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,11 +65,11 @@
       <input type="hidden" name="encPwd" id="encPwd" value="" />
       <input type="hidden" name="submiturl" id="submiturl" value="{{ callBackURL() }}" />
       <div style="text-align:right; margin-bottom: 10px;">
-        <a href="#forgot" style="color:#0056cc; font-size: 14px;">{{ __('message2.FORGOT_PASSWORD') }}?</a>
+        <a href="#forgot" style="color:#0056cc; font-size: 14px;">{{ __('message2.FORGOT_PASSWORD') }}</a>
       </div>
       <button type="submit" class="pms_button login-submit"  name="commit" value="Login">{{ __('message2.LOGIN') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        {{ __('message2.DONT_HAVE_ACCOUNT') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT') }} <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
       </p>
     </form>
   </div>

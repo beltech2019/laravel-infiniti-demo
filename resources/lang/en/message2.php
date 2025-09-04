@@ -33,7 +33,7 @@ return[
     'TO' => "To",
     'BTN_SEARCH' => "Search",
     'DEPOSIT' => "Deposit",
-    'WITHDRAWAL' => "Withdrawal",
+    'WITHDRAW' => "Withdraw",
     'PAYMENT_MODE' => "CHOOSE PAYMENT MODE",
     'BTN_PROCEED' => "Proceed",
     'PENDING_WITHDRAWALS' => "Pending Withdrawals",
@@ -174,6 +174,21 @@ return[
     'USERNAME_MOBILE' => 'Username / Mobile',
     'SUCCESS' => 'Success',
     'SOMETHING_WENT_WRONG' => 'Something went wrong, please try again.',
+
+    'NO_MESSAGES_FOUND' => 'No messages found',
+    'BTN_READ' => 'Read',
+    'ERROR_LOADING_MESSAGES' => 'Error loading messages',
+    'NO_CONTENT_FOUND' => 'No content found',
+    'CONFIRM_DELETE_MESSAGE' => 'Are you sure you want to delete this message?',
+    'NO_BONUS_FOUND' => 'No Bonus Found',
+    'NO_TICKET_DETAILS' => 'No Ticket Details Found For Selected Date Range',
+    'NO_WAGER_DATA' => 'No Wager Data Found',
+    'NO_DATA_FOR_TRANSACTION' => 'No Data Found For Selected Transaction Type',
+    'NO_TRANSACTION_DETAILS' => 'No Transaction Details Found For Selected Date Range',
+    'SELECT_METHOD_AMOUNT' => 'Select method and enter valid amount.',
+    'DEPOSIT_SUCCESS' => 'Deposit Success',
+    'WITHDRAWAL_SUCCESS' => 'Withdrawal Success',
+    'WITHDRAWAL_CANCELLED' => 'Withdrawal Cancelled',
 
 
 ];
