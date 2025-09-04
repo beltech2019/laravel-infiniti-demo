@@ -47,19 +47,19 @@ class ReferAFriendController extends Controller
             if (Validations::getErrorCode() == 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Invitation sent successfully.'
+                    'message' => __('message2.INVITATION_SENT')
                 ]);
             }
 
             return response()->json([
                 'status' => 'error',
-                'message' => $response->respMsg ?? 'Failed to send invitation.'
+                'message' => $response->respMsg ?? __('message2.INVITATION_FAILED')
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => Errors::SESSION_EXPIRED
+            'message' => __('message2.SESSION_EXPIRED')
         ]);
     }
 
@@ -86,7 +86,7 @@ class ReferAFriendController extends Controller
 
         return response()->json([
             'status' => 'error',
-            'message' => Errors::SESSION_EXPIRED
+            'message' => __('message2.SESSION_EXPIRED')
         ]);
     }
 
@@ -116,13 +116,13 @@ class ReferAFriendController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => Errors::INVALID_ERROR_CODE
+                'message' => __('message2.INVALID_ERROR_CODE')
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => Errors::SESSION_EXPIRED
+            'message' => __('message2.SESSION_EXPIRED')
         ]);
     }
 
@@ -193,7 +193,7 @@ class ReferAFriendController extends Controller
 
         return response()->json([
             'status' => 'error',
-            'message' => Errors::SESSION_EXPIRED
+            'message' => __('message2.SESSION_EXPIRED')
         ]);
     }
 
@@ -214,15 +214,15 @@ class ReferAFriendController extends Controller
         if ($isAjax) {
             return response()->json([
                 'status' => 'error',
-                'redirect' => route('login'), // assuming named route for login
-                'message' => Errors::SESSION_EXPIRED,
+                'redirect' => route('login'),
+                'message' => __('message2.SESSION_EXPIRED'),
                 'code' => Constants::AJAX_FLAG_SESSION_EXPIRE
             ]);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => Errors::SESSION_EXPIRED
+            'message' => __('message2.SESSION_EXPIRED')
         ]);
     }
 
