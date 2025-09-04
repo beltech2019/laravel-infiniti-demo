@@ -40,7 +40,7 @@ class AccountController extends Controller
             $playerId = Utilities::getPlayerID();
             $playerToken = Utilities::getPlayerToken();
             $playerInfo = Utilities::getPlayerLoginResponse();
-            $lang = 'en';
+            $lang = substr(app()->getLocale(), 0, 2);
             $currencyInfo = Utilities::getCurrencyInfo();
             $currencyCode = $currencyInfo[0] ?? '';
             $dispCurrency = $currencyInfo[1] ?? '';
@@ -71,7 +71,7 @@ class AccountController extends Controller
         $playerId = Utilities::getPlayerID();
         $playerToken = Utilities::getPlayerToken();
         $playerInfo = Utilities::getPlayerLoginResponse();
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
         $currencyInfo = Utilities::getCurrencyInfo();
         $currencyCode = $currencyInfo[0] ?? '';
         $dispCurrency = $currencyInfo[1] ?? '';
@@ -517,7 +517,7 @@ class AccountController extends Controller
         $msgId = $request->input('msgId', '');
         $isAjax = $request->input('isAjax', '');
         Validations::$isAjax = ($isAjax == 'true');
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
 
         if (LegacySession::sessionValidate()) {
             $offset = '';

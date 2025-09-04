@@ -73,7 +73,7 @@ Route::prefix('refer')->name('refer.')->group(function () {
 
 Route::get('lang/{locale}', function ($locale) {
     Log::info($locale);
-    if (in_array($locale, ['en', 'fr'])) {
+    if (in_array($locale, ['en', 'fr', 'th', 'es'])) {
         Log::info(strtoupper(app()->getLocale()));
         session(['locale' => $locale]);
         Log::info(strtoupper(app()->getLocale()));

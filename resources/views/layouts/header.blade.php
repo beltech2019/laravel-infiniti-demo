@@ -10,28 +10,28 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item" id="nav-item-lottery">
-                        <a class="nav-link" id="nav-link-lottery" aria-current="page" href="{{route('games.lottery')}}">Lottery</a>
+                        <a class="nav-link" id="nav-link-lottery" aria-current="page" href="{{route('games.lottery')}}">{{ __('message2.LOTTERY') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-sportsPool">
-                        <a class="nav-link" id="nav-link-sportsPool" href="{{route('games.sportsPool')}}">Sportspool</a>
+                        <a class="nav-link" id="nav-link-sportsPool" href="{{route('games.sportsPool')}}">{{ __('message2.SPORTSPOOL') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-bingo">
-                        <a class="nav-link" id="nav-link-bingo" href="{{route('games.bingo')}}">Bingo</a>
+                        <a class="nav-link" id="nav-link-bingo" href="{{route('games.bingo')}}">{{ __('message2.BINGO') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-sportsBetting">
-                        <a class="nav-link" id="nav-link-sportsBetting" href="{{route('games.sportsbetting')}}">Sports betting</a>
+                        <a class="nav-link" id="nav-link-sportsBetting" href="{{route('games.sportsbetting')}}">{{ __('message2.SPORTS_BETTING') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-instant">
-                        <a class="nav-link" id="nav-link-instant" href="{{route('games.instantgames')}}">Instant Games</a>
+                        <a class="nav-link" id="nav-link-instant" href="{{route('games.instantgames')}}">{{ __('message2.INSTANT_GAMES') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-slots">
-                        <a class="nav-link" id="nav-link-slots" href="{{route('games.slotgames')}}">Slots</a>
+                        <a class="nav-link" id="nav-link-slots" href="{{route('games.slotgames')}}">{{ __('message2.SLOTS') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-crazyBillions">
-                        <a class="nav-link" id="nav-link-crazyBillions" href="{{route('games.crazyBillions')}}">Crazy Billions</a>
+                        <a class="nav-link" id="nav-link-crazyBillions" href="{{route('games.crazyBillions')}}">{{ __('message2.CRAZY_BILLIONS') }}</a>
                     </li>
                     <li class="nav-item" id="nav-item-gameArt">
-                        <a class="nav-link" id="nav-link-gameArt" href="{{route('games.gameart')}}">Game Art</a>
+                        <a class="nav-link" id="nav-link-gameArt" href="{{route('games.gameart')}}">{{ __('message2.GAME_ART') }}</a>
                     </li>
 
 
@@ -45,6 +45,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a></li>
                             <li><a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">Français</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'th') }}">Thai</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'es') }}">Spanish</a></li>
                         </ul>
                     </li>
                     @if(sessionLogin())
@@ -54,13 +56,13 @@
                         <span id="amount-text">{{ authUserBalance() }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=profile' }}">🌐 My Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=tickets' }}">🎟 My Tickets</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=wallet' }}">👛 My Wallet</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=transactions' }}">💳 My Transaction</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=inbox' }}">📥 Inbox</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=refer' }}">🌍 Refer a Friend</a></li>
-                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=profile' }}">🌐 {{ __('message2.MY_PROFILE') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=tickets' }}">🎟 {{ __('message2.MY_TICKETS') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=wallet' }}">👛 {{ __('message2.MY_WALLET') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=transactions' }}">💳 {{ __('message2.MY_TRANSACTIONS') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=inbox' }}">📥 {{ __('message2.INBOX') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') . '?tab=refer' }}">🌍 {{ __('message2.REFER_A_FRIEND') }}</a></li>
+                        <li><a class="dropdown-item" href="/logout">{{ __('message2.LOGOUT') }}</a></li>
                         </ul>
                     </div>
                     @else

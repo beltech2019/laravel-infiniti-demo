@@ -4,23 +4,23 @@
                 <div class="col-md-6">
                     <div class="logo-footer">
                         <img src="{{asset('images/infinity.png')}}">
-                        <p>Skilrock's 4th generation INFINITI platform is designed to meet the gaming requirements of any client anywhere in the world.It is a true online channel and online gaming platform.</p>
+                        <p>{{ __('message2.INFINITI_DESCRIPTION') }}</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="quicklinks">
                         <div class="heaidng-links">
-                            <h4>Quick Links</h4>
+                            <h4>{{ __('message2.QUICK_LINKS') }}</h4>
                         </div>
                         <ul>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Results</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> How to Play</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.RESULTS') }}</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.HOW_TO_PLAY') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Promotions</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> News</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.PROMOTIONS') }}</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.NEWS') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Our Retailer</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.FAQ') }}</a></li>
 
                             
                         </ul>
@@ -29,16 +29,16 @@
                 <div class="col-md-3">
    <div class="quicklinks">
                         <div class="heaidng-links">
-                            <h4>More Links</h4>
+                            <h4>{{ __('message2.MORE_LINKS') }}</h4>
                         </div>
                         <ul>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Responsible Gaming</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.CONTACT_US') }}</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.RESPONSIBLE_GAMING') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Privacy policy</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Cookie Policy</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.PRIVACY_POLICY') }}</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.COOKIE_POLICY') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> Terms & Conditions</a></li>
+                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.TERMS_CONDITIONS') }}</a></li>
 
                             
                         </ul>
@@ -80,7 +80,7 @@
                     <li><a href="#"><i class="bi bi-pinterest"></i></a></li>
                     <li><a href="#"><i class="bi bi-youtube"></i></a></li>
                 </ul>
-                <p>Copyright © 2025 | Skilrock Technologies Pvt. Ltd. All Rights Reserved.</p>
+                <p>{{ __('message2.COPYRIGHT_DECRIPTION') }}</p>
             </div>
         </div>
     </footer>

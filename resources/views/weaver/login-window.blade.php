@@ -13,7 +13,7 @@
                     <a href="{{route('games.lottery')}}" class="">
                         <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-draw.png')}}" alt="Draw">
-                            <a href="{{route('games.lottery')}}" class="">Lottery</a>
+                            <a href="{{route('games.lottery')}}" class="">{{ __('message2.LOTTERY') }}</a>
                         </div>
                     </a>
                 </div>
@@ -21,7 +21,7 @@
                     <a href="{{route('games.sportsPool')}}" class="">
                           <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-sportsLottery.png')}}" alt="sportspool">
-                            <a href="{{route('games.sportsPool')}}" class="">SportsPool</a>
+                            <a href="{{route('games.sportsPool')}}" class="">{{ __('message2.SPORTSPOOL') }}</a>
                         </div>
                     </a>    
                 </div>
@@ -29,7 +29,7 @@
                     <a href="{{route('games.instantgames')}}" class="">
                         <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/games-instant.png')}}" alt="Instant Win">
-                            <a href="{{route('games.instantgames')}}" class="">Instant Games</a>
+                            <a href="{{route('games.instantgames')}}" class="">{{ __('message2.INSTANT_GAMES') }}</a>
                         </div>
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                     <a href="{{route('games.bingo')}}" class="">
                        <div class="cards-icons">
                             <img src="{{ asset('images/game-icons/game-bingo.png')}}" alt="Bingo">
-                            <a href="{{route('games.bingo')}}" class="">Bingo</a>
+                            <a href="{{route('games.bingo')}}" class="">{{ __('message2.BINGO') }}</a>
                         </div>
                     </a>    
                 </div>
@@ -46,7 +46,7 @@
                     <a href="{{route('games.slotgames')}}" class="">
                          <div class="cards-icons ">
                             <img src="{{ asset('images/game-icons/games-slot.png')}}" alt="slot" class="game777">
-                            <a href="{{route('games.slotgames')}}" class="">SLOT</a>
+                            <a href="{{route('games.slotgames')}}" class="">{{ __('message2.SLOTS') }}</a>
                         </div>
                     </a>    
                 </div>

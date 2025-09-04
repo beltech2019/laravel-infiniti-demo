@@ -6,36 +6,36 @@
   </div>
 
   <div class="col-md-9">
-    <h3>Register</h3>
-    <p><small><i>Fields marked with * are required</i></small></p>
+    <h3>{{ __('message2.REGISTER') }}</h3>
+    <p><small><i>{{ __('message2.FIELDS_REQUIRED') }}</i></small></p>
     <div id="errorBox" class="alert alert-danger d-none"></div>
 
     <div class="basic-information">
-      <h5>Basic Information</h5>
+      <h5>{{ __('message2.BASIC_INFORMATION') }}</h5>
 
       <form id="registerForm">
         @csrf
         <div class="mb-3">
-          <label for="mobileNo">Mobile No.*</label>
-          <input type="text" name="mobileNo" id="mobileNo" class="form-control" placeholder="Mobile No.*" required/>
+          <label for="mobileNo">{{ __('message2.MOBILE_NO') }}</label>
+          <input type="text" name="mobileNo" id="mobileNo" class="form-control" placeholder="{{ __('message2.MOBILE_NO') }}." required/>
         </div>
 
         <div class="mb-3">
-          <label for="password">Password*</label>
-          <input type="password" name="reg_password" id="password" class="form-control" placeholder="Password*" required/>
+          <label for="password">{{ __('message2.PASSWORD') }}</label>
+          <input type="password" name="reg_password" id="password" class="form-control" placeholder="{{ __('message2.PASSWORD') }}" required/>
         </div>
 
         <div class="mb-3">
-          <label for="confirmPassword">Confirm Password*</label>
-          <input type="password" name="confirm_password" id="confirmPassword" class="form-control" placeholder="Confirm Password*" required/>
+          <label for="confirmPassword">{{ __('message2.CONFIRM_PASSWORD') }}</label>
+          <input type="password" name="confirm_password" id="confirmPassword" class="form-control" placeholder="{{ __('message2.CONFIRM_PASSWORD') }}" required/>
           <input type="hidden" name="isAjax" value="true" />
           <input type="hidden" name="otp_enable" value="{{$otp_enable}}" />
         </div>
 
         <div class="mb-3">
-          <label for="country">Select Country*</label>
+          <label for="country">{{ __('message2.SELECT_COUNTRY') }}</label>
           <select id="country" name="countrycode" class="form-select" required>
-            <option value="">Select Country*</option>
+            <option value="">{{ __('message2.SELECT_COUNTRY') }}</option>
             @foreach($countries->data as $country)
               <option value="{{$country->countryCode}}">{{$country->countryName}}</option>
             @endforeach
@@ -43,9 +43,9 @@
         </div>
 
         <div class="mb-3">
-          <label for="currency">Select Currency*</label>
+          <label for="currency">{{ __('message2.SELECT_CURRENCY') }}</label>
           <select id="currency" name="currency" class="form-select" required>
-            <option value="">Select Currency*</option>
+            <option value="">{{ __('message2.SELECT_CURRENCY') }}</option>
             @foreach ($currency as $key => $value)
               <option value="{{$value['curCode']}}">{{$key . ' (' . $value['decSymbol'] . ')'}}</option>
             @endforeach
@@ -53,20 +53,20 @@
         </div>
 
         <div class="mb-3">
-          <label for="referCode">Refer Code</label>
-          <input type="text" name="refercode" id="referCode" class="form-control" placeholder="Refer Code" />
+          <label for="referCode">{{ __('message2.REFER_CODE') }}</label>
+          <input type="text" name="refercode" id="referCode" class="form-control" placeholder="{{ __('message2.REFER_CODE') }}" />
         </div>
 
         <input type="hidden" name="registrationType" value="MINI"/>
         <div class="mb-3 form-check">
           <input type="checkbox" id="agree" name="agree" class="form-check-input" />
           <label for="agree" class="form-check-label">
-            I am at least 18 years old and have read and accepted the 
-            <a href="">Terms and Conditions</a>
+            {{ __('message2.AGE_AGREEMENT') }} 
+            <a href="">{{ __('message2.TERMS_CONDITIONS') }}</a>
           </label>
         </div>
 
-        <button type="submit" class="btn btn-danger">Create Account</button>
+        <button type="submit" class="btn btn-danger">{{ __('message2.BTN_CREATE_ACCOUNT') }}</button>
       </form>
     </div>
   </div>
@@ -76,7 +76,7 @@
 <div id="verifyOTPModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeOtpModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">Verify OTP</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.VERIFY_OTP') }}</h2>
     <form id="otpForm">
       @csrf
       <div class="form-group">
@@ -85,7 +85,7 @@
         </div>
       </div>
       <p id="showOTPerror" style="color:red"></p>
-      <button type="submit" class="btn btn-primary mt-2">Submit</button>
+      <button type="submit" class="btn btn-primary mt-2">{{ __('message2.BTN_SUBMIT') }}</button>
     </form>
   </div>
 </div>
@@ -105,7 +105,14 @@ function closeOtpModal(){
 
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-
+    const messages = const messages = {
+        mobileValidation: "{{ __('message2.MOBILE_NUMBER_VALIDATION') }}",
+        passwordMismatch: "{{ __('message2.PASSWORD_MISMATCH') }}",
+        countryRequired: "{{ __('message2.COUNTRY_REQUIRED') }}",
+        currencyRequired: "{{ __('message2.CURRENCY_REQUIRED') }}",
+        agreeRequired: "{{ __('message2.AGREE_REQUIRED') }}",
+        passwordAlphaNum: "{{ __('message2.PASSWORD_ALPHANUMERIC') }}"
+    };
     let mobile   = document.getElementById('mobileNo').value.trim();
     let password = document.getElementById('password').value.trim();
     let confirm  = document.getElementById('confirmPassword').value.trim();
@@ -115,37 +122,37 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     // 🔹 Mobile validation: only 10 digits
     if(!/^[0-9]{10}$/.test(mobile)) {
-        showError("Mobile number must be exactly 10 digits.");
+        showError(messages.mobileValidation);
         return;
     }
 
     // 🔹 Password: only alphanumeric
     if(!/^[a-zA-Z0-9]+$/.test(password)) {
-        showError("Password can only contain letters and numbers (no special characters).");
+        showError(message.passwordAlphaNum);
         return;
     }
 
     // 🔹 Confirm password
     if(password !== confirm) {
-        showError("Password and Confirm Password do not match.");
+        showError(message.passwordMismatch);
         return;
     }
 
     // 🔹 Country required
     if(country === "") {
-        showError("Please select a country.");
+        showError(message.countryRequired);
         return;
     }
 
     // 🔹 Currency required
     if(currency === "") {
-        showError("Please select a currency.");
+        showError(message.currencyRequired);
         return;
     }
 
     // 🔹 Terms checkbox required
     if(!agree) {
-        showError("You must agree to the Terms and Conditions.");
+        showError(message.agreeRequired);
         return;
     }
 

@@ -160,5 +160,5 @@ return[
      'INVALID_ERROR_CODE' => "System Error. Please try again. [Error Code]",
      'PLEASE_LOGIN_FIRST' => "Please log-in first",
      'REFER_A_FRIEND_REMINDER_SENT' => "Reminder sent successfully.",
-
+     'COPYRIGHT_DECRIPTION' => 'Copyright © 2025 | Skilrock Technologies Pvt. Ltd. All Rights Reserved.',
 ];

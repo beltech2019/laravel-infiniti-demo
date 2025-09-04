@@ -159,6 +159,7 @@ return[
     'INVALID_ERROR_CODE' => "Error del sistema. Por favor, inténtalo de nuevo. [Código de Error]",
     'PLEASE_LOGIN_FIRST' => "Por favor, inicia sesión primero",
     'REFER_A_FRIEND_REMINDER_SENT' => "Recordatorio enviado exitosamente.",
+    'COPYRIGHT_DECRIPTION' => 'Copyright © 2025 | Skilrock Technologies Pvt. Ltd. Todos los derechos reservados.',
 
 
 

@@ -21,7 +21,6 @@ class NewIgeGameController extends Controller
         $playType = htmlspecialchars($request->get('playType', ''), ENT_QUOTES, 'UTF-8');
         $return_url = htmlspecialchars(url()->current(), ENT_QUOTES, 'UTF-8');
         $lang = substr(app()->getLocale(), 0, 2); // e.g., 'en'
-
         // Replace these with your own logic
         $playerToken = Utilities::getPlayerToken();
         $playerInfo = Utilities::getPlayerLoginResponse();
@@ -114,7 +113,7 @@ class NewIgeGameController extends Controller
 
     public function sportsbetting(Request $request)
     {
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
         $playerToken = Utilities::getPlayerToken();
         $playerId = Utilities::getPlayerID();
         $url = Configuration::SPORTS_BETTING_IFRAME;
@@ -129,7 +128,7 @@ class NewIgeGameController extends Controller
 
     public function bingo(Request $request)
     {
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
         $playerToken = Utilities::getPlayerToken();
         $playerId = Utilities::getPlayerID();
         $url = Configuration::GAMES_DOMAIN;
@@ -145,7 +144,7 @@ class NewIgeGameController extends Controller
 
     public function lottery(Request $request)
     {
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
         $playerToken = Utilities::getPlayerToken();
         $playerId = Utilities::getPlayerID();
         $url = Configuration::GAMES_DOMAIN;
@@ -161,7 +160,7 @@ class NewIgeGameController extends Controller
 
     public function sportsPool(Request $request)
     {
-        $lang = 'en';
+        $lang = substr(app()->getLocale(), 0, 2);
         $playerToken = Utilities::getPlayerToken();
         $playerId = Utilities::getPlayerID();
         $url = 'https://dm-node1-wls.infinitilotto.com/';
