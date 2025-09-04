@@ -45,10 +45,10 @@
             id="login-form-ige">
       @csrf      
       <div class="form-group">
-        <label>{{ __('message2.MOBILE') }}</label>
+        <label>{{ __('message2.MOBILE_NO') }}</label>
         <div class="input-wrapper">
           <span class="icon">⇨</span>
-          <input type="text" placeholder="{{ __('message2.MOBILE') }}" name="userName_email" id="userName_email" autocomplete="off">
+          <input type="text" placeholder="{{ __('message2.MOBILE_NO') }}" name="userName_email" id="userName_email" autocomplete="off">
         </div>
       </div>
       <div class="form-group">
@@ -65,11 +65,11 @@
       <input type="hidden" name="encPwd" id="encPwd" value="" />
       <input type="hidden" name="submiturl" id="submiturl" value="{{ callBackURL() }}" />
       <div style="text-align:right; margin-bottom: 10px;">
-        <a href="#forgot" style="color:#0056cc; font-size: 14px;">{{ __('message2.FORGOT_PASSWORD ') }}?</a>
+        <a href="#forgot" style="color:#0056cc; font-size: 14px;">{{ __('message2.FORGOT_PASSWORD') }}?</a>
       </div>
-      <button type="submit" class="pms_button login-submit"  name="commit" value="Login">{{ __('message2.LOGIN ') }}</button>
+      <button type="submit" class="pms_button login-submit"  name="commit" value="Login">{{ __('message2.LOGIN') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        {{ __('message2.DONT_HAVE_ACCOUNT ') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP ') }}</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
       </p>
     </form>
   </div>
@@ -78,20 +78,20 @@
 <div id="forgotPasswordModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD ') }}?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}?</h2>
     
     <form method="post" action="{{route('forget.password')}}">
       @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">👤</span>
-          <input type="text" placeholder="{{ __('message2.USERNAME_MOBILE ') }}" name="forget_mobile">
+          <input type="text" placeholder="{{ __('message2.USERNAME_MOBILE') }}" name="forget_mobile">
         </div>
       </div>
       <p id="forgetpasserror" style="color:red"></p>
-      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT ') }}</button>
+      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT') }}</button>
       <p style="margin-top: 12px; font-size: 14px; color: #999;">
-        {{ __('message2.DONT_HAVE_ACCOUNT ') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP ') }}</a>
+        {{ __('message2.DONT_HAVE_ACCOUNT') }}? <a href="{{route('registerview')}}" style="color: #0056cc;">{{ __('message2.SIGNUP') }}</a>
       </p>
     </form>
   </div>
@@ -100,34 +100,34 @@
 <div id="forgotPasswordOTPModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeResetForgotModal()">&times;</span>
-    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD ') }}?</h2>
+    <h2 style="color:#0a58ca; font-size: 20px; margin-bottom: 15px;">{{ __('message2.FORGOT_PASSWORD') }}?</h2>
     
     <form method="post" action="{{route('resetPassword.Forgot')}}">
       @csrf
       <div class="form-group">
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="number" placeholder="{{ __('message2.OTP ') }}" name="playerotp" id="playerotp">
+          <input type="number" placeholder="{{ __('message2.OTP') }}" name="playerotp" id="playerotp">
         </div>
       </div>
       
       <div class="form-group">
-        <label>{{ __('message2.NEW_PASSWORD ') }}</label>
+        <label>{{ __('message2.NEW_PASSWORD') }}</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="{{ __('message2.NEW_PASSWORD ') }}" name="newPassword" id="newPassword" autocomplete="off">
+          <input type="password" placeholder="{{ __('message2.NEW_PASSWORD') }}" name="newPassword" id="newPassword" autocomplete="off">
         </div>
       </div>
       
       <div class="form-group">
-        <label>{{ __('message2.CONFIRM_PASSWORD ') }}</label>
+        <label>{{ __('message2.CONFIRM_PASSWORD') }}</label>
         <div class="input-wrapper">
           <span class="icon">🔒</span>
-          <input type="password" placeholder="{{ __('message2.CONFIRM_PASSWORD ') }}" name="retypePassword" id="retypePassword" autocomplete="off">
+          <input type="password" placeholder="{{ __('message2.CONFIRM_PASSWORD') }}" name="retypePassword" id="retypePassword" autocomplete="off">
         </div>
       </div>
       <p id="forgetpassotperror" style="color:red"></p>
-      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT ') }}</button>
+      <button type="submit" class="login-submit">{{ __('message2.BTN_SUBMIT') }}</button>
     </form>
   </div>
 </div> 
@@ -229,17 +229,21 @@ $(document).ready(function() {
   };
 </script>
 <script>
+  const message = {
+        mobileValidation: "{{ __('message2.MOBILE_NUMBER_VALIDATION') }}",
+        passwordAlphaNum: "{{ __('message2.PASSWORD_ALPHANUMERIC') }}"
+    };
   document.getElementById('login-form-ige').addEventListener('submit', function (e) {
   e.preventDefault();
     let mobile   = document.getElementById('userName_email').value.trim();
     let password = document.getElementById('password').value.trim();
     if(!/^[0-9]{10}$/.test(mobile)) {
-        showError("Mobile number must be exactly 10 digits.");
+        showError(message.mobileValidation);
         return;
     }
 
     if(!/^[a-zA-Z0-9]+$/.test(password)) {
-        showError("Password can only contain letters and numbers (no special characters).");
+        showError(message.passwordAlphaNum);
         return;
     }
   const form = this;
@@ -314,9 +318,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const mobile = forgotForm.querySelector("input[name='forget_mobile']").value.trim();
         const errorBox = document.getElementById("forgetpasserror");
-
+        const message = {
+                mobileValidation: "{{ __('message2.MOBILE_NUMBER_VALIDATION') }}"
+            };
         if (!/^[0-9]{10}$/.test(mobile)) {
-            errorBox.textContent = "Mobile number must be exactly 10 digits.";
+            errorBox.textContent = message.mobileValidation;
             return;
         }
         errorBox.textContent = "";
@@ -349,7 +355,11 @@ document.addEventListener("DOMContentLoaded", () => {
             errorBox.textContent = "Something went wrong, please try again.";
         }
     });
-
+    const message = {
+        passwordMismatch: "{{ __('message2.PASSWORD_MISMATCH') }}",
+        passwordAlphaNum: "{{ __('message2.PASSWORD_ALPHANUMERIC') }}",
+        wentWrong: "{{ __('message2.SOMETHING_WENT_WRONG') }}"
+    };
     resetForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -358,13 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const confirm = document.getElementById("retypePassword").value.trim();
         const mobile = document.getElementById("forgotPasswordOTPModal").dataset.mobile;
         const errorBox = document.getElementById("forgetpassotperror");
-
         if (!/^[a-zA-Z0-9]+$/.test(password)) {
-            errorBox.textContent = "Password can only contain letters and numbers (no special characters).";
+            errorBox.textContent = message.passwordAlphaNum;
             return;
         }
         if (password !== confirm) {
-            errorBox.textContent = "Password and Confirm Password do not match.";
+            errorBox.textContent = message.passwordMismatch;
             return;
         }
         errorBox.textContent = "";
@@ -394,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         } catch (err) {
-            errorBox.textContent = "Something went wrong, please try again.";
+            errorBox.textContent = message.wentWrong;
         }
     });
 
@@ -409,13 +418,13 @@ document.addEventListener("DOMContentLoaded", () => {
           dataType: 'json',
           success: function(response) {
               if (response.loggedIn) {
-                  onSuccess();  // Call the actual AJAX function if logged in
+                  onSuccess();
               } else {
-                  window.location.href = '/'; // Redirect to login page if not logged in
+                  window.location.href = '/';
               }
           },
           error: function() {
-              window.location.href = '/'; // Redirect on error as fallback
+              window.location.href = '/';
           }
       });
   }

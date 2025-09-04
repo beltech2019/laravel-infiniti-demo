@@ -105,7 +105,7 @@ function closeOtpModal(){
 
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const messages = const messages = {
+    const message = {
         mobileValidation: "{{ __('message2.MOBILE_NUMBER_VALIDATION') }}",
         passwordMismatch: "{{ __('message2.PASSWORD_MISMATCH') }}",
         countryRequired: "{{ __('message2.COUNTRY_REQUIRED') }}",
@@ -122,7 +122,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     // 🔹 Mobile validation: only 10 digits
     if(!/^[0-9]{10}$/.test(mobile)) {
-        showError(messages.mobileValidation);
+        showError(message.mobileValidation);
         return;
     }
 
