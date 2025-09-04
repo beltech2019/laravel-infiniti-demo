@@ -44,7 +44,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a></li>
-                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">Français</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">French</a></li>
                             <li><a class="dropdown-item" href="{{ route('lang.switch', 'th') }}">Thai</a></li>
                             <li><a class="dropdown-item" href="{{ route('lang.switch', 'es') }}">Spanish</a></li>
                         </ul>
