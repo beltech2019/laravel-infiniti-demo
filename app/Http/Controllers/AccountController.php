@@ -85,7 +85,7 @@ class AccountController extends Controller
     {
         try {
             if (!LegacySession::sessionValidate()) {
-                return redirect()->back()->withErrors(['error' => 'Session expired. Please login again.']);
+                return redirect()->back()->withErrors(['error' => __('message2.SESSION_EXPIRED')]);
             }
             $selectedAvatar = $request->input('selected_avatar', '');
             $userAvatar = $request->file('user_avatar');
@@ -147,9 +147,9 @@ class AccountController extends Controller
                         "avatarPath" => "/playerImages/" . $selectedAvatarName
                     ]);
 
-                    return redirect()->back()->with('success', "Uploade Successfully");
+                    return redirect()->back()->with('success', __('message2.UPLOAD_SUCCESS'));
                 } else {
-                    return redirect()->back()->withErrors(['error' => "Uploade Failed"]);
+                    return redirect()->back()->withErrors(['error' => "__('message2.UPLOAD_FAILED')"]);
                 }
             } elseif ($selectedAvatar) {
 
@@ -186,7 +186,7 @@ class AccountController extends Controller
                     return redirect()->back()->withErrors(['error' => $response]);
                 }
             } else {
-                return redirect()->back()->withErrors(['error' => 'Invalid request.']);
+                return redirect()->back()->withErrors(['error' => __('message2.INVALID_REQUEST')]);
             }
 
         } catch (\Exception $e) {
@@ -205,7 +205,7 @@ class AccountController extends Controller
                     return json_encode([
                         "status" => "error",
                         "code"   => 1,
-                        "message"=> "Invalid Transaction Type Received."
+                        "message"=> __('message2.INVALID_TRANSACTION_TYPE')
                     ]);
                 }
             }
@@ -218,23 +218,23 @@ class AccountController extends Controller
             $toDate = date('d/m/Y', strtotime($toDate)); 
             // Date and parameter validation
             if (!Validations::validateDate($fromDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_FROM_DATE')]);
             }
 
             if (!Validations::validateDate($toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid to date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_TO_DATE')]);
             }
 
             if (!Validations::compareDate($fromDate, $toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"To date must be greater than or equal to from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.TO_DATE_MUST_BE_GREATER')]);
             }
 
             if ($limit != Constants::MAX_ROW_LIMIT) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
 
             if ($offset < 0) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
 
             Log::info("hellombjgjh");
@@ -260,17 +260,17 @@ class AccountController extends Controller
             if (Validations::getErrorCode() == 0) {
                 if ($txnType == Constants::TXNTYPE_TICKET_DETAILS) {
                     if (!isset($response->ticketList)) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_RESPONSE')]);
                     }
                     if (count($response->ticketList) == 0) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Ticket Details Found For Selected Date Range."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.NO_TICKET_DETAILS')]);
                     }
                 } else {
                     if (!isset($response->txnList)) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_RESPONSE')]);
                     }
                     if (count($response->txnList) == 0) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Transaction Details Found For Selected Date Range."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.NO_TRANSACTION_DETAILS')]);
                     }
                 }
 
@@ -305,7 +305,7 @@ class AccountController extends Controller
             return json_encode([
                 "status"  => "error",
                 "code"    => Constants::AJAX_FLAG_SESSION_EXPIRE,
-                "message" => Errors::SESSION_EXPIRED
+                "message" => Errors::__('message2.SESSION_EXPIRED')
             ]);
         }
     }
@@ -320,7 +320,7 @@ class AccountController extends Controller
                     return json_encode([
                         "status" => "error",
                         "code"   => 1,
-                        "message"=> "Invalid Transaction Type Received."
+                        "message"=> __('message2.INVALID_TRANSACTION_TYPE')
                     ]);
                 }
             }
@@ -333,23 +333,23 @@ class AccountController extends Controller
             $toDate = date('d/m/Y', strtotime($toDate)); 
             // Date and parameter validation
             if (!Validations::validateDate($fromDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_FROM_DATE')]);
             }
 
             if (!Validations::validateDate($toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid to date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_TO_DATE')]);
             }
 
             if (!Validations::compareDate($fromDate, $toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"To date must be greater than or equal to from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.TO_DATE_MUST_BE_GREATER')]);
             }
 
             if ($limit != Constants::MAX_ROW_LIMIT) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
 
             if ($offset < 0) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
 
             Log::info("hellombjgjh");
@@ -375,17 +375,17 @@ class AccountController extends Controller
             if (Validations::getErrorCode() == 0) {
                 if ($txnType == Constants::TXNTYPE_TICKET_DETAILS) {
                     if (!isset($response->ticketList)) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_RESPONSE')]);
                     }
                     if (count($response->ticketList) == 0) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Ticket Details Found For Selected Date Range."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.NO_TICKET_DETAILS')]);
                     }
                 } else {
                     if (!isset($response->txnList)) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_RESPONSE')]);
                     }
                     if (count($response->txnList) == 0) {
-                        return json_encode(["status"=>"error","code"=>1,"message"=>"No Transaction Details Found For Selected Date Range."]);
+                        return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.NO_TRANSACTION_DETAILS')]);
                     }
                 }
 
@@ -419,7 +419,7 @@ class AccountController extends Controller
             return json_encode([
                 "status"  => "error",
                 "code"    => Constants::AJAX_FLAG_SESSION_EXPIRE,
-                "message" => Errors::SESSION_EXPIRED
+                "message" => Errors::__('message2.SESSION_EXPIRED')
             ]);
         }
     }
@@ -434,23 +434,23 @@ class AccountController extends Controller
             $isAjax = $request->input('isAjax', '');
             Validations::$isAjax = ($isAjax == 'true') ? true : false;
             if (!Validations::validateDate($fromDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_FROM_DATE')]);
             }
 
             if (!Validations::validateDate($toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Please enter valid to date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_TO_DATE')]);
             }
 
             if (!Validations::compareDate($fromDate, $toDate)) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"To date must be greater than or equal to from date."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.TO_DATE_MUST_BE_GREATER')]);
             }
 
             if ($limit != Constants::MAX_ROW_LIMIT) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
 
             if ($offset < 0) {
-                return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid data received."]);
+                return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_DATA_RECEIVED')]);
             }
             $response = ServerCommunication::sendCall(ServerUrl::BONUS_DETAILS, array(
                         "fromDate" => $fromDate,
@@ -460,10 +460,10 @@ class AccountController extends Controller
                             ), Validations::$isAjax);
             if (Validations::getErrorCode() == 0) {
                 if (!isset($response->bonusList)) {
-                    return json_encode(["status"=>"error","code"=>1,"message"=>"Invalid response received."]);
+                    return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.INVALID_RESPONSE')]);
                 }
                  if (count($response->bonusList) == 0) {
-                    return json_encode(["status"=>"error","code"=>1,"message"=>"No Bonus Found."]);
+                    return json_encode(["status"=>"error","code"=>1,"message"=>__('message2.NO_BONUS_FOUND')]);
                 }
             }
             return response()->json(['response'=>$response]);
@@ -471,7 +471,7 @@ class AccountController extends Controller
            return json_encode([
                 "status"  => "error",
                 "code"    => Constants::AJAX_FLAG_SESSION_EXPIRE,
-                "message" => Errors::SESSION_EXPIRED
+                "message" => Errors::__('message2.SESSION_EXPIRED')
             ]);
         }
     }
@@ -506,7 +506,7 @@ class AccountController extends Controller
 
         return response()->json([
             'errorCode' => 1,
-            'respMsg' => 'Session expired',
+            'respMsg' => __('message2.SESSION_EXPIRED'),
             'redirect' => route('login'),
         ], 401);
     }
@@ -564,7 +564,7 @@ class AccountController extends Controller
                     if (count($response->plrInboxList) == 0) {
                         return response()->json([
                             'errorCode' => 1,
-                            'respMsg' => 'No messages in inbox',
+                            'respMsg' => __('message2.NO_MESSAGES_INBOX'),
                         ]);
                     }
 
@@ -576,7 +576,7 @@ class AccountController extends Controller
                     if (count($ids) == 0) {
                         return response()->json([
                             'errorCode' => 1,
-                            'respMsg' => 'No messages content found',
+                            'respMsg' => __('message2.NO_MESSAGE_CONTENT'),
                         ]);
                     }
 
@@ -608,7 +608,7 @@ class AccountController extends Controller
 
         return response()->json([
             'errorCode' => 1,
-            'respMsg' => 'Session expired',
+            'respMsg' => ('message2.SESSION_EXPIRED'),
             'redirect' => route('login'),
         ], 401);
     }
@@ -675,9 +675,9 @@ class AccountController extends Controller
             if ($playerToken == $sessionToken) {
                 Utilities::playerLogout();
                 if (Validations::$isAjax) {
-                    return response()->json(['error' => 'User Authentication failed'], 401);
+                    return response()->json(['error' => ('message2.AUTH_FAILED')], 401);
                 }
-                return redirect()->back()->withErrors('User Authentication failed');
+                return redirect()->back()->withErrors(__('message2.AUTH_FAILED'));
             }
 
             $requestData = [
@@ -722,12 +722,12 @@ class AccountController extends Controller
             // }
 
             if ($response->errorCode == 0) {
-                return redirect()->back()->with('success', 'Player Profile Updated Successfully');
+                return redirect()->back()->with('success', __('message2.PROFILE_UPDATED'));
             } else {
                 return redirect()->back()->withErrors($response->errorMessage);
             }
         }
-        return redirect()->back()->withErrors('SESSION_EXPIRED');
+        return redirect()->back()->withErrors(__('message2.SESSION_EXPIRED'));
     }
 
 
@@ -758,7 +758,7 @@ class AccountController extends Controller
         } else {
             return response()->json([
                 'errorCode' => 1,
-                'respMsg' => 'Session expired',
+                'respMsg' => __('message2.SESSION_EXPIRED'),
                 'redirect' => route('login'),
             ], 401);
         }
@@ -834,7 +834,7 @@ class AccountController extends Controller
         } else {
             return response()->json([
                 'errorCode' => 1,
-                'respMsg' => 'Session expired',
+                'respMsg' => __('message2.SESSION_EXPIRED'),
                 'redirect' => route('login'),
             ], 401);
         }         
@@ -875,12 +875,12 @@ class AccountController extends Controller
             Session::setSessionVariable('depositRequest', $depositRequest);
             return response()->json([
                 'errorCode' => 0,
-                'respMsg' => 'Successs',
+                'respMsg' => __('message2.SUCCESS'),
             ]);
         } else {
             return response()->json([
                 'errorCode' => 1,
-                'respMsg' => 'Session expired',
+                'respMsg' => __('message2.SESSION_EXPIRED'),
                 'redirect' => route('login'),
             ], 401);
         }  

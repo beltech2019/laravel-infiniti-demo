@@ -168,5 +168,7 @@ return[
     'FRIEND_EMAIL' => 'อีเมลของเพื่อน',
     'OTP' => 'รหัส OTP',
     'USERNAME_MOBILE' => 'ชื่อผู้ใช้ / เบอร์มือถือ',
+    'SUCCESS' => 'สำเร็จ',
+    'SOMETHING_WENT_WRONG' => 'เกิดข้อผิดพลาด กรุณาลองอีกครั้ง',
 
 ];

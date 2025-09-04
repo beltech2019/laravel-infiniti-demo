@@ -172,4 +172,8 @@ return[
     'FRIEND_EMAIL' => 'Friend\'s Email Address',
     'OTP' => 'OTP',
     'USERNAME_MOBILE' => 'Username / Mobile',
+    'SUCCESS' => 'Success',
+    'SOMETHING_WENT_WRONG' => 'Something went wrong, please try again.',
+
+
 ];

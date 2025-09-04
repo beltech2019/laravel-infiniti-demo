@@ -168,5 +168,7 @@ return[
     'FRIEND_EMAIL' => "Adresse e-mail de l'ami",
     'OTP' => 'OTP',
     'USERNAME_MOBILE' => 'Nom d’utilisateur / Mobile',
+    'SUCCESS' => 'Succès',
+    'SOMETHING_WENT_WRONG' => 'Une erreur s’est produite, veuillez réessayer.',
 
 ];
