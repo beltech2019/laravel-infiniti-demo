@@ -5,6 +5,7 @@ use App\Http\Controllers\NewIgeGameController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthorisationController;
 use App\Http\Controllers\ReferAFriendController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Log;
 
@@ -80,5 +81,20 @@ Route::get('lang/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('lang.switch');
+
+/* Admin Routes */ 
+Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
+
+// Signup
+Route::get('/admin/signup', [AuthController::class, 'showSignupForm'])->name('admin.signup');
+Route::post('/admin/signup', [AuthController::class, 'signup'])->name('admin.signup.submit');
+
+// Logout
+Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+});
 
 });

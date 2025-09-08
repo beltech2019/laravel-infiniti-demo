@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -100,36 +99,53 @@
     <div class="shape" style="left:60%; width:100px; height:100px; animation-duration: 20s;"></div>
     <div class="shape" style="left:85%; width:60px; height:60px; animation-duration: 14s;"></div>
   </div>
+  {{-- Flash Messages --}}
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+  @if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+  @endif
+
+  {{-- Validation Errors --}}
+  @if($errors->any())
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        @foreach($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
 
   <!-- Signup Form -->
   <div class="signup-box">
     <h2>Admin Signup</h2>
-    <form onsubmit="handleSignup(event)">
+    <form action="{{ route('admin.signup.submit') }}" method="POST">
+      @csrf
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="fullname" placeholder="Full Name" required>
+        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name" required>
         <label for="fullname">Full Name</label>
+        @error('fullname')
+          <div class="text-danger small">{{ $message }}</div>
+        @enderror
       </div>
       <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="email" placeholder="Email" required>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
         <label for="email">Email</label>
+        @error('email')
+          <div class="text-danger small">{{ $message }}</div>
+        @enderror
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="password" placeholder="Password" required>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
         <label for="password">Password</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
-        <label for="phone">Phone Number</label>
+        @error('password')
+          <div class="text-danger small">{{ $message }}</div>
+        @enderror
       </div>
       <button type="submit" class="btn btn-signup">Sign Up</button>
     </form>
   </div>
-
-  <script>
-    function handleSignup(e) {
-      e.preventDefault();
-      alert("Signup Successful! 🎉");
-    }
-  </script>
 </body>
 </html>

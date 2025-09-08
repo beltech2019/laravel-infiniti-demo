@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -104,17 +103,41 @@
     <div class="bubble" style="left:70%; width:20px; height:20px; animation-duration: 8s;"></div>
     <div class="bubble" style="left:90%; width:35px; height:35px; animation-duration: 16s;"></div>
   </div>
+ {{-- Flash Messages --}}
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+  @if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+  @endif
 
+  {{-- Validation Errors --}}
+  @if($errors->any())
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        @foreach($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
   <div class="login-box">
     <h2>Login</h2>
-    <form>
+    <form action="{{ route('admin.login.submit') }}" method="POST">
+    @csrf
       <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         <label for="email">Email address</label>
+        @error('email')
+          <div class="text-danger small">{{ $message }}</div>
+        @enderror
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="password" placeholder="Password" required>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
         <label for="password">Password</label>
+        @error('password')
+          <div class="text-danger small">{{ $message }}</div>
+        @enderror
       </div>
       <button type="submit" class="btn btn-login">Login</button>
     </form>

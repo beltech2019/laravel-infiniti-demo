@@ -8,8 +8,13 @@
     <div class="dropdown">
         <img src="https://i.pravatar.cc/40" alt="Profile" class="profile-pic dropdown-toggle" data-bs-toggle="dropdown">
         <ul class="dropdown-menu dropdown-menu-end">
-        <li><a class="dropdown-item" href="#">Profile</a></li>
-        <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li>
+                <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+            </li>
         </ul>
     </div>
 </nav>
