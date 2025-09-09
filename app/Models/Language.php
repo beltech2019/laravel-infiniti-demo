@@ -14,6 +14,10 @@ class Language extends Model
 
     protected $table = 'tb_language';
 
+    protected $casts = [
+        'publish' => 'integer',
+    ];
+    
     protected $fillable = [
         'name',
         'publish',

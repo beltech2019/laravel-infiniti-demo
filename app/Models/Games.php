@@ -14,6 +14,10 @@ class Games extends Model
 
     protected $table = 'tb_games';
 
+    protected $casts = [
+        'publish' => 'integer',
+    ];
+
     protected $fillable = [
         'name',
         'publish',

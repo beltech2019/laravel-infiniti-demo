@@ -14,6 +14,10 @@ class Articles extends Model
 
     protected $table = 'tb_articles';
 
+    protected $casts = [
+        'publish' => 'integer',
+    ];
+    
     protected $fillable = [
         'name',
         'publish',
