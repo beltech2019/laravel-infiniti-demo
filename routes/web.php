@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Log;
 Route::middleware([SetLocale::class])->group(function () {
 Route::match(['GET','POST'], '/component/weaver', [AuthorisationController::class, 'dispatch'])
     ->name('weaver.dispatch');
+Route::get('/faqs', function () {
+    $faqs = getFaqs(); 
+    return view('faqs', compact('faqs'));
+})->name('faqs');
 
 // (Optional: pretty routes if you want them too)
 Route::post('/login', [AuthorisationController::class, 'playerLogin'])->name('weaver.login');
@@ -36,7 +40,6 @@ Route::post('/player-registration', [AuthorisationController::class, 'playerRegi
 
 Route::post('/forget-password', [AuthorisationController::class, 'forgotPassword'])->name('forget.password');
 Route::post('/reset-password-forgot', [AuthorisationController::class, 'resetPasswordForgot'])->name('resetPassword.Forgot');
-Route::get('/faqs', [AuthorisationController::class, 'faqs'])->name('faqs');
 
 
 Route::prefix('games')->name('games.')->group(function () {

@@ -377,10 +377,4 @@ class AuthorisationController extends Controller
         return response()->json($response);
     }
 
-    public function faqs()
-    {
-        $faqs = FAQ::all();
-        return view('faqs', compact('faqs'));
-    }
-
 }

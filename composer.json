@@ -43,7 +43,9 @@
             "app/Helpers/ServerUrl.php",
             "app/Helpers/Session.php",
             "app/Helpers/Utilities.php",
-            "app/Helpers/Validations.php"
+            "app/Helpers/Validations.php",
+            "app/Helpers/faq_helper.php"
+
         ]
     },
     "autoload-dev": {
