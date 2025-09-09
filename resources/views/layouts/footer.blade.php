@@ -20,7 +20,11 @@
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.NEWS') }}</a></li>
 
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.FAQ') }}</a></li>
+                            <li>
+                                <a href="{{ route('faqs') }}">
+                                    <i class="bi bi-chevron-right"></i> {{ __('message2.FAQ') }}
+                                </a>
+                            </li>
 
                             
                         </ul>

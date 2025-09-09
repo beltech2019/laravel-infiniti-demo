@@ -16,6 +16,7 @@ use App\Helpers\Session as LegacySession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session as LaravelSession;
 use Illuminate\Support\Facades\Cache;
+use App\Models\FAQ;
 
 
 class AuthorisationController extends Controller
@@ -374,6 +375,12 @@ class AuthorisationController extends Controller
             "mobileNo" => $mobile
         ), Validations::$isAjax);
         return response()->json($response);
+    }
+
+    public function faqs()
+    {
+        $faqs = FAQ::all();
+        return view('faqs', compact('faqs'));
     }
 
 }

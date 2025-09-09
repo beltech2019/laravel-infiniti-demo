@@ -16,16 +16,36 @@ class BannerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'path' => 'required|string|regex:/\.(jpg|jpeg|png)$/i',
-        ], [
-            'path.regex' => 'Only JPG and PNG files are allowed.',
-        ]);
-
         $banner = Banners::findOrFail($id);
-        $banner->path = $request->path;
+        $type = strtolower($banner->type); // e.g. jpg, jpeg, png
+
+        if ($request->hasFile('file')) {
+            // Validate according to banner type
+            $request->validate([
+                'file' => "file|mimes:$type|max:4096",
+            ], [
+                'file.mimes' => "Only .$type files are allowed.",
+            ]);
+
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+
+            $banner->path = 'images/' . $filename;
+        } else {
+            // If no file uploaded, validate path string
+            $request->validate([
+                'path' => "required|string|regex:/\.($type)$/i",
+            ], [
+                'path.regex' => "Only .$type file paths are allowed.",
+            ]);
+
+            $banner->path = $request->path;
+        }
+
         $banner->save();
 
-        return back()->with('success', 'Banner path updated.');
+        return back()->with('success', 'Banner updated successfully.');
     }
+
 }

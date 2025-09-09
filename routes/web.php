@@ -36,6 +36,7 @@ Route::post('/player-registration', [AuthorisationController::class, 'playerRegi
 
 Route::post('/forget-password', [AuthorisationController::class, 'forgotPassword'])->name('forget.password');
 Route::post('/reset-password-forgot', [AuthorisationController::class, 'resetPasswordForgot'])->name('resetPassword.Forgot');
+Route::get('/faqs', [AuthorisationController::class, 'faqs'])->name('faqs');
 
 
 Route::prefix('games')->name('games.')->group(function () {
