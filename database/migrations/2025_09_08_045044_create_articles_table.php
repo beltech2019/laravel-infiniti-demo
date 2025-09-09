@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tb_articles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('publish', ['true', 'false'])->default('true');
+            $table->enum('publish', [1, 0])->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

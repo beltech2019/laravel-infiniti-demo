@@ -6,6 +6,11 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthorisationController;
 use App\Http\Controllers\ReferAFriendController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Log;
 
@@ -95,6 +100,13 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('articles', ArticleController::class)->only(['index','update']);
+        Route::resource('games', GameController::class)->only(['index','update']);
+        Route::resource('faqs', FAQController::class)->except(['show']);
+        Route::resource('banners', BannerController::class)->only(['index','update']);
+        Route::resource('languages', LanguageController::class)->only(['index','update']);
+    });
 });
 
 });
