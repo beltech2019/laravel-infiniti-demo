@@ -54,15 +54,30 @@ class ArticleController extends Controller
         return view('admin.articles.responsibleGaming', compact('data'));
     }
 
-    public function privacyPolicyConfigdata(Request $request)
+    public function privacyPolicyConfig(Request $request)
     {
         $data = privacyPolicydata();
         return view('admin.articles.privacyPolicy', compact('data'));
     }
 
-    public function termsandconditionConfigdata(Request $request)
+    public function termsandconditionConfig(Request $request)
     {
         $data = termsandconditiondata();
         return view('admin.articles.termsandcondition', compact('data'));
+    }
+
+    public function responsibleGamingupdate(Request $request)
+    {
+        return back()->with('success', 'Updated.');
+    }
+
+    public function privacyPolicyupdate(Request $request)
+    {
+        return back()->with('success', 'Updated.');    
+    }
+
+    public function termsandconditionupdate(Request $request)
+    {
+        return back()->with('success', 'Updated.');      
     }
 }

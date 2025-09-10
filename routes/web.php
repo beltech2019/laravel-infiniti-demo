@@ -109,6 +109,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/privacyPolicyConfig', [ArticleController::class, 'privacyPolicyConfig'])->name('privacyPolicyConfig');
         Route::get('/termsandconditionConfig', [ArticleController::class, 'termsandconditionConfig'])->name('termsandconditionConfig');
         Route::get('/responsibleGamingConfig', [ArticleController::class, 'responsibleGamingConfig'])->name('responsibleGamingConfig');
+        Route::post('/privacyPolicyupdate', [ArticleController::class, 'privacyPolicyupdate'])->name('privacyPolicyupdate');
+        Route::post('/termsandconditionupdate', [ArticleController::class, 'termsandconditionupdate'])->name('termsandconditionupdate');
+        Route::post('/responsibleGamingupdate', [ArticleController::class, 'responsibleGamingupdate'])->name('responsibleGamingupdate');
     });
 });
     Route::prefix('articals')->name('articals.')->group(function () {
