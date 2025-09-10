@@ -47,4 +47,22 @@ class ArticleController extends Controller
         $data = termsandconditiondata();
         return view('articals.termsandcondition', compact('data'));
     }
+
+    public function responsibleGamingConfig(Request $request)
+    {
+        $data = responsibleGamingConfigdata();
+        return view('admin.articles.responsibleGaming', compact('data'));
+    }
+
+    public function privacyPolicyConfigdata(Request $request)
+    {
+        $data = privacyPolicydata();
+        return view('admin.articles.privacyPolicy', compact('data'));
+    }
+
+    public function termsandconditionConfigdata(Request $request)
+    {
+        $data = termsandconditiondata();
+        return view('admin.articles.termsandcondition', compact('data'));
+    }
 }

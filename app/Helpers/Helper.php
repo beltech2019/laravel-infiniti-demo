@@ -95,3 +95,18 @@ function termsandconditiondata()
 {
     return LinksContent::where('key','TERMS_CONDITIONS')->value('data');
 }
+
+function responsibleGamingConfigdata()
+{
+    return LinksContent::where('key','RESPONSIBLE_GAMING')->first();
+}
+
+function privacyPolicyConfigdata()
+{
+    return LinksContent::where('key','PRIVACY_POLICY')->first();
+}
+
+function termsandconditionConfigdata()
+{
+    return LinksContent::where('key','TERMS_CONDITIONS')->first();
+}
