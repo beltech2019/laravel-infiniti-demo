@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -199,5 +200,7 @@
       }, 3000);
     }
   </script>
+
+  @stack('scripts')
 </body>
 </html>

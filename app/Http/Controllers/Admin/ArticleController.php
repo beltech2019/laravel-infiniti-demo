@@ -57,13 +57,13 @@ class ArticleController extends Controller
 
     public function privacyPolicyConfig(Request $request)
     {
-        $data = privacyPolicydata();
+        $data = privacyPolicyConfigdata();
         return view('admin.articles.privacyPolicy', compact('data'));
     }
 
     public function termsandconditionConfig(Request $request)
     {
-        $data = termsandconditiondata();
+        $data = termsandconditionConfigdata();
         return view('admin.articles.termsandcondition', compact('data'));
     }
 
