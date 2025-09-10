@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\LinksContent;
 use App\Models\Articles;
 use Illuminate\Http\Request;
 use Log;
@@ -68,16 +69,37 @@ class ArticleController extends Controller
 
     public function responsibleGamingupdate(Request $request)
     {
+        $request->validate([
+            'data' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'RESPONSIBLE_GAMING')
+            ->update(['data' => $request->data]);
+
         return back()->with('success', 'Updated.');
     }
 
     public function privacyPolicyupdate(Request $request)
     {
-        return back()->with('success', 'Updated.');    
+        $request->validate([
+            'data' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'PRIVACY_POLICY')
+            ->update(['data' => $request->data]);
+
+        return back()->with('success', 'Updated.');  
     }
 
     public function termsandconditionupdate(Request $request)
     {
+        $request->validate([
+            'data' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'TERMS_CONDITIONS')
+            ->update(['data' => $request->data]);
+
         return back()->with('success', 'Updated.');      
     }
 }
