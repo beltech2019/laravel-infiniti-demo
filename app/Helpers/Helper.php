@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Log;
 use App\Helpers\Session as LegacySession;
 use App\Helpers\Utilities;
 use Carbon\Carbon;
-
+use App\Models\LinksContent;
+use App\Models\FAQ;
 function authUserId(){
     $userId = session('user_id');
     return $userId;
@@ -73,4 +74,24 @@ function getCurrencyDetailcode(){
     $playerInfo = Utilities::getPlayerLoginResponse();
     $currency = $playerInfo->walletBean->currency;
     return $currency;
+}
+
+function getFaqs()
+{
+    return FAQ::all();
+}
+
+function responsibleGamingdata()
+{
+    return LinksContent::where('key','RESPONSIBLE_GAMING')->value('data');
+}
+
+function privacyPolicydata()
+{
+    return LinksContent::where('key','PRIVACY_POLICY')->value('data');
+}
+
+function termsandconditiondata()
+{
+    return LinksContent::where('key','TERMS_CONDITIONS')->value('data');
 }

@@ -19,10 +19,6 @@ use Illuminate\Support\Facades\Log;
 Route::middleware([SetLocale::class])->group(function () {
 Route::match(['GET','POST'], '/component/weaver', [AuthorisationController::class, 'dispatch'])
     ->name('weaver.dispatch');
-Route::get('/faqs', function () {
-    $faqs = getFaqs(); 
-    return view('faqs', compact('faqs'));
-})->name('faqs');
 
 // (Optional: pretty routes if you want them too)
 Route::post('/login', [AuthorisationController::class, 'playerLogin'])->name('weaver.login');
@@ -110,7 +106,15 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('faqs', FAQController::class)->except(['show']);
         Route::resource('banners', BannerController::class)->only(['index','update']);
         Route::resource('languages', LanguageController::class)->only(['index','update']);
+        Route::get('/privacyPolicyConfig', [ArticleController::class, 'privacyPolicyConfig'])->name('privacyPolicyConfig');
+        Route::get('/termsandconditionConfig', [ArticleController::class, 'termsandconditionConfig'])->name('termsandconditionConfig');
+        Route::get('/responsibleGamingConfig', [ArticleController::class, 'responsibleGamingConfig'])->name('responsibleGamingConfig');
     });
 });
-
+    Route::prefix('articals')->name('articals.')->group(function () {
+        Route::get('/responsibleGaming', [ArticleController::class, 'responsibleGaming'])->name('responsibleGaming');
+        Route::get('/faqs', [ArticleController::class, 'faqs'])->name('faqs');
+        Route::get('/privacyPolicy', [ArticleController::class, 'privacyPolicy'])->name('privacyPolicy');
+        Route::get('/termsandcondition', [ArticleController::class, 'termsandcondition'])->name('termsandcondition');
+    });
 });

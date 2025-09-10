@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Articles;
 use Illuminate\Http\Request;
+use Log;
 
 class ArticleController extends Controller
 {
@@ -21,5 +22,29 @@ class ArticleController extends Controller
         $article->save();
 
         return back()->with('success', 'Article publish status updated.');
+    }
+
+    public function faqs(Request $request)
+    {
+        $faqs = getFaqs(); 
+        return view('articals.faqs', compact('faqs'));
+    }
+
+    public function responsibleGaming(Request $request)
+    {
+        $data = responsibleGamingdata();
+        return view('articals.responsibleGaming', compact('data'));
+    }
+
+    public function privacyPolicy(Request $request)
+    {
+        $data = privacyPolicydata();
+        return view('articals.privacyPolicy', compact('data'));
+    }
+
+    public function termsandcondition(Request $request)
+    {
+        $data = termsandconditiondata();
+        return view('articals.termsandcondition', compact('data'));
     }
 }

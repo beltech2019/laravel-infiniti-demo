@@ -21,7 +21,7 @@
 
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
                             <li>
-                                <a href="{{ route('faqs') }}">
+                                <a href="{{ route('articals.faqs') }}">
                                     <i class="bi bi-chevron-right"></i> {{ __('message2.FAQ') }}
                                 </a>
                             </li>
@@ -37,12 +37,12 @@
                         </div>
                         <ul>
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.CONTACT_US') }}</a></li>
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.RESPONSIBLE_GAMING') }}</a></li>
+                            <li><a href="{{route('articals.responsibleGaming')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.RESPONSIBLE_GAMING') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.PRIVACY_POLICY') }}</a></li>
+                            <li><a href="{{route('articals.privacyPolicy')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.PRIVACY_POLICY') }}</a></li>
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.COOKIE_POLICY') }}</a></li>
 
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.TERMS_CONDITIONS') }}</a></li>
+                            <li><a href="{{route('articals.termsandcondition')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.TERMS_CONDITIONS') }}</a></li>
 
                             
                         </ul>
