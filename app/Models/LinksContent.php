@@ -14,6 +14,7 @@ class LinksContent extends Model
     protected $fillable = [
         'key',
         'value',
+        'lang',
         'data',
     ];
 }

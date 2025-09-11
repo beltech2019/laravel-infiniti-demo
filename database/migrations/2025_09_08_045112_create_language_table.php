@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tb_language', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('code');
             $table->tinyInteger('publish')->default(0);
             $table->timestamps();
             $table->softDeletes();

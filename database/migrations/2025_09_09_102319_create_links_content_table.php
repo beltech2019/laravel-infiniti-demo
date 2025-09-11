@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('links_content', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
-            $table->string('value');    
+            $table->string('value');
+            $table->string('lang');    
             $table->text('data')->nullable(); 
             $table->timestamps();
         });

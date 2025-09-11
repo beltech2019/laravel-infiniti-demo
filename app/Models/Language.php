@@ -17,9 +17,10 @@ class Language extends Model
     protected $casts = [
         'publish' => 'integer',
     ];
-    
+
     protected $fillable = [
         'name',
+        'code',
         'publish',
     ];
 }

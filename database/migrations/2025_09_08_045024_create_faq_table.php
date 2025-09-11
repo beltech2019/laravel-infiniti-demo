@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tb_faq', function (Blueprint $table) {
             $table->id();
             $table->text('question');
+            $table->string('lang');
             $table->text('answer')->nullable();
             $table->timestamps();
             $table->softDeletes();

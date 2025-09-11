@@ -17,6 +17,7 @@ class LinksContentSeeder extends Seeder
             [
                 'key' => 'RESPONSIBLE_GAMING',
                 'value' => 'Responsible Gaming',
+                'lang' => 'en',
                 'data' => '
             <p>Mention name of the governing authority that manages lottery-based gaming in Myanmar region is strongly committed to finding the right balance between profitability and social responsibility. Working collaboratively, we are putting that commitment into action. Therefore, <strong>company name</strong> has introduced a number of initiatives designed to promote the safe use of our products.</p>
 
@@ -44,6 +45,7 @@ class LinksContentSeeder extends Seeder
             [
                 'key' => 'PRIVACY_POLICY',
                 'value' => 'Privacy Policy',
+                'lang' => 'en',
                 'data' => '
             <h3>Privacy Policy</h>
 
@@ -92,6 +94,7 @@ class LinksContentSeeder extends Seeder
             [
                 'key' => 'TERMS_CONDITIONS',
                 'value' => 'Terms & Conditions',
+                'lang' => 'en',
                 'data' => '
 
             <p>Welcome to the online lottery. In order to keep you informed of the membership benefits, please read the agreement carefully before registering for membership and using <strong>wls.infinitilotto.com</strong>. Members have read and accept the "Website Terms and Conditions of Service".</p>
