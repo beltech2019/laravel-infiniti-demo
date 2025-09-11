@@ -6,6 +6,7 @@
   <title>Admin Panel</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
   <style>
     body {
@@ -67,6 +68,11 @@
       color: #fff;
     }
 
+    .sidebar a.active {
+        background: #221183ff;
+        color: #fff;
+    }
+    
     .sidebar i {
       min-width: 30px;
       text-align: center;

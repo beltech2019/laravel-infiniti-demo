@@ -464,8 +464,10 @@ class LinksContentSeeder extends Seeder
         ];
 
         foreach ($links as $link) {
-            LinksContent::updateOrCreate(['key' => $link['key']], [
+            LinksContent::Create([
+                'key' => $link['key'],
                 'value' => $link['value'],
+                'lang' => $link['lang'],
                 'data' => $link['data']
             ]);
         }

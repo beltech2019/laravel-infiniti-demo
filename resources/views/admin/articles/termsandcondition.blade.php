@@ -9,11 +9,21 @@
                 <div class="card-header">
                     <h5 class="mb-0">Terms & Conditions</h5>
                 </div>
-                <div class="card-body" style="min-height: 420px;">
-                    <textarea class="form-control tinytextarea" name="data" rows="10">{!! $data->data ?? '' !!}</textarea>
-                    <div id="tinymce-warning" class="alert alert-warning mt-2 d-none">
-                        TinyMCE could not load. Please check your API key or script source.
-                    </div>
+                <div class="card-body mt-4">
+                    <label>English</label>
+                    <textarea class="form-control tinytextarea" name="dataen" rows="10" required>{!! $dataen->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>Spanish</label>
+                    <textarea class="form-control tinytextarea" name="dataes" rows="10" required>{!! $dataes->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>French</label>
+                    <textarea class="form-control tinytextarea" name="datafr" rows="10" required>{!! $datafr->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>Thai</label>
+                    <textarea class="form-control tinytextarea" name="datath" rows="10" required>{!! $datath->data ?? '' !!}</textarea>
                 </div>
             </div>
             <div class="text-end mt-3">

@@ -51,30 +51,55 @@ class ArticleController extends Controller
 
     public function responsibleGamingConfig(Request $request)
     {
-        $data = responsibleGamingConfigdata();
-        return view('admin.articles.responsibleGaming', compact('data'));
+        $dataen = responsibleGamingConfigdata('en');
+        $dataes = responsibleGamingConfigdata('es');
+        $datafr = responsibleGamingConfigdata('fr');
+        $datath = responsibleGamingConfigdata('th');
+        return view('admin.articles.responsibleGaming', compact('dataen','dataes','datafr','datath'));
     }
 
     public function privacyPolicyConfig(Request $request)
     {
-        $data = privacyPolicyConfigdata();
-        return view('admin.articles.privacyPolicy', compact('data'));
+        $dataen = privacyPolicyConfigdata('en');
+        $dataes = privacyPolicyConfigdata('es');
+        $datafr = privacyPolicyConfigdata('fr');
+        $datath = privacyPolicyConfigdata('th');
+        return view('admin.articles.privacyPolicy', compact('dataen','dataes','datafr','datath'));
     }
 
     public function termsandconditionConfig(Request $request)
     {
-        $data = termsandconditionConfigdata();
-        return view('admin.articles.termsandcondition', compact('data'));
+        $dataen = termsandconditionConfigdata('en');
+        $dataes = termsandconditionConfigdata('es');
+        $datafr = termsandconditionConfigdata('fr');
+        $datath = termsandconditionConfigdata('th');
+        return view('admin.articles.termsandcondition', compact('dataen','dataes','datafr','datath'));
     }
 
     public function responsibleGamingupdate(Request $request)
     {
         $request->validate([
-            'data' => 'required|string',
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
         ]);
 
         LinksContent::where('key', 'RESPONSIBLE_GAMING')
-            ->update(['data' => $request->data]);
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'RESPONSIBLE_GAMING')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'RESPONSIBLE_GAMING')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'RESPONSIBLE_GAMING')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);
 
         return back()->with('success', 'Updated.');
     }
@@ -82,11 +107,27 @@ class ArticleController extends Controller
     public function privacyPolicyupdate(Request $request)
     {
         $request->validate([
-            'data' => 'required|string',
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
         ]);
 
         LinksContent::where('key', 'PRIVACY_POLICY')
-            ->update(['data' => $request->data]);
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'PRIVACY_POLICY')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'PRIVACY_POLICY')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'PRIVACY_POLICY')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
 
         return back()->with('success', 'Updated.');  
     }
@@ -94,11 +135,27 @@ class ArticleController extends Controller
     public function termsandconditionupdate(Request $request)
     {
         $request->validate([
-            'data' => 'required|string',
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
         ]);
 
         LinksContent::where('key', 'TERMS_CONDITIONS')
-            ->update(['data' => $request->data]);
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'TERMS_CONDITIONS')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'TERMS_CONDITIONS')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'TERMS_CONDITIONS')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
 
         return back()->with('success', 'Updated.');      
     }

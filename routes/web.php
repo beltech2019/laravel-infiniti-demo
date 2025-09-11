@@ -98,7 +98,7 @@ Route::post('/admin/signup', [AuthController::class, 'signup'])->name('admin.sig
 // Logout
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['adminauth'])->group(function () {
     Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('articles', ArticleController::class)->only(['index','update']);

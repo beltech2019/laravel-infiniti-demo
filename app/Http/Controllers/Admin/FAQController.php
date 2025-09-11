@@ -10,18 +10,52 @@ class FAQController extends Controller
 {
     public function index()
     {
-        $faqs = FAQ::all();
-        return view('admin.faqs.index', compact('faqs'));
+        $faqs = FAQ::orderBy('lang')->get()->groupBy('lang');
+
+        $languages = [
+            'en' => 'English',
+            'fr' => 'French',
+            'es' => 'Spanish',
+            'th' => 'Thai',
+        ];
+
+        return view('admin.faqs.index', compact('faqs', 'languages'));
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string',
+            'questionen' => 'required|string|max:255',
+            'answeren' => 'required|string',
+            'questiones' => 'required|string|max:255',
+            'answeres' => 'required|string',
+            'questionfr' => 'required|string|max:255',
+            'answerfr' => 'required|string',
+            'questionth' => 'required|string|max:255',
+            'answerth' => 'required|string',
         ]);
 
-        FAQ::create($request->only('question', 'answer'));
+        FAQ::create([
+            'lang' => 'en',
+            'question' => $request->questionen,
+            'answer' => $request->answeren
+        ]);
+        FAQ::create([
+            'lang' => 'es',
+            'question' => $request->questiones,
+            'answer' => $request->answeres
+        ]);
+        FAQ::create([
+            'lang' => 'th',
+            'question' => $request->questionth,
+            'answer' => $request->answerth
+        ]);
+        FAQ::create([
+            'lang' => 'fr',
+            'question' => $request->questionfr,
+            'answer' => $request->answerfr
+        ]);
         return back()->with('success', 'FAQ added successfully.');
     }
 

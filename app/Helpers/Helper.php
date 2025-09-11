@@ -6,6 +6,7 @@ use App\Helpers\Session as LegacySession;
 use App\Helpers\Utilities;
 use Carbon\Carbon;
 use App\Models\LinksContent;
+use App\Models\Language;
 use App\Models\FAQ;
 function authUserId(){
     $userId = session('user_id');
@@ -78,35 +79,44 @@ function getCurrencyDetailcode(){
 
 function getFaqs()
 {
-    return FAQ::all();
+    $lang = substr(app()->getLocale(), 0, 2);
+    return FAQ::where('lang',$lang)->get();
 }
 
 function responsibleGamingdata()
 {
-    return LinksContent::where('key','RESPONSIBLE_GAMING')->value('data');
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','RESPONSIBLE_GAMING')->value('data');
 }
 
 function privacyPolicydata()
 {
-    return LinksContent::where('key','PRIVACY_POLICY')->value('data');
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','PRIVACY_POLICY')->value('data');
 }
 
 function termsandconditiondata()
 {
-    return LinksContent::where('key','TERMS_CONDITIONS')->value('data');
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','TERMS_CONDITIONS')->value('data');
 }
 
-function responsibleGamingConfigdata()
+function responsibleGamingConfigdata($lang)
 {
-    return LinksContent::where('key','RESPONSIBLE_GAMING')->first();
+    return LinksContent::where('lang',$lang)->where('key','RESPONSIBLE_GAMING')->first();
 }
 
-function privacyPolicyConfigdata()
+function privacyPolicyConfigdata($lang)
 {
-    return LinksContent::where('key','PRIVACY_POLICY')->first();
+    return LinksContent::where('lang',$lang)->where('key','PRIVACY_POLICY')->first();
 }
 
-function termsandconditionConfigdata()
+function termsandconditionConfigdata($lang)
 {
-    return LinksContent::where('key','TERMS_CONDITIONS')->first();
+    return LinksContent::where('lang',$lang)->where('key','TERMS_CONDITIONS')->first();
+}
+
+function getAlllangs()
+{
+    return Language::all();
 }

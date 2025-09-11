@@ -9,8 +9,21 @@
                 <div class="card-header">
                     <h5 class="mb-0">Responsible Gaming</h5>
                 </div>
-                <div class="card-body" style="min-height: 420px;">
-                    <textarea id="tinyeditor" class="form-control tinytextarea" name="data" rows="15">{!! $data->data ?? '' !!}</textarea>
+                <div class="card-body mt-4">
+                    <label>English</label>
+                    <textarea class="form-control tinytextarea" name="dataen" rows="10" required>{!! $dataen->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>Spanish</label>
+                    <textarea class="form-control tinytextarea" name="dataes" rows="10" required>{!! $dataes->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>French</label>
+                    <textarea class="form-control tinytextarea" name="datafr" rows="10" required>{!! $datafr->data ?? '' !!}</textarea>
+                </div>
+                <div class="card-body mt-4">
+                    <label>Thai</label>
+                    <textarea class="form-control tinytextarea" name="datath" rows="10" required>{!! $datath->data ?? '' !!}</textarea>
                 </div>
             </div>
             <div class="text-end mt-3">
@@ -25,42 +38,39 @@
 <script rel="preload" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
-    function alertInvalidAPI() {
-        alert("TinyMCE cannot load: please check your API key.");
-        console.error("TinyMCE API key is missing or invalid.");
-    }
+    const warning = document.getElementById('tinymce-warning');
 
     try {
         if (typeof tinymce !== "undefined") {
 
-            if (tinymce.get('tinyeditor')) tinymce.get('tinyeditor').remove();
+            // Remove previous instance if any
+            tinymce.remove('textarea.tinytextarea');
 
             tinymce.init({
-                selector: '#tinyeditor',
+                selector: 'textarea.tinytextarea',
                 height: 400,
                 menubar: false,
                 plugins: 'lists link image preview code',
                 toolbar: 'undo redo | bold italic underline | bullist numlist | link image | preview code',
                 branding: false,
-                entity_encoding: 'raw',
                 setup: function(editor) {
                     editor.on('init', function() {
-                        // Check if the editor loaded correctly
                         if (!editor.getContainer()) {
-                            alertInvalidAPI();
+                            warning.classList.remove('d-none');
+                            console.error("TinyMCE failed to load.");
                         }
                     });
                 }
             });
 
         } else {
-            alertInvalidAPI();
+            warning.classList.remove('d-none');
+            console.error("TinyMCE not found.");
         }
     } catch (e) {
-        alertInvalidAPI();
+        warning.classList.remove('d-none');
+        console.error("TinyMCE initialization error:", e);
     }
-
 });
 </script>
 @endpush
