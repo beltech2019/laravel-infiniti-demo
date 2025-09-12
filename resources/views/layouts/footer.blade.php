@@ -3,7 +3,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="logo-footer">
-                        <img src="{{asset('images/infinity.png')}}">
+                        <img src="{{ getBannerPath('Logo')}}">
                         <p>{{ __('message2.INFINITI_DESCRIPTION') }}</p>
                     </div>
                 </div>
@@ -13,19 +13,28 @@
                             <h4>{{ __('message2.QUICK_LINKS') }}</h4>
                         </div>
                         <ul>
+                            @if(articlesview('Results'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.RESULTS') }}</a></li>
+                            @endif
+                            @if(articlesview('How To Play'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.HOW_TO_PLAY') }}</a></li>
-
+                            @endif
+                            @if(articlesview('Permotions'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.PROMOTIONS') }}</a></li>
+                            @endif
+                            @if(articlesview('News'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.NEWS') }}</a></li>
-
+                            @endif
+                            @if(articlesview('Our Retailer'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
+                            @endif
+                            @if(articlesview('FAQ'))
                             <li>
                                 <a href="{{ route('articals.faqs') }}">
                                     <i class="bi bi-chevron-right"></i> {{ __('message2.FAQ') }}
                                 </a>
                             </li>
-
+                            @endif
                             
                         </ul>
                     </div>
@@ -36,13 +45,23 @@
                             <h4>{{ __('message2.MORE_LINKS') }}</h4>
                         </div>
                         <ul>
+                            @if(articlesview('Contact Us'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.CONTACT_US') }}</a></li>
+                            @endif
+                            @if(articlesview('Responsible Gaming'))
                             <li><a href="{{route('articals.responsibleGaming')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.RESPONSIBLE_GAMING') }}</a></li>
-
+                            @endif
+                             @if(articlesview('Privacy Policy'))
                             <li><a href="{{route('articals.privacyPolicy')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.PRIVACY_POLICY') }}</a></li>
+                            @endif
+                            @if(articlesview('Cookie Policy'))
                             <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.COOKIE_POLICY') }}</a></li>
+                            @endif
+                            @if(articlesview('Tearms & Conditions'))
 
                             <li><a href="{{route('articals.termsandcondition')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.TERMS_CONDITIONS') }}</a></li>
+                            @endif
+                            
 
                             
                         </ul>

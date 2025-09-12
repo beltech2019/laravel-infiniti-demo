@@ -39,7 +39,7 @@
 <div id="loginModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal()">&times;</span>
-    <img src="{{ asset('images/infinity.png')}}" alt="Infiniti Logo" style="width: 150px; margin-bottom: 20px;">
+    <img src="{{  getBannerPath('Logo')}}" alt="Infiniti Logo" style="width: 150px; margin-bottom: 20px;">
     <form method="post"
             action="{{route('weaver.login')}}"
             id="login-form-ige">

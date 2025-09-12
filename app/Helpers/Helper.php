@@ -8,6 +8,9 @@ use Carbon\Carbon;
 use App\Models\LinksContent;
 use App\Models\Language;
 use App\Models\FAQ;
+use App\Models\Banners;
+use App\Models\Articles;
+use App\Models\Games;
 function authUserId(){
     $userId = session('user_id');
     return $userId;
@@ -119,4 +122,38 @@ function termsandconditionConfigdata($lang)
 function getAlllangs()
 {
     return Language::all();
+}
+
+
+function getBannerPath(string $nameOrLocation, string $type = 'name'): ?string
+    {
+        $banner = null;
+
+        if ($type === 'name') {
+            $banner = Banners::where('name', $nameOrLocation)->first();
+        } elseif ($type === 'location') {
+            $banner = Banners::where('location', $nameOrLocation)->first();
+        }
+
+        return $banner ? asset($banner->path) : null;
+    }
+
+
+
+function articlesview($articlename)
+{
+    $articles =Articles::where('name', $articlename)->where('publish', 1)->first();
+    
+    return $articles ? true : false;
+}
+
+function gamesview($gamesname)
+{
+    $games =Games::where('name', $gamesname)->where('publish', 1)->first();
+    if($games){
+        return true;
+    }else{
+        return false;
+    }
+    
 }

@@ -1,7 +1,7 @@
 <header class="header sticky-top bg-transparent">
     <nav class="navbar navbar-expand-lg navbar-light ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('loginPage')}}"><img src="{{asset('images/infinity.png')}}" class="logo"></a>
+            <a class="navbar-brand" href="{{route('loginPage')}}"><img src="{{ getBannerPath('Logo')}}" class="logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -9,30 +9,46 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @if(gamesview('LOTTERY'))
                     <li class="nav-item" id="nav-item-lottery">
                         <a class="nav-link" id="nav-link-lottery" aria-current="page" href="{{route('games.lottery')}}">{{ __('message2.LOTTERY') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('SPORTSPOOL'))
                     <li class="nav-item" id="nav-item-sportsPool">
                         <a class="nav-link" id="nav-link-sportsPool" href="{{route('games.sportsPool')}}">{{ __('message2.SPORTSPOOL') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('BINGO'))
                     <li class="nav-item" id="nav-item-bingo">
                         <a class="nav-link" id="nav-link-bingo" href="{{route('games.bingo')}}">{{ __('message2.BINGO') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('SPORTS BETTING'))
                     <li class="nav-item" id="nav-item-sportsBetting">
                         <a class="nav-link" id="nav-link-sportsBetting" href="{{route('games.sportsbetting')}}">{{ __('message2.SPORTS_BETTING') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('INSTANT GAMES'))
                     <li class="nav-item" id="nav-item-instant">
                         <a class="nav-link" id="nav-link-instant" href="{{route('games.instantgames')}}">{{ __('message2.INSTANT_GAMES') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('SLOT'))
                     <li class="nav-item" id="nav-item-slots">
                         <a class="nav-link" id="nav-link-slots" href="{{route('games.slotgames')}}">{{ __('message2.SLOTS') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('CRAZY BILLIONS'))
                     <li class="nav-item" id="nav-item-crazyBillions">
                         <a class="nav-link" id="nav-link-crazyBillions" href="{{route('games.crazyBillions')}}">{{ __('message2.CRAZY_BILLIONS') }}</a>
                     </li>
+                    @endif
+                    @if(gamesview('GAME ART'))
                     <li class="nav-item" id="nav-item-gameArt">
                         <a class="nav-link" id="nav-link-gameArt" href="{{route('games.gameart')}}">{{ __('message2.GAME_ART') }}</a>
                     </li>
+                    @endif
 
 
 

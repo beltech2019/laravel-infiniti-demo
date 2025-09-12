@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
   <div class="col-md-3">
-    <img src="{{ asset('images/misc/dummyLeftBanner.jpg') }}" alt="Infiniti Banner" class="img-fluid" style="width: 100%;">
+    <img src="{{  getBannerPath('Main Banner of Register Page')}}" alt="Infiniti Banner" class="img-fluid" style="width: 100%;">
   </div>
 
   <div class="col-md-9">
