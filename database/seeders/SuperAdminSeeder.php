@@ -20,7 +20,7 @@ class SuperAdminSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'email_verified_at' => now(),
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('live_bet2win'),
                 'remember_token' => Str::random(10),
             ]
         );

@@ -112,6 +112,8 @@ Route::middleware(['adminauth'])->group(function () {
         Route::post('/privacyPolicyupdate', [ArticleController::class, 'privacyPolicyupdate'])->name('privacyPolicyupdate');
         Route::post('/termsandconditionupdate', [ArticleController::class, 'termsandconditionupdate'])->name('termsandconditionupdate');
         Route::post('/responsibleGamingupdate', [ArticleController::class, 'responsibleGamingupdate'])->name('responsibleGamingupdate');
+        Route::get('/change-password', [AuthController::class, 'showChangePasswordForm'])->name('changePasswordForm');
+        Route::post('/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
     });
 });
     Route::prefix('articals')->name('articals.')->group(function () {
