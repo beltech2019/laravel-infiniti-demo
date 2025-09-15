@@ -1,5 +1,5 @@
 @extends('admin.layout.app')
 @section('content')
-<h1>Welcome to the Animated Dashboard</h1>
-<p>This is your homepage with animated sidebar and header navigation.</p>
+<h1>Infiniti-Demo</h1>
+<p>Hello Admin</p>
 @endsection

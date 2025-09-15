@@ -49,7 +49,7 @@
                     </a>    
                 </div>
                 @endif
-                @if(gamesview('SLOTS'))
+                @if(gamesview('SLOT'))
                 <div class="col-md-3 last_parents">
                     <a href="{{route('games.slotgames')}}" class="">
                          <div class="cards-icons ">

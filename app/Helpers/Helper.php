@@ -121,7 +121,7 @@ function termsandconditionConfigdata($lang)
 
 function getAlllangs()
 {
-    return Language::all();
+    return Language::where('publish',1)->get();
 }
 
 
