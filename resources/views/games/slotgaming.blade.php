@@ -40,7 +40,7 @@
     top: 10px;
     right: 10px;
     background-color: rgba(255,255,255,0.85);
-    padding: 6px;
+    padding: 13px;
     border-radius: 3px;
     cursor: pointer;
 }

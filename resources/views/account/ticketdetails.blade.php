@@ -8,7 +8,7 @@
     </div>
     <div class="ticket-divider"></div>
     <div class="ticket-right">
-        <img src="https://via.placeholder.com/50" alt="Game Logo">
+<img src="https://d1n3o8efs042su.cloudfront.net/IGEContentWLS/content/gamePlayContent/launcher/eng/{{ str_replace(' ', '', $ticket->gameName) }}.png" alt="Game Logo">
         <p>{{$ticket->gameName ?? ''}}</p>
     </div>
 </div>

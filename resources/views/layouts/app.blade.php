@@ -27,7 +27,7 @@
 
 <body class="@if(session('user_id'))post-login @endif">
 @include('layouts.header')
- <div class="div">
+ <div class="div" style="overflow: hidden;">
 @yield('content')
  </div>
 @include('layouts.footer')
@@ -39,7 +39,7 @@
 <div id="loginModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal()">&times;</span>
-    <img src="{{  getBannerPath('Logo')}}" alt="Infiniti Logo" style="width: 150px; margin-bottom: 20px;">
+    <img src="{{  getBannerPath('Logo')}}" alt="Infiniti Logo" style="width: 150px; margin: 0px auto 20px auto;">
     <form method="post"
             action="{{route('weaver.login')}}"
             id="login-form-ige">
@@ -183,6 +183,9 @@ $(document).ready(function() {
 
     @if(session('success'))
         toastr.success(@json(session('success')), 'Success');
+    @endif
+    @if($errors->has('error'))
+      toastr.error(@json($errors->first('error')), 'Error');
     @endif
 
 });
