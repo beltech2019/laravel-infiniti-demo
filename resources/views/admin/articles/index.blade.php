@@ -27,17 +27,52 @@
                     </td>
                     <td>
                         @if($article->name == 'Responsible Gaming')
-                            <a href="{{ route('admin.responsibleGamingConfig') }}" class="{{ request()->routeIs('admin.responsibleGamingConfig') ? 'active' : '' }}">
+                            <a href="{{ route('admin.responsibleGamingConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         @endif
                         @if($article->name == 'Tearms & Conditions')
-                            <a href="{{ route('admin.termsandconditionConfig') }}" class="{{ request()->routeIs('admin.termsandconditionConfig') ? 'active' : '' }}">
+                            <a href="{{ route('admin.termsandconditionConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         @endif
                         @if($article->name == 'Privacy Policy')
-                            <a href="{{ route('admin.privacyPolicyConfig') }}" class="{{ request()->routeIs('admin.privacyPolicyConfig') ? 'active' : '' }}">
+                            <a href="{{ route('admin.privacyPolicyConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'Cookie Policy')
+                            <a href="{{ route('admin.cookiePolicyConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'How To Play')
+                            <a href="{{ route('admin.howtoplayConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'News')
+                            <a href="{{ route('admin.newsConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'Our Retailer')
+                            <a href="{{ route('admin.ourRetailersConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'Permotions')
+                            <a href="{{ route('admin.promotionsConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'Results')
+                            <a href="{{ route('admin.resultsConfig') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        @endif
+                        @if($article->name == 'FAQ')
+                            <a href="{{ route('admin.faqs.index') }}" class="{{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         @endif

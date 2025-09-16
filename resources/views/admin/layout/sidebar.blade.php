@@ -22,16 +22,4 @@
     <a href="{{ route('admin.faqs.index') }}" class="{{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
         <i class="fas fa-question-circle"></i><span class="menu-text"> FAQ Configration</span>
     </a>
-
-    <a href="{{ route('admin.responsibleGamingConfig') }}" class="{{ request()->routeIs('admin.responsibleGamingConfig') ? 'active' : '' }}">
-        <i class="fas fa-shield-alt"></i><span class="menu-text"> Responsible Gaming</span>
-    </a>
-
-    <a href="{{ route('admin.privacyPolicyConfig') }}" class="{{ request()->routeIs('admin.privacyPolicyConfig') ? 'active' : '' }}">
-        <i class="fas fa-user-shield"></i><span class="menu-text"> Privacy Policy</span>
-    </a>
-
-    <a href="{{ route('admin.termsandconditionConfig') }}" class="{{ request()->routeIs('admin.termsandconditionConfig') ? 'active' : '' }}">
-        <i class="fas fa-file-contract"></i><span class="menu-text"> Terms & Conditions</span>
-    </a>
 </div>

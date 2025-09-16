@@ -159,4 +159,263 @@ class ArticleController extends Controller
 
         return back()->with('success', 'Updated.');      
     }
+
+
+    public function cookiePolicy(Request $request)
+    {
+        $data = cookiePolicydata();
+        return view('articals.cookiePolicy', compact('data'));
+    }
+
+    public function howtoplay(Request $request)
+    {
+        $data = howtoplaydata();
+        return view('articals.howtoplay', compact('data'));
+    }
+
+    public function news(Request $request)
+    {
+        $data = newsdata();
+        return view('articals.news', compact('data'));
+    }
+
+    public function cookiePolicyConfig(Request $request)
+    {
+        $dataen = cookiePolicyConfigdata('en');
+        $dataes = cookiePolicyConfigdata('es');
+        $datafr = cookiePolicyConfigdata('fr');
+        $datath = cookiePolicyConfigdata('th');
+        return view('admin.articles.cookiePolicy', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function howtoplayConfig(Request $request)
+    {
+        $dataen = howtoplayConfigdata('en');
+        $dataes = howtoplayConfigdata('es');
+        $datafr = howtoplayConfigdata('fr');
+        $datath = howtoplayConfigdata('th');
+        return view('admin.articles.howtoplay', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function newsConfig(Request $request)
+    {
+        $dataen = newsConfigdata('en');
+        $dataes = newsConfigdata('es');
+        $datafr = newsConfigdata('fr');
+        $datath = newsConfigdata('th');
+        return view('admin.articles.news', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function cookiePolicyupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'COOKIE_POLICY')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'COOKIE_POLICY')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'COOKIE_POLICY')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'COOKIE_POLICY')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);
+
+        return back()->with('success', 'Updated.');
+    }
+
+    public function howtoplayupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'HOW_TO_PLAY')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'HOW_TO_PLAY')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'HOW_TO_PLAY')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'HOW_TO_PLAY')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
+
+        return back()->with('success', 'Updated.');  
+    }
+
+    public function newsupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'NEWS')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'NEWS')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'NEWS')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'NEWS')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
+
+        return back()->with('success', 'Updated.');      
+    }
+
+    public function ourRetailers(Request $request)
+    {
+        $data = ourRetailersdata();
+        return view('articals.ourRetailers', compact('data'));
+    }
+
+    public function promotions(Request $request)
+    {
+        $data = promotionsdata();
+        return view('articals.promotions', compact('data'));
+    }
+
+    public function results(Request $request)
+    {
+        $data = resultsdata();
+        return view('articals.results', compact('data'));
+    }
+
+    public function ourRetailersConfig(Request $request)
+    {
+        $dataen = ourRetailersConfigdata('en');
+        $dataes = ourRetailersConfigdata('es');
+        $datafr = ourRetailersConfigdata('fr');
+        $datath = ourRetailersConfigdata('th');
+        return view('admin.articles.ourRetailers', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function promotionsConfig(Request $request)
+    {
+        $dataen = promotionsConfigdata('en');
+        $dataes = promotionsConfigdata('es');
+        $datafr = promotionsConfigdata('fr');
+        $datath = promotionsConfigdata('th');
+        return view('admin.articles.promotions', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function resultsConfig(Request $request)
+    {
+        $dataen = resultsConfigdata('en');
+        $dataes = resultsConfigdata('es');
+        $datafr = resultsConfigdata('fr');
+        $datath = resultsConfigdata('th');
+        return view('admin.articles.results', compact('dataen','dataes','datafr','datath'));
+    }
+
+    public function ourRetailersupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'OUR_RETAILERS')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'OUR_RETAILERS')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'OUR_RETAILERS')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'OUR_RETAILERS')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);
+
+        return back()->with('success', 'Updated.');
+    }
+
+    public function promotionsupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'PROMOTIONS')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'PROMOTIONS')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'PROMOTIONS')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'PROMOTIONS')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
+
+        return back()->with('success', 'Updated.');  
+    }
+
+    public function resultsupdate(Request $request)
+    {
+        $request->validate([
+            'dataen' => 'required|string',
+            'datath' => 'required|string',
+            'dataes' => 'required|string',
+            'datafr' => 'required|string',
+        ]);
+
+        LinksContent::where('key', 'RESULTS')
+            ->where('lang','en')
+            ->update(['data' => $request->dataen]);
+
+        LinksContent::where('key', 'RESULTS')
+            ->where('lang','es')
+            ->update(['data' => $request->dataes]);
+
+        LinksContent::where('key', 'RESULTS')
+            ->where('lang','fr')
+            ->update(['data' => $request->datafr]);
+
+        LinksContent::where('key', 'RESULTS')
+            ->where('lang','th')
+            ->update(['data' => $request->datath]);    
+
+        return back()->with('success', 'Updated.');      
+    }
 }

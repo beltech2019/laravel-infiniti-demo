@@ -119,6 +119,72 @@ function termsandconditionConfigdata($lang)
     return LinksContent::where('lang',$lang)->where('key','TERMS_CONDITIONS')->first();
 }
 
+function cookiePolicydata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','COOKIE_POLICY')->value('data');
+}
+
+function howtoplaydata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','HOW_TO_PLAY')->value('data');
+}
+
+function newsdata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','NEWS')->value('data');
+}
+
+function cookiePolicyConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','COOKIE_POLICY')->first();
+}
+
+function howtoplayConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','HOW_TO_PLAY')->first();
+}
+
+function newsConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','NEWS')->first();
+}
+
+function ourRetailersdata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','OUR_RETAILERS')->value('data');
+}
+
+function promotionsdata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','PROMOTIONS')->value('data');
+}
+
+function resultsdata()
+{
+    $lang = substr(app()->getLocale(), 0, 2);
+    return LinksContent::where('lang',$lang)->where('key','RESULTS')->value('data');
+}
+
+function ourRetailersConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','OUR_RETAILERS')->first();
+}
+
+function promotionsConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','PROMOTIONS')->first();
+}
+
+function resultsConfigdata($lang)
+{
+    return LinksContent::where('lang',$lang)->where('key','RESULTS')->first();
+}
+
 function getAlllangs()
 {
     return Language::where('publish',1)->get();

@@ -14,19 +14,19 @@
                         </div>
                         <ul>
                             @if(articlesview('Results'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.RESULTS') }}</a></li>
+                            <li><a href="{{ route('articals.results') }}"><i class="bi bi-chevron-right"></i> {{ __('message2.RESULTS') }}</a></li>
                             @endif
                             @if(articlesview('How To Play'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.HOW_TO_PLAY') }}</a></li>
+                            <li><a href="{{ route('articals.howtoplay') }}"><i class="bi bi-chevron-right"></i> {{ __('message2.HOW_TO_PLAY') }}</a></li>
                             @endif
                             @if(articlesview('Permotions'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.PROMOTIONS') }}</a></li>
+                            <li><a href="{{ route('articals.promotions') }}"><i class="bi bi-chevron-right"></i> {{ __('message2.PROMOTIONS') }}</a></li>
                             @endif
                             @if(articlesview('News'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.NEWS') }}</a></li>
+                            <li><a href="{{ route('articals.news') }}"><i class="bi bi-chevron-right"></i> {{ __('message2.NEWS') }}</a></li>
                             @endif
                             @if(articlesview('Our Retailer'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
+                            <li><a href="{{ route('articals.ourRetailers') }}"><i class="bi bi-chevron-right"></i> {{ __('message2.OUR_RETAILER') }}</a></li>
                             @endif
                             @if(articlesview('FAQ'))
                             <li>
@@ -55,7 +55,7 @@
                             <li><a href="{{route('articals.privacyPolicy')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.PRIVACY_POLICY') }}</a></li>
                             @endif
                             @if(articlesview('Cookie Policy'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.COOKIE_POLICY') }}</a></li>
+                            <li><a href="{{route('articals.cookiePolicy')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.COOKIE_POLICY') }}</a></li>
                             @endif
                             @if(articlesview('Tearms & Conditions'))
 
