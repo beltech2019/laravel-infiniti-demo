@@ -56,7 +56,7 @@
                     <table class="table table-bordered">
                         <thead class="table-dark">
                             <tr>
-                                <th>ID</th>
+                                <th>S.No.</th>
                                 <th>Question</th>
                                 <th>Answer</th>
                                 <th>Actions</th>
@@ -65,7 +65,7 @@
                         <tbody>
                             @foreach($langFaqs as $faq)
                             <tr>
-                                <td>{{ $faq->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $faq->question }}</td>
                                 <td>{{ $faq->answer }}</td>
                                 <td>
