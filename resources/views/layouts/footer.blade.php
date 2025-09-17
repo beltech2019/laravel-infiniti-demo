@@ -46,7 +46,7 @@
                         </div>
                         <ul>
                             @if(articlesview('Contact Us'))
-                            <li><a href="#"><i class="bi bi-chevron-right"></i> {{ __('message2.CONTACT_US') }}</a></li>
+                            <li><a href="{{route('articals.contactUs')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.CONTACT_US') }}</a></li>
                             @endif
                             @if(articlesview('Responsible Gaming'))
                             <li><a href="{{route('articals.responsibleGaming')}}"><i class="bi bi-chevron-right"></i> {{ __('message2.RESPONSIBLE_GAMING') }}</a></li>

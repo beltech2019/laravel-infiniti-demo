@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LinksContent;
 use App\Models\Articles;
+use App\Helpers\Configuration;
+use App\Helpers\ServerCommunication;
+use App\Helpers\ServerUrl;
+use App\Helpers\Constants;
 use Illuminate\Http\Request;
 use Log;
 
@@ -418,4 +422,52 @@ class ArticleController extends Controller
 
         return back()->with('success', 'Updated.');      
     }
+
+    public function contactUs(Request $request){
+        return view('articals.contactus');
+    }
+
+    public function contactUsSubmit(Request $request)
+    {
+        // ✅ Check if it's an Ajax request
+        $isAjax = $request->input('isAjax', false) === 'true';
+
+        // ✅ Validate input
+        $validated = $request->validate([
+            'fname'   => 'required|string|max:255',
+            'lname'   => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        // ✅ Prepare request payload
+        $payload = [
+            'firstName'  => $validated['fname'],
+            'lastName'   => $validated['lname'],
+            'emailId'    => $validated['email'],
+            'subject'    => $validated['subject'],
+            'message'    => $validated['message'],
+            'domainName' => Configuration::DOMAIN_NAME,
+        ];
+        Log::info($payload);
+        // ✅ Send request to server
+        $response = ServerCommunication::sendCall(ServerUrl::CONTACT_US, $payload);
+        Log::info(json_encode($response));
+        // ✅ Handle response
+        if ($response && $response->errorCode == 0) {
+            $response->msg = __('message2.CONTACT_US_SUCCESSFULLY');
+
+            return redirect()->back()
+                ->with('success', $response->msg);
+
+        } else {
+            $errorMsg = $response ?? __('message2.CONTACT_US_UNSUCCESSFULLY');
+
+            return redirect()->back()
+                ->withErrors(['general' => $errorMsg])
+                ->withInput();
+        }
+    }
+
 }

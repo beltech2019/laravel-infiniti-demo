@@ -186,4 +186,14 @@ return[
     'WITHDRAWAL_SUCCESS' => 'Retrait réussi',
     'WITHDRAWAL_CANCELLED' => 'Retrait annulé',
 
+    'CONTACT_US' => 'Contactez-nous',
+    'CONTACT_US_HEADING' => "Nous serions ravis d'avoir de vos nouvelles",
+    'CONTACT_US_DESCRIPTION' => "Nous sommes là pour vous aider et répondre à toutes vos questions. Nous avons hâte de vous lire.",
+    'SUBJECT' => 'Sujet',
+    'YOUR_MESSAGE' => 'Votre message',
+    'CONTACT_US_SUCCESSFULLY' => 'Votre message a été envoyé avec succès.',
+    'CONTACT_US_UNSUCCESSFULLY' => "Une erreur s'est produite.",
+
+
+
 ];

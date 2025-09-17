@@ -139,5 +139,7 @@ Route::middleware(['adminauth'])->group(function () {
         Route::get('/ourRetailers', [ArticleController::class, 'ourRetailers'])->name('ourRetailers');
         Route::get('/promotions', [ArticleController::class, 'promotions'])->name('promotions');
         Route::get('/results', [ArticleController::class, 'results'])->name('results');
+        Route::get('/contactUs', [ArticleController::class, 'contactUs'])->name('contactUs');
+        Route::post('/contactUsSubmit', [ArticleController::class, 'contactUsSubmit'])->name('contactUsSubmit');
     });
 });

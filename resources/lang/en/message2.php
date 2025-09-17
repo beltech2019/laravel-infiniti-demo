@@ -191,5 +191,13 @@ return[
     'WITHDRAWAL_SUCCESS' => 'Withdrawal Success',
     'WITHDRAWAL_CANCELLED' => 'Withdrawal Cancelled',
 
+    'CONTACT_US' => 'Contact Us',
+    'CONTACT_US_HEADING' => "We'd love to hear from you",
+    'CONTACT_US_DESCRIPTION' => "We're here to help and answer any question you might have. We look forward to hearing from you.",
+    'SUBJECT' => 'Subject',
+    'YOUR_MESSAGE' => 'Your Message',
+    'CONTACT_US_SUCCESSFULLY' => 'Your Message was sent successfully.',
+    'CONTACT_US_UNSUCCESSFULLY' => 'Something went wrong.'
+
 
 ];

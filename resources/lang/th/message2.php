@@ -186,4 +186,14 @@ return[
     'WITHDRAWAL_SUCCESS' => 'ถอนเงินสำเร็จ',
     'WITHDRAWAL_CANCELLED' => 'การถอนถูกยกเลิก',
 
+    'CONTACT_US' => 'ติดต่อเรา',
+    'CONTACT_US_HEADING' => "เรายินดีที่จะรับฟังจากคุณ",
+    'CONTACT_US_DESCRIPTION' => "เราพร้อมที่จะช่วยเหลือและตอบทุกคำถามที่คุณอาจมี เราหวังว่าจะได้ยินจากคุณ",
+    'SUBJECT' => 'หัวข้อ',
+    'YOUR_MESSAGE' => 'ข้อความของคุณ',
+    'CONTACT_US_SUCCESSFULLY' => 'ส่งข้อความของคุณเรียบร้อยแล้ว',
+    'CONTACT_US_UNSUCCESSFULLY' => 'เกิดข้อผิดพลาดบางอย่าง',
+
+
+
 ];
